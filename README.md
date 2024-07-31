@@ -1,5 +1,8 @@
 # WebApp boilerplate with React JS and Flask API
 
+## Tablero del proyecto
+[Ver tabla de tareas](https://trello.com/b/we2CQ2Zr/mind-to-mind)
+
 Build web applications using React.js for the front end and python/flask for your backend API.
 
 - Documentation can be found here: https://start.4geeksacademy.com/starters/react-flask
