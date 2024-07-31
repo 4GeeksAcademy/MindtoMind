@@ -15,18 +15,26 @@ db = SQLAlchemy(app)
 class User(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String, nullable=False)
-    last_name = db.Column(db.String, nullable=False)
-    username = db.Column(db.String, unique=True, nullable=False)
-    email = db.Column(db.String, unique=True, nullable=False)
-    password = db.Column(db.String, nullable=False)
+    username = db.Column(db.String(100), unique=True, nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
 
-
-    is_psychologist = db.Column(db.Boolean, default=False)
     chats = db.relationship('Chat', back_populates='user')
-    blog_posts = db.relationship('BlogPost', back_populates='author')
-    appointments = db.relationship('Appointment', foreign_keys='Appointment.user_id', back_populates='user')
-    psychologist_appointments = db.relationship('Appointment', foreign_keys='Appointment.psychologist_id', back_populates='psychologist')
+    
+# Definición del modelo Psychologist (Psicólogo)
+class Psychologist(db.Model):
+    __tablename__ = 'psychologists'
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(100), nullable=False)
+    last_name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    specialty = db.Column(db.String(100), nullable=False)
+    years_of_experience = db.Column(db.Integer, nullable=False)
+    user = db.relationship('User')
+    inefficacy = db.Column(db.Float, nullable=True)  # Ejemplo de atributo adicional
+
 
 # Definición del modelo Chat (Chat)
 class Chat(db.Model):
@@ -37,21 +45,11 @@ class Chat(db.Model):
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)
     user = db.relationship('User', back_populates='chats')
 
-# Definición del modelo BlogPost (Publicación del blog)
-class BlogPost(db.Model):
-    __tablename__ = 'blog_posts'
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String, nullable=False)
-    content = db.Column(db.Text, nullable=False)
-    author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
-    author = db.relationship('User', back_populates='blog_posts')
-
 # Definición del modelo Test (Prueba)
 class Test(db.Model):
     __tablename__ = 'tests'
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String, nullable=False)
+    title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)
     questions = db.relationship('Question', back_populates='test')
 
@@ -73,15 +71,6 @@ class Answer(db.Model):
     is_correct = db.Column(db.Boolean, nullable=False)
     question = db.relationship('Question', back_populates='answers')
 
-# Definición del modelo Appointment (Cita)
-class Appointment(db.Model):
-    __tablename__ = 'appointments'
-    id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    psychologist_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    appointment_time = db.Column(db.DateTime, nullable=False)
-    user = db.relationship('User', foreign_keys=[user_id], back_populates='appointments')
-    psychologist = db.relationship('User', foreign_keys=[psychologist_id], back_populates='psychologist_appointments')
 
 # Crear las tablas en la base de datos
 with app.app_context():
