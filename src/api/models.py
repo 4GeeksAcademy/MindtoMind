@@ -19,20 +19,16 @@ class User(db.Model):
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
 
-    chats = db.relationship('Chat', back_populates='user')
-    psychologists = db.relationship('Psychologist', back_populates='user')
-    
+    conversations = db.relationship('Conversation', back_populates='user')
+    test_results = db.relationship('TestResult', back_populates='user')
+
     def serialize(self):
         return {
             "id": self.id,
             "username": self.username,
             "email": self.email
-            # do not serialize the password, its a security breach
+            # no se serializa la contraseña por razones de seguridad
         }
-
-
-
-
 
 # Definición del modelo Psychologist (Psicólogo)
 class Psychologist(db.Model):
@@ -43,11 +39,9 @@ class Psychologist(db.Model):
     phone_number = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     specialty = db.Column(db.String(100), nullable=False)
     years_of_experience = db.Column(db.Integer, nullable=False)
-    
-    user = db.relationship('User', back_populates='psychologists')
+    photo = db.Column(db.String(200), nullable=True)  # Ruta de la foto del psicólogo
 
     def serialize(self):
         return {
@@ -56,24 +50,44 @@ class Psychologist(db.Model):
             "last_name": self.last_name,
             "phone_number": self.phone_number,
             "years_of_experience": self.years_of_experience,
-            "specialty": self.specialty
+            "specialty": self.specialty,
+            "photo":self.photo
             # do not serialize the password, its a security breach
         }
 
 
-# Definición del modelo Chat (Chat)
-class Chat(db.Model):
-    __tablename__ = 'chats'
+# Definición del modelo Conversation (Conversación)
+class Conversation(db.Model):
+    __tablename__ = 'conversations'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
-    message = db.Column(db.Text, nullable=False)
-    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    started_on = db.Column(db.DateTime, default=datetime.utcnow)
     
-    user = db.relationship('User', back_populates='chats')
+    user = db.relationship('User', back_populates='conversations')
+    messages = db.relationship('Message', back_populates='conversation')
 
     def serialize(self):
         return {
             "id": self.id,
+            "user_id": self.user_id,
+            "started_on": self.started_on
+        }
+
+
+# Definición del modelo Message (Mensaje)
+class Message(db.Model):
+    __tablename__ = 'messages'
+    id = db.Column(db.Integer, primary_key=True)
+    conversation_id = db.Column(db.Integer, db.ForeignKey('conversations.id'))
+    message = db.Column(db.Text, nullable=False)
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    conversation = db.relationship('Conversation', back_populates='messages')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "conversation_id":self.conversation_id,
             "menssage": self.message,
             "timestamp": self.timestamp,
             # do not serialize the password, its a security breach
@@ -130,6 +144,27 @@ class Answer(db.Model):
             "answer_text": self.answer_text,
             "is_correct": self.is_correct,
             # do not serialize the password, its a security breach
+        }
+    
+# Definición del modelo TestResult (Resultado de Prueba)
+class TestResult(db.Model):
+    __tablename__ = 'test_results'
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    test_id = db.Column(db.Integer, db.ForeignKey('tests.id'))
+    score = db.Column(db.Integer, nullable=False)
+    taken_on = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    user = db.relationship('User', back_populates='test_results')
+    test = db.relationship('Test')
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "user_id": self.user_id,
+            "test_id": self.test_id,
+            "score": self.score,
+            "taken_on": self.taken_on
         }
 
 # Crear las tablas en la base de datos
