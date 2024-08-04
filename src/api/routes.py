@@ -12,23 +12,24 @@ api = Blueprint('api', __name__)
 CORS(api)
 
 
-@api.route('/hello', methods=['POST', 'GET'])
-def handle_hello():
+# @api.route('/hello', methods=['POST', 'GET'])
+# def handle_hello():
 
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
+#     response_body = {
+#         "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
+#     }
 
-    return jsonify(response_body), 200
+#     return jsonify(response_body), 200
+
 
 # Crear usuario
-@api.route('/users', methods=['POST'])
+@api.route('/user', methods=['POST'])
 def create_user():
     data = request.json
     new_user = User(username=data['username'], email=data['email'], password=data['password'])
     db.session.add(new_user)
     db.session.commit()
-    return jsonify(new_user.serialize()), 201
+    return jsonify(new_user.serialize()), 200
 
 # Obtener todos los usuarios
 @api.route('/users', methods=['GET'])
@@ -42,8 +43,17 @@ def get_user(id):
     user = User.query.get_or_404(id)
     return jsonify(user.serialize()), 200
 
+# Eliminar un usuario por ID
+@api.route('/user/<int:id>', methods=['DELETE'])
+def delete_user(id):
+    user = User.query.get_or_404(id)
+    db.session.delete(user)
+    db.session.commit()
+    return jsonify({"message": "User deleted successfully"}), 200
+
+
 # Crear psicólogo
-@api.route('/psychologists', methods=['POST'])
+@api.route('/psychologist', methods=['POST'])
 def create_psychologist():
     data = request.json
     new_psychologist = Psychologist(
@@ -54,7 +64,7 @@ def create_psychologist():
     )
     db.session.add(new_psychologist)
     db.session.commit()
-    return jsonify(new_psychologist.serialize()), 201
+    return jsonify(new_psychologist.serialize()), 200
 
 # Obtener todos los psicólogos
 @api.route('/psychologists', methods=['GET'])
@@ -67,3 +77,11 @@ def get_psychologists():
 def get_psychologist(id):
     psychologist = Psychologist.query.get_or_404(id)
     return jsonify(psychologist.serialize()), 200
+
+# Eliminar un psicólogo por ID
+@api.route('/psychologist/<int:id>', methods=['DELETE'])
+def delete_psychologist(id):
+    psychologist = Psychologist.query.get_or_404(id)
+    db.session.delete(psychologist)
+    db.session.commit()
+    return jsonify({"message": "Psychologist deleted successfully"}), 200
