@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 
 import { Context } from "../store/appContext";
@@ -7,36 +7,69 @@ export const Demo = () => {
   const { store, actions } = useContext(Context);
 
   const [messageData, setMessageData] = useState("");
-  const [responseMessage, setResponseMessage] = useState("");
+  const [messages, setMessages] = useState([]);
 
   const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (messageData.trim() === "") return;
+
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { text: messageData, type: "user" },
+    ]);
+
     try {
-      e.preventDefault();
       const response = await actions.mensajeApi(messageData);
-      // console.log(messageData);
-      setResponseMessage(response.message || "");
-      setMessageData("");
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: response.message || "No response", type: "ai" },
+      ]);
     } catch (error) {
-      setResponseMessage("Error al enviar el mensaje");
-      console.log(response);
+      console.error("Error al enviar el mensaje:", error);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: "Hubo un error al enviar el mensaje.", type: "error" },
+      ]);
     }
+
+    setMessageData("");
   };
+
   const sendMessage = (e) => {
     if (e.key === "Enter") {
-      handleSendMessage(e); 
+      handleSendMessage(e);
     }
   };
+
   return (
     <div className="container text-center">
       <div className="row align-items-center">
         <div className="col-3">Aqui van las conversaciones</div>
         <div className="col-6">
-          <p id="output">{responseMessage}</p>
+          <div className="messages-container">
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`message ${
+                  msg.type === "user" ? "text-end mb-2" : "text-start mb-2"
+                }`}
+              >
+                <p
+                  className={` p-2 rounded ${
+                    msg.type === "user" ? "bg-purple " : "bg-light"
+                  }`}
+                >
+                  {msg.text}
+                </p>
+              </div>
+              // <p key={index} className={msg.type}>
+              //   {msg.text}
+              // </p>
+            ))}
+          </div>
           <input
-            onChange={(e) => {
-              // console.log(e.target.value);
-              setMessageData(e.target.value);
-            }}
+            onChange={(e) => setMessageData(e.target.value)}
             onKeyDown={sendMessage}
             value={messageData}
             type="text"
@@ -44,10 +77,7 @@ export const Demo = () => {
             id="message"
             name="message"
             placeholder="Escribe aqui tu mensaje"
-          ></input>
-          {/* <button id="generate" onClick={handleSendMessage}>
-            Generate
-          </button> */}
+          />
         </div>
         <div className="col-3">Aqui van los psicologos</div>
       </div>
