@@ -9,7 +9,7 @@ from openai import OpenAI
 import os
 from dotenv import load_dotenv
 import openai
-
+import requests
 # Allow CORS requests to this API
 
 load_dotenv()
@@ -67,35 +67,82 @@ def handle_hello():
 #     # Para la solicitud GET, podrías devolver un mensaje simple o una instrucción de uso.
 #     return jsonify({"message": "Por favor, envíe una solicitud POST con su contenido."}), 200
 
+# @api.route('/demo', methods=['POST'])
+# def handleIA():
+#     if request.method == 'POST':
+#         data = request.get_json()
+#         content = data.get('content')
+#         # Si el usuario escribe esta palabra, acabará la conversación.
+#         if content == "exit":
+#             return jsonify({"message": "Conversación terminada."}), 200
+#         messages = [
+#             {"role": "system", "content": "Eres psicólogo muy útil recomendando ejercicios"},
+#             {"role": "user", "content": content}
+#         ]
+#         response = openai.client.chat.completions.create(
+#             model="gpt-3.5-turbo",
+#             messages=messages
+#         )
+#         print(type(response))
+        
+#         # Access the response correctly
+#         if response.choices and len(response.choices) > 0:
+#             result = response.choices[0].message['content']
+#             response_body = {
+#                 "message": result
+#             }
+#             return jsonify(response_body), 200
+#         else:
+#             return jsonify({"message": "No se obtuvo una respuesta válida del modelo."}), 500
+    
+#     # Para la solicitud GET, podrías devolver un mensaje simple o una instrucción de uso.
+#     return jsonify({"message": "Por favor, envíe una solicitud POST con su contenido."}), 200
+
+def get_openai_response(messages):
+    url = "https://api.openai.com/v1/chat/completions"
+    headers = {
+        "Authorization": f"Bearer {os.getenv('API_KEY_AI')}",
+        "Content-Type": "application/json"
+    }
+    payload = {
+        "model": "gpt-3.5-turbo",
+        "messages": messages
+    }
+    response = requests.post(url, headers=headers, json=payload)
+    if response.status_code == 200:
+        return response.json()
+    else:
+        return {"error": response.text}
+
+
 @api.route('/demo', methods=['POST'])
 def handleIA():
     if request.method == 'POST':
         data = request.get_json()
         content = data.get('content')
-        # Si el usuario escribe esta palabra, acabará la conversación.
+
         if content == "exit":
             return jsonify({"message": "Conversación terminada."}), 200
+
         messages = [
             {"role": "system", "content": "Eres psicólogo muy útil recomendando ejercicios"},
             {"role": "user", "content": content}
         ]
-        response = openai.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=messages
-        )
-        print(type(response))
-        
-        # Access the response correctly
-        if response.choices and len(response.choices) > 0:
-            result = response.choices[0].message['content']
+
+        try:
+            response = get_openai_response(messages)
+            
+            if "error" in response:
+                return jsonify({"error": response["error"]}), 500
+
+            result = response['choices'][0]['message']['content']
             response_body = {
                 "message": result
             }
             return jsonify(response_body), 200
-        else:
-            return jsonify({"message": "No se obtuvo una respuesta válida del modelo."}), 500
-    
-    # Para la solicitud GET, podrías devolver un mensaje simple o una instrucción de uso.
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
     return jsonify({"message": "Por favor, envíe una solicitud POST con su contenido."}), 200
 
 
