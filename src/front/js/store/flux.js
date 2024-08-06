@@ -54,15 +54,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         } catch (error) {
           console.log("Error loading message from backend", error);
         }
-        // const respuesta = document.querySelector("#prompt");
-        // const button = document.querySelector("#generate");
-        // const output = document.querySelector("#output");
-        // button.addEventListener("click", async () => {
-        //   if (!respuesta.value) return;
-
-        //   const response = await mensajeApi(respuesta.value);
-        //   output.innerHTML = response.choices[0].message.content;
-        // });
+       
       },
       changeColor: (index, color) => {
         //get the store
