@@ -5,12 +5,17 @@ const getState = ({ getStore, getActions, setStore }) => {
       message: null,
       demo: [
         {
-          title: "FIRST",
+          title: "Eduardo",
           background: "white",
           initial: "white",
         },
         {
-          title: "SECOND",
+          title: "Alexis",
+          background: "white",
+          initial: "white",
+        },
+        {
+          title: "Juan",
           background: "white",
           initial: "white",
         },
@@ -54,7 +59,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         } catch (error) {
           console.log("Error loading message from backend", error);
         }
-       
       },
       changeColor: (index, color) => {
         //get the store

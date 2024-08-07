@@ -20,6 +20,9 @@ flask-admin = "*"
 typing-extensions = "*"
 openai= "*"
 requests = "*"
+flask-jwt-extended = "*"
+flask-bcrypt = "*"
+
 [requires]
 python_version = "3.10"
 flask_sqlalchemy="3.1.1"
