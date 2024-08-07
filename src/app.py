@@ -12,6 +12,7 @@ from api.models import db,User,TokenBlockedList
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+from flask_cors import CORS
 
 
 
@@ -22,6 +23,10 @@ static_file_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), '../public/')
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+
+
+CORS(app, resources={r"/*": {"origins": "*"}})
+# https://sturdy-space-memory-7v74r7vxgg9gfpj45-3000.app.github.dev
 
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 # database condiguration
