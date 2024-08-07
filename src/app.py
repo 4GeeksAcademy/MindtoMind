@@ -4,12 +4,16 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 import os
 from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager #libreria nueva 
+from flask_bcrypt import Bcrypt  # Importar Flask-Bcrypt
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db
+from api.models import db,User,TokenBlockedList
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
+
+
 
 # from models import Person
 
@@ -19,6 +23,7 @@ static_file_dir = os.path.join(os.path.dirname(
 app = Flask(__name__)
 app.url_map.strict_slashes = False
 
+app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 # database condiguration
 db_url = os.getenv("DATABASE_URL")
 if db_url is not None:
@@ -26,10 +31,25 @@ if db_url is not None:
         "postgres://", "postgresql://")
 else:
     app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:////tmp/test.db"
+    
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    
+    # app.config['SECRET_KEY'] = 'your_secret_key'  # Agrega tu clave secreta
+    # app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'  # Agrega tu clave secreta para JWT
 
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
+
+bcrypt = Bcrypt(app)
+jwt = JWTManager(app) #libreria nueva 
+
+@jwt.token_in_blocklist_loader
+def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
+    jti = jwt_payload["jti"]
+    token = TokenBlockedList.query.filter_by(jti=jti).first()
+
+    return token is not None
+
 
 # add the admin
 setup_admin(app)
