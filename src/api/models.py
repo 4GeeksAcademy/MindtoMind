@@ -1,14 +1,17 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from flask_bcrypt import Bcrypt
 
 # Configuración de la aplicación Flask
 app = Flask(__name__)
 # Configuración de la URI de la base de datos y desactivación del seguimiento de modificaciones
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///mental_health.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
+app.config['SECRET_KEY'] = 'your_secret_key'
 # Inicialización de la extensión Flask-SQLAlchemy
+
+bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)
 
 # Definición del modelo User (Usuario)
@@ -17,10 +20,17 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True, nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
 
     conversations = db.relationship('Conversation', back_populates='user')
     test_results = db.relationship('TestResult', back_populates='user')
+
+    def set_password(self, password):
+        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password_hash, password)
+
 
     def serialize(self):
         return {
@@ -38,16 +48,25 @@ class Psychologist(db.Model):
     last_name = db.Column(db.String(100), nullable=False)
     phone_number = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(100), nullable=False)
+    #password = db.Column(db.String(100), nullable=False)
+    password_hash = db.Column(db.String(128), nullable=False)
     specialty = db.Column(db.String(100), nullable=False)
     years_of_experience = db.Column(db.Integer, nullable=False)
     photo = db.Column(db.String(200), nullable=True)  # Ruta de la foto del psicólogo
+
+
+    def set_password(self, password):
+        self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password_hash, password)
 
     def serialize(self):
         return {
             "id": self.id,
             "first_name": self.first_name,
             "last_name": self.last_name,
+            "email": self.email,
             "phone_number": self.phone_number,
             "years_of_experience": self.years_of_experience,
             "specialty": self.specialty,
@@ -166,6 +185,10 @@ class TestResult(db.Model):
             "score": self.score,
             "taken_on": self.taken_on
         }
+
+class TokenBlockedList(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    jti=db.Column(db.String(100),nullable=False)
 
 # Crear las tablas en la base de datos
 with app.app_context():
