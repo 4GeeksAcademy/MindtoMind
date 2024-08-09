@@ -24,19 +24,9 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "https://sturdy-space-memory-7v74r7vxgg9gfpj45-3000.app.github.dev"}})
 api = Blueprint('api', __name__)
 CORS(api, resources={r"/*": {"origins": "https://sturdy-space-memory-7v74r7vxgg9gfpj45-3000.app.github.dev"}})
-# Obtener todos los usuarios
-@api.route('/users', methods=['GET'])
-def get_users():
-    users = User.query.all()
-    return jsonify([user.serialize() for user in users]), 200
 
-
-    
-    response_body = {
-        "message": "Hello! I'm a message that came from the backend, check the network tab on the google inspector and you will see the GET request"
-    }
-
-    return jsonify(response_body), 200
+if __name__ == '__main__':
+    app.run(debug=True)
 
 
 def get_openai_response(messages):
@@ -97,117 +87,259 @@ def handleIA():
     return jsonify({"message": "Por favor, envíe una solicitud POST con su contenido."}), 200
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# Obtener todos los usuarios
+@api.route('/users', methods=['GET'])
+def get_users():
+    try:
+        users = User.query.all()
+        if not users:
+            return jsonify({"message": "No users found"}), 404
+        
+        return jsonify({
+            "message": "Users retrieved successfully",
+            "data":[user.serialize() for user in users]
+            }), 200
+    
+    except Exception as e:
+        print(f"Error retrieving users: {str(e)}")
+        
+        return jsonify({
+            "message": "An error occurred while retrieving users",
+            "error": str(e)
+        }), 500
+
+
 # Obtener un usuario por ID
 @api.route('/user/<int:id>', methods=['GET'])
 def get_user(id):
-    user = User.query.get_or_404(id)
-    return jsonify(user.serialize()), 200
+    try:
+        user = User.query.get(id)
+        
+        if user is None:
+            return jsonify({"message": "User not found"}), 404
+
+        return jsonify({
+            "message": "User retrieved successfully",
+            "data": user.serialize()
+            }), 200
+    
+    except Exception as e:
+        # Imprimir el error en la consola para depuración
+        print(f"Error retrieving user with id {id}: {str(e)}")
+
+    return jsonify({
+            "message": "An error occurred while retrieving the user",
+            "error": str(e)
+        }), 500
 
 
 # Eliminar un usuario por ID
 @api.route('/user/<int:id>', methods=['DELETE'])
 def delete_user(id):
-    user = User.query.get_or_404(id)
-    db.session.delete(user)
-    db.session.commit()
-    return jsonify({"message": "User deleted successfully"}), 200
+    try:
+        user = User.query.get(id)
 
+        if user is None:
+                return jsonify({"message": "User not found"}), 404
+
+        db.session.delete(user)
+        db.session.commit()
+
+        return jsonify({"message": "User deleted successfully"}), 200
+    
+    except Exception as e:
+        return jsonify({
+            "message": "An error occurred while deleting the user",
+            "error": str(e)
+        }), 500
 
 
 # Obtener todos los psicólogos
 @api.route('/psychologists', methods=['GET'])
 def get_psychologists():
-    psychologists = Psychologist.query.all()
-    return jsonify([psychologist.serialize() for psychologist in psychologists]), 200
+    try:
+        psychologists = Psychologist.query.all()
+        
+        if not psychologists:
+            return jsonify({"message": "No psychologists found"}), 404
+
+        return jsonify({
+            "message": "Users retrieved successfully",
+            "data":[psychologist.serialize() for psychologist in psychologists]}
+            ), 200
+    
+    except Exception as e:
+        print(f"Error retrieving psychologists: {str(e)}")
+
+        return jsonify({
+            "message": "An error occurred while retrieving psychologists",
+            "error": str(e)
+        }), 500
 
 
 # Obtener un psicólogo por ID
 @api.route('/psychologist/<int:id>', methods=['GET'])
 def get_psychologist(id):
-    psychologist = Psychologist.query.get_or_404(id)
-    return jsonify(psychologist.serialize()), 200
+    try:
+        psychologist = Psychologist.query.get(id)
+
+        if psychologist is None:
+            return jsonify({"message": "Psychologist not found"}), 404
+
+        return jsonify({
+            "message": "psychologist retrieved successfully",
+            "data": psychologist.serialize()}), 200
+    
+    except Exception as e:
+        return jsonify({
+            "message": "An error occurred while retrieving the psychologist",
+            "error": str(e)
+        }), 500
 
 
 # Eliminar un psicólogo por ID
 @api.route('/psychologist/<int:id>', methods=['DELETE'])
 def delete_psychologist(id):
-    psychologist = Psychologist.query.get_or_404(id)
-    db.session.delete(psychologist)
-    db.session.commit()
-    return jsonify({"message": "Psychologist deleted successfully"}), 200
+    try:
+        psychologist = Psychologist.query.get(id)
 
+        if psychologist is None:
+            return jsonify({"message": "Psychologist not found"}), 404
 
+        db.session.delete(psychologist)
+        db.session.commit()
+
+        return jsonify({"message": "Psychologist deleted successfully"}), 200
+    
+    except Exception as e:
+        return jsonify({
+            "message": "An error occurred while deleting the psychologist",
+            "error": str(e)
+        }), 500
 
 
 # Ruta para el registro de usuarios
 @api.route('/register', methods=['POST'])
 def register():
-    data = request.json
-    new_user = User(username=data['username'], email=data['email'])
-    new_user.set_password(data['password'])
-    db.session.add(new_user)
-    db.session.commit()
+    try:
+        data = request.json
+        new_user = User(username=data['username'], email=data['email'])
+        new_user.set_password(data['password'])
+        db.session.add(new_user)
+        db.session.commit()
+        
+        return jsonify({
+            "messege":"User created successfully"
+            }), 200 #new_user.serialize()
     
-    return jsonify(new_user.serialize()), 201
+    except KeyError as e:
+        return jsonify({
+            "message": "Missing required data",
+            "error": str(e)
+        }), 400
+    
+    except Exception as e:
+        return jsonify({
+            "message": "An error occurred while registering the user",
+            "error": str(e)
+        }), 500
 
 
 # Ruta para el registro de psicólogos
 @api.route('/register_psychologist', methods=['POST'])
 def register_psychologist():
-    data = request.json
-    new_psychologist = Psychologist(
-        first_name=data['first_name'], last_name=data['last_name'],
-        phone_number=data['phone_number'], email=data['email'],
-        specialty=data['specialty'], years_of_experience=data['years_of_experience'],
-        photo=data.get('photo')
-    )
-    new_psychologist.set_password(data['password'])
-    db.session.add(new_psychologist)
-    db.session.commit()
-    return jsonify(new_psychologist.serialize()), 201
+    try:
+        data = request.json
+        new_psychologist = Psychologist(
+            first_name=data['first_name'], last_name=data['last_name'],
+            phone_number=data['phone_number'], email=data['email'],
+            specialty=data['specialty'], years_of_experience=data['years_of_experience'],
+            photo=data.get('photo')
+        )
+        new_psychologist.set_password(data['password'])
+        db.session.add(new_psychologist)
+        db.session.commit()
+
+        return jsonify({
+            "messege":"Psychologist created successfully",
+            }), 200 #new_psychologist.serialize()
+    
+    except KeyError as e:
+        return jsonify({
+            "message": "Missing required data",
+            "error": str(e)
+        }), 400
+    
+    except Exception as e:
+        return jsonify({
+            "message": "An error occurred while registering the psychologist",
+            "error": str(e)
+        }), 500
 
 
 # Ruta para el inicio de sesión de usuarios
 @api.route('/login', methods=['POST'])
 def login():
-    data = request.json
-    user = User.query.filter_by(email=data['email']).first()
-    if user and user.check_password(data['password']):
-        access_token = create_access_token(identity=user.id)
-        return jsonify({'token': access_token}), 200
-    return jsonify({'message': 'Invalid credentials'}), 401
+    try:
+
+        data = request.json
+        user = User.query.filter_by(email=data['email']).first()
+
+        if user and user.check_password(data['password']):
+            access_token = create_access_token(identity=user.id)
+            return jsonify({'token': access_token}), 200
+        
+        return jsonify({'message': 'Invalid credentials'}), 401
+
+    except Exception as e:
+        return jsonify({
+            "message": "An error occurred during login",
+            "error": str(e)
+        }), 500
 
 
 # Ruta para el inicio de sesión de psicólogos
 @api.route('/login_psychologist', methods=['POST'])
 def login_psychologist():
-    data = request.json
-    psychologist = Psychologist.query.filter_by(email=data['email']).first()
-    if psychologist and psychologist.check_password(data['password']):
-        access_token = create_access_token(identity=psychologist.id)
-        return jsonify({'token': access_token}), 200
-    return jsonify({'message': 'Invalid credentials'}), 401
+    try:
+        data = request.json
+        psychologist = Psychologist.query.filter_by(email=data['email']).first()
+
+        if psychologist and psychologist.check_password(data['password']):
+            access_token = create_access_token(identity=psychologist.id)
+            return jsonify({'token': access_token}), 200
+        
+        return jsonify({'message': 'Invalid credentials'}), 401
+    
+    except Exception as e:
+        return jsonify({
+            "message": "An error occurred during psychologist login",
+            "error": str(e)
+        }), 500
 
 
 @api.route('/logout', methods=['POST'])
 @jwt_required()
 def user_logout():
-    jti=get_jwt()["jti"]
-    token_blocked=TokenBlockedList(jti=jti)
-    db.session.add(token_blocked) 
-    db.session.commit()
-    return jsonify({"msg":"Sesion cerrada"})
-
-
-
+    try:
+        jti=get_jwt()["jti"]
+        token_blocked=TokenBlockedList(jti=jti)
+        db.session.add(token_blocked) 
+        db.session.commit()
+        
+        return jsonify({"msg":"Session closed"}), 200
+    
+    except Exception as e:
+        return jsonify({
+            "message": "An error occurred while logging out",
+            "error": str(e)
+        }), 500
 
 
 # Ruta protegida de ejemplo
-@api.route('/protected', methods=['GET'])
-@jwt_required()
-def protected():
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
-    return jsonify({'message': f'Hello, {user.username}'}), 200
+# @api.route('/protected', methods=['GET'])
+# @jwt_required()
+# def protected():
+#     current_user_id = get_jwt_identity()
+#     user = User.query.get(current_user_id)
+#     return jsonify({'message': f'Hello, {user.username}'}), 200
