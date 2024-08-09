@@ -128,19 +128,37 @@ def handleIA():
     
     return jsonify({"message": "Por favor, envíe una solicitud POST con su contenido."}), 200
 
-# api.route('/conversation', methods=['POST'])
-# def save_conversation():
-#     data = request.get_json()
-#     content=data.get('message')
-#     new_message=Message(message=content)
-    
-#     db.session.add(new_message)
-#     db.session.commit()
-    
-#     return jsonify(new_message.serialize()), 201
+
+
+@api.route('/enviarmensaje', methods=['POST'])
+def send_message():
+    data = request.get_json()
+# lo que le estamos enviando. 
+   
+    if 'conversation_id' not in data or 'message' not in data:
+        return jsonify({"error": "Faltan datos (conversation_id, message)"}), 400
+# validar si hay message y conversation id
+    conversation_id = data['conversation_id']
+    message_text = data['message']
+
+# estamos comprobando si existe conversation id    
+    conversation = Conversation.query.get(conversation_id)
+    if conversation is None:
+        return jsonify({"error": "La conversación no existe"}), 404
+
+#   Crea una variable para almacenar los 2 en 1 
+    new_message = Message(conversation_id=conversation_id, message=message_text)
+
+
+    db.session.add(new_message)
+    db.session.commit()
+
+    return jsonify({"message": "Mensaje enviado", "data": new_message.serialize()}), 201
+
 
 if __name__ == '__main__':
     app.run(debug=True)
+  
 # Obtener un usuario por ID
 @api.route('/user/<int:id>', methods=['GET'])
 def get_user(id):
@@ -156,8 +174,44 @@ def delete_user(id):
     db.session.commit()
     return jsonify({"message": "User deleted successfully"}), 200
 
+# mostrar todos los mensajes por ID
+@api.route('/messages/<int:id>', methods=['GET'])
+@jwt_required()
+def get_messages_id(id):
+    try:    
+        messages = Message.query.get(id)
+        if not messages:
+            return jsonify({"message":"No hay messages"}),404
+        return jsonify(messages.serialize()), 200
+
+    except Exception as e:
+        print(f"Error en el servidor: {str(e)}")
+
+        return jsonify({
+            "message":"Hay un error en el servidor",
+            "error": str(e)
+        }),500
+        
 
 
+# mostrar todos los mensajes
+@api.route('/messages', methods=['GET'])
+@jwt_required()
+def get_messages():
+    try:
+        messages = Message.query.all()
+        if not messages:
+            return jsonify({"message":"No hay messages"}),404
+        
+        return jsonify([message.serialize() for message in messages]), 200
+    except Exception as e:
+        print(f"Error en el servidor: {str(e)}")
+
+        return jsonify({
+            "message":"Hay un error en el servidor",
+            "error": str(e)
+        }),500
+    
 # Obtener todos los psicólogos
 @api.route('/psychologists', methods=['GET'])
 def get_psychologists():
