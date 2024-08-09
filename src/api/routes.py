@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
-from api.models import db, User,Psychologist,TokenBlockedList
+from api.models import db, User,Psychologist,TokenBlockedList, Conversation, Message
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
@@ -11,6 +11,7 @@ import os
 from dotenv import load_dotenv
 import openai
 import requests
+import json
 # Allow CORS requests to this API
 
 load_dotenv()
@@ -25,6 +26,7 @@ CORS(app, resources={r"/*": {"origins": "https://sturdy-space-memory-7v74r7vxgg9
 api = Blueprint('api', __name__)
 CORS(api, resources={r"/*": {"origins": "https://sturdy-space-memory-7v74r7vxgg9gfpj45-3000.app.github.dev"}})
 # Obtener todos los usuarios
+
 @api.route('/users', methods=['GET'])
 def get_users():
     users = User.query.all()
@@ -37,6 +39,21 @@ def get_users():
     }
 
     return jsonify(response_body), 200
+
+conversation_file = 'conversation_history.json'
+
+def save_conversation(history):
+    with open(conversation_file, 'w') as f:
+        json.dump(history, f)
+
+def load_conversation():
+    try:
+        with open(conversation_file, 'r') as f:
+            return json.load(f)
+    except FileNotFoundError:
+        return []
+
+
 
 
 def get_openai_response(messages):
@@ -62,6 +79,11 @@ def is_inappropriate(content):
     return any(keyword in content.lower() for keyword in inappropriate_keywords)
 
 
+
+
+
+
+
 @api.route('/demo', methods=['POST'])
 def handleIA():
     if request.method == 'POST':
@@ -69,13 +91,17 @@ def handleIA():
         content = data.get('content')
 
         if content == "exit":
+            conversation_history = load_conversation()
+            save_conversation(conversation_history)
+            conversation_history = []
+            save_conversation(conversation_history)
             return jsonify({"message": "Conversación terminada."}), 200
-
+        
         messages = [
-            {"role": "system", "content": "Solo temas psicológicos. No hablar de medicamentos. No pasar a otras páginas web. No hacer evaluaciones negativas. Mantener una rutina diaria para estructura y normalidad. Hacer actividad física para mejorar el estado de ánimo. Abordar el sueño inadecuado que puede contribuir a la depresión. Enfocar en objetivos pequeños para sentir menos agobio. Practicar técnicas de manejo del estrés como meditación, yoga y respiración profunda. Hacer cosas que te gustan para recuperar interés y placer en la vida. Escuchar sin juicios y sin diagnosticar. Animar a retomar actividades que antes reconfortaban, sin presionar. Ofrecer apoyo y aliento, sugiriendo hablar con un experto si es útil. No hablar con terceros del problema delante de la persona afectada. Recordar que estás disponible para ayudar y ofrecer apoyo continuo."},
+            {"role": "system", "content": "Solo temas psicológicos. No hablar de medicamentos. No pasar a otras páginas web. No hacer evaluaciones negativas. Mantener una rutina diaria para estructura y normalidad. Hacer actividad física para mejorar el estado de ánimo. Enfocar en objetivos pequeños para sentir menos agobio. Practicar técnicas de manejo del estrés como meditación, yoga y respiración profunda. Hacer cosas que te gustan para recuperar interés y placer en la vida. Escuchar sin juicios y sin diagnosticar. Animar a retomar actividades que antes reconfortaban, sin presionar. Ofrecer apoyo y aliento, sugiriendo hablar con un experto si es útil. No hablar con terceros del problema delante de la persona afectada. Recordar que estás disponible para ayudar y ofrecer apoyo continuo."},
             {"role": "user", "content": content},
             
-        ]
+        ] 
         
         try:
             response = get_openai_response(messages)
@@ -90,12 +116,28 @@ def handleIA():
             response_body = {
                 "message": result
             }
+            conversation_history = load_conversation()
+            conversation_history.append({"role": "user", "content": content})
+            conversation_history.append({"role": "assistant", "content": result})
+            save_conversation(conversation_history)
+
             return jsonify(response_body), 200
+
         except Exception as e:
             return jsonify({"error": str(e)}), 500
-
+    
     return jsonify({"message": "Por favor, envíe una solicitud POST con su contenido."}), 200
 
+# api.route('/conversation', methods=['POST'])
+# def save_conversation():
+#     data = request.get_json()
+#     content=data.get('message')
+#     new_message=Message(message=content)
+    
+#     db.session.add(new_message)
+#     db.session.commit()
+    
+#     return jsonify(new_message.serialize()), 201
 
 if __name__ == '__main__':
     app.run(debug=True)

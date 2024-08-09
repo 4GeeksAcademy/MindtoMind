@@ -48,12 +48,11 @@ class Psychologist(db.Model):
     last_name = db.Column(db.String(100), nullable=False)
     phone_number = db.Column(db.String(20), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    #password = db.Column(db.String(100), nullable=False)
     password_hash = db.Column(db.String(128), nullable=False)
     specialty = db.Column(db.String(100), nullable=False)
     years_of_experience = db.Column(db.Integer, nullable=False)
     photo = db.Column(db.String(200), nullable=True)  # Ruta de la foto del psicólogo
-
+    
 
     def set_password(self, password):
         self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')

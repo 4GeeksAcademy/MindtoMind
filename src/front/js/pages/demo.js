@@ -8,6 +8,7 @@ export const Demo = () => {
 
   const [messageData, setMessageData] = useState("");
   const [messages, setMessages] = useState([]);
+  const [savedConversations, setSavedConversations] = useState([]);
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
@@ -42,11 +43,43 @@ export const Demo = () => {
     }
   };
 
+  const handleClearConversation = () => {
+    setSavedConversations((prevSavedConversations) => [
+      ...prevSavedConversations,
+      { id: Date.now(), messages },
+    ]);
+    setMessages([]);
+  };
+
   return (
     <div className="container">
       <div className="row ">
         {/* Este div contiene las conversaciones guardadas */}
-        <div className="col-3">Aqui van las conversaciones</div>
+        <div className="col-3">
+          <h5>Conversaciones Guardadas</h5>
+          <ul className="list-group">
+            {savedConversations.map((conversation) => (
+              <li key={conversation.id} className="list-group-item">
+                {conversation.messages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className={`message ${
+                      msg.type === "user" ? "text-end mb-2" : "text-start mb-2"
+                    }`}
+                  >
+                    <p
+                      className={`p-2 rounded ${
+                        msg.type === "user" ? "bg-purple " : "bg-light"
+                      }`}
+                    >
+                      {msg.text}
+                    </p>
+                  </div>
+                ))}
+              </li>
+            ))}
+          </ul>
+        </div>
         {/* Este div contiene la vista del chat */}
 
         <div className="col-6 d-flex flex-column ">
@@ -129,6 +162,9 @@ export const Demo = () => {
       <Link to="/">
         <button className="btn btn-primary">Back home</button>
       </Link>
+      <button className="btn btn-danger" onClick={handleClearConversation}>
+        Clear Conversation
+      </button>
     </div>
   );
 };
