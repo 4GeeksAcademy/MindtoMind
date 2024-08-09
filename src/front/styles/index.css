@@ -65,3 +65,50 @@
     color: #b50dfd;
     background-color: transparent
 }
+
+.form-control {
+    display: inline-flex;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--bs-body-color);
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid #a601ff;
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out
+}
+
+.btn-check:focus+.form-control,.form-control:focus {
+    box-shadow: 0 0 0 .25rem rgba(129, 13, 253, 0.362)
+}
+
+.btn-check:active+.form-control,.btn-check:checked+.form-control,.form-control.active,.form-control.dropdown-toggle.show,.form-control:active {
+    color: #fff;
+    background-color: #5c4c66;
+    border-color: #a601ff
+
+}
+
+.btn-check:active+.form-control:focus,.form-control:checked+.form-control:focus,.form-control.active:focus,.form-control.dropdown-toggle.show:focus,.form-control:active:focus {
+    box-shadow: 0 0 0 .25rem rgba(129, 13, 253, 0.362)
+}
+
+.form-control.disabled,.form-control:disabled {
+    color: #b50dfd;
+    background-color: transparent
+}
+
+.submit-login{
+    width: 100%;
+}
+
+.fill-all{
+    color: fff;
+    background-color:rgba(129, 13, 253, 0.362)
+}
