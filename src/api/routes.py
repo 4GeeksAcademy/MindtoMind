@@ -11,7 +11,11 @@ import os
 from dotenv import load_dotenv
 import openai
 import requests
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 # Allow CORS requests to this API
+
 
 load_dotenv()
 
@@ -27,6 +31,15 @@ CORS(api, resources={r"/*": {"origins": "https://sturdy-space-memory-7v74r7vxgg9
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+# Configuración de Cloudinary
+cloudinary.config( 
+  cloud_name = os.getenv("CLOUD_NAME"), 
+  api_key = os.getenv("API_KEY"), 
+  api_secret = os.getenv("API_SECRET"),
+  secure = True
+)
 
 
 def get_openai_response(messages):
@@ -249,12 +262,24 @@ def register():
 @api.route('/register_psychologist', methods=['POST'])
 def register_psychologist():
     try:
-        data = request.json
+        # Manejo de JSON o form-data según el Content-Type
+        if request.content_type == 'application/json':
+            data = request.json
+            photo_url = data.get('photo')
+        else:
+            data = request.form
+            if 'photo' in request.files:
+                img = request.files['photo']
+                upload_result = cloudinary.uploader.upload(img)
+                photo_url = upload_result['url']
+            else:
+                photo_url = None
+
         new_psychologist = Psychologist(
             first_name=data['first_name'], last_name=data['last_name'],
             phone_number=data['phone_number'], email=data['email'],
             specialty=data['specialty'], years_of_experience=data['years_of_experience'],
-            photo=data.get('photo')
+            description=data['description'], photo=photo_url
         )
         new_psychologist.set_password(data['password'])
         db.session.add(new_psychologist)
