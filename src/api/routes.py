@@ -131,6 +131,7 @@ def handleIA():
 
 
 @api.route('/enviarmensaje', methods=['POST'])
+@jwt_required()
 def send_message():
     data = request.get_json()
 # lo que le estamos enviando. 
@@ -307,3 +308,26 @@ def protected():
     current_user_id = get_jwt_identity()
     user = User.query.get(current_user_id)
     return jsonify({'message': f'Hello, {user.username}'}), 200
+
+# Cambio de contraseña
+@api.route('/user/<int:user_id>', methods=['PATCH'])
+def user_change(user_id):
+    user=User.query.filter_by(id=user_id).first()
+    if user is None:
+        return jsonify({"info":"Not found"}), 404
+    user_body=request.get_json()
+
+    if "username" in user_body:
+        user.username=user_body["username"]
+
+
+    if "email" in user_body:
+        user.email=user_body["email"]
+
+    if "password" in user_body:
+        user.password=user_body["password"]
+
+    
+    db.session.add(user)
+    db.session.commit()
+    return jsonify(user.serialize())

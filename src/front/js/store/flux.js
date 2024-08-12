@@ -74,6 +74,23 @@ const getState = ({ getStore, getActions, setStore }) => {
         //reset the global store
         setStore({ demo: demo });
       },
+      saveMessage: async (messages) => {
+        try {
+          const resp = await fetch(apiUrl + "/enviarmensaje", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + process.env.API_KEY_AI,
+            },
+            body: JSON.stringify({ messages }),
+          });
+          const data = await resp.json();
+          setStore({ message: data.message });
+          return data;
+        } catch (error) {
+          console.log("Error saving messages to backend", error);
+        }
+      },
     },
   };
 };
