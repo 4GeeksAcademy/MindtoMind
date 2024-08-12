@@ -18,6 +18,10 @@ export const Psicho = () => {
                                 <label class="col-xl-6" for="lastName"><strong>Apellido</strong><input type="text" id="lastName" class="form-control"  aria-label="Last name" /></label>
                             </div>
                             <div class="row">
+                                <label class="col-xl-6" for="password"><strong>Password</strong><input type="text" id="password" class="form-control"  aria-label="First name" /></label>
+                                <label class="col-xl-6" for="rpasswrd"><strong>Repetir Password</strong><input type="text" id="rpassword" class="form-control"  aria-label="Last name" /></label>
+                            </div>
+                            <div class="row">
                                 <label class="col-xl-6" for="City"><strong>Teléfono</strong><input type="text" id="city" class="form-control"  aria-label="Last name" / ></label>
                                 <label for="city" class="col-xl-3"><strong>Especialidad</strong><input type="text" id="city" class="form-control"  aria-label="Last name" / ></label>
                                 <label for="years" class="form-label col-xl-3"><strong>Años de experiencia</strong><input type="number" class="form-control number-input" id="years" placeholder="XXXXX" maxlength="5" /></label>

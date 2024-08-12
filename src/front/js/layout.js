@@ -6,6 +6,7 @@ import { BackendURL } from "./component/backendURL";
 import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Login } from "./pages/login";
+import { Resetpass } from "./pages/resetpass";
 import { Signup } from "./pages/signup";
 import { Psicho } from "./pages/psicho";
 import { Usuario } from "./pages/usuario";
@@ -28,13 +29,15 @@ const Layout = () => {
                 <ScrollToTop>
                     <Navbar />
                     <Routes>
-                        <Route element={<Home />} path="/" />
-                        <Route element={<Demo />} path="/demo" />
-                        <Route element={<Login />} path="/Login" />
-                        <Route element={<Signup />} path="/Signup" />
-                        <Route element={<Psicho />} path="/Psicho" />
-                        <Route element={<Usuario />} path="/Usuario" />
-                        <Route element={<h1>Not found!</h1>} />
+                        <Route path="/" element={<Home />}  />
+                        <Route path="/demo" element={<Demo />}  />
+                        
+                        <Route path="/Signup" element={<Signup />}  />
+                        <Route path="/Resetpass" element={<Resetpass />}  />
+                        <Route path="/Login" element={<Login />}  />
+                        <Route path="/Psicho" element={<Psicho />}  />
+                        <Route path="/Usuario" element={<Usuario />}  />
+                        <Route  element={<h1>Not found!</h1>} />
                     </Routes>
                     <Footer />
                 </ScrollToTop>

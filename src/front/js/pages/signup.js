@@ -12,8 +12,8 @@ export const Signup = () => {
           <div className="card">
             <div className="card-body">
               <h5 className="card-title">Usuario</h5>
-              <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              <a href="#" className="btn btn-primary">Go somewhere</a>
+              <p className="card-text">Necesitas ayuda con problemas de ansiedad o depresión con una IA o buscar un profesional, registrate con nosotros.</p>
+              <a href="/usuario" className="btn btn-primary">Go somewhere</a>
             </div>
           </div>
         </div>
@@ -21,8 +21,8 @@ export const Signup = () => {
           <div className="card">
             <div class="card-body">
               <h5 className="card-title">Psicólogo</h5>
-              <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
-              <a href="#" className="btn btn-primary">Go somewhere</a>
+              <p className="card-text">Eres un profesional de la Psicología? Quieres ofrecer tus servicios? Registrate acá!.</p>
+              <a href="/psicho" className="btn btn-primary">Go somewhere</a>
             </div>
           </div>
         </div>

@@ -14,9 +14,7 @@ export const Usuario = () => {
                         <div className="fill-all p-2" role="alert">Por favor rellena todos los datos</div>
                         <form action="">
                             <div class="row">
-                                <label class="col-xl-4" for="userName"><strong>userName</strong><input type="text" id="userName" class="form-control"  aria-label="User Name" /></label>
-                                <label class="col-xl-4" for="firstName"><strong>Nombre</strong><input type="text" id="firstName" class="form-control"  aria-label="First name" /></label>
-                                <label class="col-xl-4" for="lastName"><strong>Apellido</strong><input type="text" id="lastName" class="form-control"  aria-label="Last name" /></label>
+                                <label class="col-xl-12" for="userName"><strong>Nombre de Usuario</strong><input type="text" id="userName" class="form-control"  aria-label="User Name" /></label>
                             </div>
                             <div class="row">
                                 <label class="col-xl-6" for="password"><strong>Password</strong><input type="password" id="pasword" class="form-control"  aria-label="password" / ></label>
