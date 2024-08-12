@@ -51,7 +51,7 @@ export const Demo = () => {
         { id: Date.now(), messages },
       ]);
       setMessages([]);
-      const conversation_id = 1;
+      
     } catch (error) {
       console.error("Error al guardar la conversación:", error);
     }

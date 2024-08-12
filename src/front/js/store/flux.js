@@ -74,7 +74,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         //reset the global store
         setStore({ demo: demo });
       },
-      saveMessage: async (messages) => {
+      saveMessage: async (message) => {
         try {
           const resp = await fetch(apiUrl + "/enviarmensaje", {
             method: "POST",
@@ -82,7 +82,7 @@ const getState = ({ getStore, getActions, setStore }) => {
               "Content-Type": "application/json",
               Authorization: "Bearer " + process.env.API_KEY_AI,
             },
-            body: JSON.stringify({ messages }),
+            body: JSON.stringify({ message }),
           });
           const data = await resp.json();
           setStore({ message: data.message });
