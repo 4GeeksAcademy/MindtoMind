@@ -35,10 +35,10 @@ api = Blueprint('api', __name__)
 CORS(api, resources={r"/*": {"origins": "https://sturdy-space-memory-7v74r7vxgg9gfpj45-3000.app.github.dev"}})
 # Obtener todos los usuarios
 
-@api.route('/users', methods=['GET'])
-def get_users():
-    users = User.query.all()
-    return jsonify([user.serialize() for user in users]), 200
+# @api.route('/users', methods=['GET'])
+# def get_users():
+#     users = User.query.all()
+#     return jsonify([user.serialize() for user in users]), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -519,13 +519,8 @@ def reset_password():
         return jsonify({"message": "Token has expired"}), 400
     except jwt.InvalidTokenError:
         return jsonify({"message": "Invalid token"}), 400
-# Ruta protegida de ejemplo
-@api.route('/protected', methods=['GET'])
-@jwt_required()
-def protected():
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
-    return jsonify({'message': f'Hello, {user.username}'}), 200
+
+
 
 # Cambio de contraseña
 @api.route('/user/<int:user_id>', methods=['PATCH'])
@@ -549,3 +544,12 @@ def user_change(user_id):
     db.session.add(user)
     db.session.commit()
     return jsonify(user.serialize())
+
+
+# Ruta protegida de ejemplo
+# @api.route('/protected', methods=['GET'])
+# @jwt_required()
+# def protected():
+#     current_user_id = get_jwt_identity()
+#     user = User.query.get(current_user_id)
+#     return jsonify({'message': f'Hello, {user.username}'}), 200
