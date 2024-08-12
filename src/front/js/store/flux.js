@@ -54,7 +54,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
 
           const data = await resp.json();
-          console.log(data);
+          // console.log(data);
           return data;
         } catch (error) {
           console.log("Error loading message from backend", error);
@@ -73,6 +73,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 
         //reset the global store
         setStore({ demo: demo });
+      },
+      saveMessage: async (message) => {
+        try {
+          const resp = await fetch(apiUrl + "/enviarmensaje", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + process.env.API_KEY_AI,
+            },
+            body: JSON.stringify({ message }),
+          });
+          const data = await resp.json();
+          setStore({ message: data.message });
+          return data;
+        } catch (error) {
+          console.log("Error saving messages to backend", error);
+        }
       },
     },
   };
