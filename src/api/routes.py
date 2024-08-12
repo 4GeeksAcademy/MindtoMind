@@ -3,7 +3,9 @@ This module takes care of starting the API Server, Loading the DB and Adding the
 """
 from flask import Flask, request, jsonify, url_for, Blueprint
 from api.models import db, User,Psychologist,TokenBlockedList
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity, get_jwt,decode_token
+import jwt
+import datetime
 from api.utils import generate_sitemap, APIException
 from flask_cors import CORS
 from openai import OpenAI
@@ -32,6 +34,10 @@ CORS(api, resources={r"/*": {"origins": "https://sturdy-space-memory-7v74r7vxgg9
 if __name__ == '__main__':
     app.run(debug=True)
 
+#JWT secret
+app.config['SECRET_KEY'] =  os.getenv("JWT_SECRET")
+
+SECRET_KEY = 'SECRET_KEY'
 
 # Configuración de Cloudinary
 cloudinary.config( 
@@ -102,6 +108,7 @@ def handleIA():
 
 # Obtener todos los usuarios
 @api.route('/users', methods=['GET'])
+@jwt_required()
 def get_users():
     try:
         users = User.query.all()
@@ -124,6 +131,7 @@ def get_users():
 
 # Obtener un usuario por ID
 @api.route('/user/<int:id>', methods=['GET'])
+@jwt_required()
 def get_user(id):
     try:
         user = User.query.get(id)
@@ -148,6 +156,7 @@ def get_user(id):
 
 # Eliminar un usuario por ID
 @api.route('/user/<int:id>', methods=['DELETE'])
+@jwt_required()
 def delete_user(id):
     try:
         user = User.query.get(id)
@@ -169,6 +178,7 @@ def delete_user(id):
 
 # Obtener todos los psicólogos
 @api.route('/psychologists', methods=['GET'])
+@jwt_required()
 def get_psychologists():
     try:
         psychologists = Psychologist.query.all()
@@ -192,6 +202,7 @@ def get_psychologists():
 
 # Obtener un psicólogo por ID
 @api.route('/psychologist/<int:id>', methods=['GET'])
+@jwt_required()
 def get_psychologist(id):
     try:
         psychologist = Psychologist.query.get(id)
@@ -212,6 +223,7 @@ def get_psychologist(id):
 
 # Eliminar un psicólogo por ID
 @api.route('/psychologist/<int:id>', methods=['DELETE'])
+@jwt_required()
 def delete_psychologist(id):
     try:
         psychologist = Psychologist.query.get(id)
@@ -271,6 +283,7 @@ def register_psychologist():
             if 'photo' in request.files:
                 img = request.files['photo']
                 upload_result = cloudinary.uploader.upload(img)
+                print(upload_result)
                 photo_url = upload_result['url']
             else:
                 photo_url = None
@@ -361,10 +374,42 @@ def user_logout():
         }), 500
 
 
-# Ruta protegida de ejemplo
-# @api.route('/protected', methods=['GET'])
-# @jwt_required()
-# def protected():
-#     current_user_id = get_jwt_identity()
-#     user = User.query.get(current_user_id)
-#     return jsonify({'message': f'Hello, {user.username}'}), 200
+
+@api.route('/generate_reset_token', methods=['POST'])
+def generate_reset_token():
+    email = request.json.get('email')
+    
+    user = User.query.filter_by(email=email).first()
+    if not user:
+        return jsonify({"message": "Email not found"}), 404
+
+    # Genera un token de JWT con un tiempo de expiración
+    reset_token = create_access_token(identity=user.id, expires_delta=datetime.timedelta(minutes=30))
+
+    return jsonify({"reset_token": reset_token}), 200
+
+
+@api.route('/reset_password', methods=['POST'])
+def reset_password():
+    reset_token = request.json.get('reset_token')
+    new_password = request.json.get('new_password')
+  
+    
+    try:
+        # Decodifica el token JWT para obtener la identidad del usuario
+        user_id = decode_token(reset_token)['sub']
+        user = User.query.get(user_id)
+
+        if not user:
+            return jsonify({"message": "Invalid token"}), 404
+
+        # Aquí puedes implementar una función para hash la nueva contraseña, si no la tienes ya en el modelo.
+        user.set_password(new_password)
+        db.session.commit()
+
+        return jsonify({"message": "Password reset successful"}), 200
+
+    except jwt.ExpiredSignatureError:
+        return jsonify({"message": "Token has expired"}), 400
+    except jwt.InvalidTokenError:
+        return jsonify({"message": "Invalid token"}), 400

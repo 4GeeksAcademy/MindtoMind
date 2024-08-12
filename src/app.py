@@ -13,9 +13,7 @@ from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_cors import CORS
-# import cloudinary
-# import cloudinary.uploader
-# import cloudinary.api
+
 
 
 # from models import Person
@@ -41,19 +39,13 @@ else:
     
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
-    # app.config['SECRET_KEY'] = 'your_secret_key'  # Agrega tu clave secreta
-    # app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'  # Agrega tu clave secreta para JWT
+  
 
 app.config['CLOUD_NAME'] =  os.getenv("CLOUD_NAME")
 app.config['API_KEY'] =  os.getenv("API_KEY")
 app.config['API_SECRET'] =  os.getenv("API_SECRET")
 
-# cloudinary.config( 
-#   cloud_name = app.config['CLOUD_NAME'], 
-#   api_key = app.config['API_KEY'], 
-#   api_secret = app.config['API_SECRET'],
-#   secure = True
-# )
+
 
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
@@ -94,15 +86,7 @@ def sitemap():
         return generate_sitemap(app)
     return send_from_directory(static_file_dir, 'index.html')
 
-#cloudnary
-# @app.route('/img', methods= ['POST'])
-# def upload_img():
-#     img = request.files["img"]
-#     img_url= cloudinary.uploader.upload(img)
 
-#     return jsonify({"img_url": img_url["url"]}), 200
-
-# any other endpoint will try to serve it like a static file
 
 @app.route('/<path:path>', methods=['GET'])
 def serve_any_other_file(path):
