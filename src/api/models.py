@@ -53,7 +53,7 @@ class Psychologist(db.Model):
     years_of_experience = db.Column(db.Integer, nullable=False)
     description = db.Column(db.String(500), nullable=True)
     photo = db.Column(db.String(200), nullable=True)  # Ruta de la foto del psicólogo
-
+    
 
     def set_password(self, password):
         self.password_hash = bcrypt.generate_password_hash(password).decode('utf-8')
