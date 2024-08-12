@@ -51,6 +51,7 @@ class Psychologist(db.Model):
     password_hash = db.Column(db.String(128), nullable=False)
     specialty = db.Column(db.String(100), nullable=False)
     years_of_experience = db.Column(db.Integer, nullable=False)
+    description = db.Column(db.String(500), nullable=True)
     photo = db.Column(db.String(200), nullable=True)  # Ruta de la foto del psicólogo
     
 
@@ -69,7 +70,8 @@ class Psychologist(db.Model):
             "phone_number": self.phone_number,
             "years_of_experience": self.years_of_experience,
             "specialty": self.specialty,
-            "photo":self.photo
+            "photo":self.photo,
+            "description": self.description
             # do not serialize the password, its a security breach
         }
 
@@ -192,4 +194,3 @@ class TokenBlockedList(db.Model):
 # Crear las tablas en la base de datos
 with app.app_context():
     db.create_all()
-

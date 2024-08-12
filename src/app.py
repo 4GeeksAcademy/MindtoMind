@@ -39,8 +39,13 @@ else:
     
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     
-    # app.config['SECRET_KEY'] = 'your_secret_key'  # Agrega tu clave secreta
-    # app.config['JWT_SECRET_KEY'] = 'your_jwt_secret_key'  # Agrega tu clave secreta para JWT
+  
+
+app.config['CLOUD_NAME'] =  os.getenv("CLOUD_NAME")
+app.config['API_KEY'] =  os.getenv("API_KEY")
+app.config['API_SECRET'] =  os.getenv("API_SECRET")
+
+
 
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
@@ -81,7 +86,6 @@ def sitemap():
         return generate_sitemap(app)
     return send_from_directory(static_file_dir, 'index.html')
 
-# any other endpoint will try to serve it like a static file
 
 
 @app.route('/<path:path>', methods=['GET'])
