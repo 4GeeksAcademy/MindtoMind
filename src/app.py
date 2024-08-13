@@ -14,7 +14,9 @@ from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_cors import CORS
 
-
+# import cloudinary
+# import cloudinary.uploader
+# import cloudinary.api
 
 # from models import Person
 
@@ -41,11 +43,16 @@ else:
     
   
 
-app.config['CLOUD_NAME'] =  os.getenv("CLOUD_NAME")
-app.config['API_KEY'] =  os.getenv("API_KEY")
-app.config['API_SECRET'] =  os.getenv("API_SECRET")
+# app.config['CLOUD_NAME'] =  os.getenv("CLOUD_NAME")
+# app.config['API_KEY'] =  os.getenv("API_KEY")
+# app.config['API_SECRET'] =  os.getenv("API_SECRET")
 
-
+# cloudinary.config(
+#     cloud_name=app.config['CLOUD_NAME'],
+#     api_key=app.config['API_KEY'],
+#     api_secret=app.config['API_SECRET'],
+#     secure=True
+# )
 
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)

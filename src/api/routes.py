@@ -49,6 +49,11 @@ app.config['SECRET_KEY'] =  os.getenv("JWT_SECRET")
 SECRET_KEY = 'SECRET_KEY'
 
 # Configuración de Cloudinary
+app.config['CLOUD_NAME'] =  os.getenv("CLOUD_NAME")
+app.config['API_KEY'] =  os.getenv("API_KEY")
+app.config['API_SECRET'] =  os.getenv("API_SECRET")
+
+
 cloudinary.config( 
   cloud_name = os.getenv("CLOUD_NAME"), 
   api_key = os.getenv("API_KEY"), 
