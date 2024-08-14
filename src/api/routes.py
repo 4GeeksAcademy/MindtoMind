@@ -550,6 +550,12 @@ def user_change(user_id):
     db.session.commit()
     return jsonify(user.serialize())
 
+@api.route('/userinfo', methods=['GET'])
+@jwt_required()
+def user_info():
+    user = get_jwt_identity()
+    load = get_jwt()
+    return jsonify({"user":user, "role":load["role"]})
 
 # Ruta protegida de ejemplo
 # @api.route('/protected', methods=['GET'])

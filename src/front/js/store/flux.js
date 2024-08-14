@@ -128,15 +128,24 @@ const getState = ({ getStore, getActions, setStore }) => {
           alert("Error al crear usuario");
         }
       },
-      signupPsico: async(dataToSend) => {
-        const response = await fetch(apiUrl +"register_psycologist",
+      signupPsico: async(dataToSend, photo) => {
+        let formData = new FormData();
+        for (const key in dataToSend) {
+          formData.append(key, dataToSend[key]);
+        }
+        if (photo) {
+          formData.append("photo", photo);
+          
+        }
+
+        const response = await fetch(apiUrl +"/register_psychologist",
           {
             method: "POST",
             headers: {
-              "Content-Type": "application/json",
+              
               "Access-Control-Allow-Origin":"*"
             },
-            body: JSON.stringify(dataToSend),
+            body: formData,
           }
         );
         console.log(dataToSend);
@@ -147,6 +156,37 @@ const getState = ({ getStore, getActions, setStore }) => {
           alert("Error al crear usuario");
         }
       },
+      loadSession: async () => {
+				let storageToken = localStorage.getItem("token");
+				if (!storageToken) return;
+				setStore({ token: storageToken });
+				let resp = await fetch(apiUrl + "/userinfo", {
+					headers: {
+						Authorization: "Bearer " + storageToken,
+					},
+				});
+				if (!resp.ok) {
+					setStore({ token: null });
+					localStorage.removeItem("token")
+					return false;
+				}
+				let data = await resp.json();
+				setStore({ userInfo: data });
+				return true;
+			},
+			logout: async () => {
+				let { token } = getStore();
+				let resp = await fetch(apiUrl + "/logout", {
+					method: "POST",
+					headers: {
+						"Authorization": "Bearer " + token
+					},
+				});
+				if (!resp.ok) return false;
+				setStore({ token: null, userInfo: null });
+				localStorage.removeItem("token");
+				return true;
+			},
     },
   };
 };

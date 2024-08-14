@@ -13,7 +13,7 @@ export const Psicho = () => {
   const [specialty, setSpecialty] = useState("");
   const [years_of_experience, setExperience] = useState("");
   const [description, setDescription] = useState("");
-  const [photo, setPhoto] = useState("");
+  const [photo, setPhoto] = useState(null);
   
 
   const First_NameChange = (e) => {
@@ -49,10 +49,7 @@ export const Psicho = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (photo){
-      const formData= new FormData();
-      formData.append("img" , photo);
-    }
+   
     if (password !== ConfirmPassword) {
       alert("Las contraseñas no coinciden");
       return;
@@ -66,9 +63,9 @@ export const Psicho = () => {
       specialty,
       years_of_experience,
       description,
-      photo,
+     
     };
-    actions.signupPsico(dataToSend);
+    await actions.signupPsico(dataToSend,photo);
     
   };
 
@@ -190,7 +187,7 @@ export const Psicho = () => {
                       id="inputGroupFile04"
                       aria-describedby="inputGroupFileAddon04"
                       aria-label="Upload"
-                      value={photo}
+                      
                       onChange={PhotoChange}
                       accept="image/*"
                     />
