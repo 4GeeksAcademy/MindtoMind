@@ -35,10 +35,7 @@ api = Blueprint('api', __name__)
 CORS(api, resources={r"/*": {"origins": "https://sturdy-space-memory-7v74r7vxgg9gfpj45-3000.app.github.dev"}})
 # Obtener todos los usuarios
 
-# @api.route('/users', methods=['GET'])
-# def get_users():
-#     users = User.query.all()
-#     return jsonify([user.serialize() for user in users]), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -49,6 +46,11 @@ app.config['SECRET_KEY'] =  os.getenv("JWT_SECRET")
 SECRET_KEY = 'SECRET_KEY'
 
 # Configuración de Cloudinary
+app.config['CLOUD_NAME'] =  os.getenv("CLOUD_NAME")
+app.config['API_KEY'] =  os.getenv("API_KEY")
+app.config['API_SECRET'] =  os.getenv("API_SECRET")
+
+
 cloudinary.config( 
   cloud_name = os.getenv("CLOUD_NAME"), 
   api_key = os.getenv("API_KEY"), 
@@ -93,10 +95,6 @@ def is_inappropriate(content):
     # Aquí definís el listado de palabras no apropiadas
     inappropriate_keywords = ["porno","matar","sexo","suicidio","pastillas","medicamentos"]
     return any(keyword in content.lower() for keyword in inappropriate_keywords)
-
-
-
-
 
 
 
@@ -419,6 +417,7 @@ def register_psychologist():
             "message": "An error occurred while registering the psychologist",
             "error": str(e)
         }), 500
+        
 
 
 # Ruta para el inicio de sesión de usuarios
@@ -545,11 +544,10 @@ def user_change(user_id):
     db.session.commit()
     return jsonify(user.serialize())
 
+@api.route('/userinfo', methods=['GET'])
+@jwt_required()
+def user_info():
+    user = get_jwt_identity()
+    load = get_jwt()
+    return jsonify({"user":user, "role":load["role"]})
 
-# Ruta protegida de ejemplo
-# @api.route('/protected', methods=['GET'])
-# @jwt_required()
-# def protected():
-#     current_user_id = get_jwt_identity()
-#     user = User.query.get(current_user_id)
-#     return jsonify({'message': f'Hello, {user.username}'}), 200
