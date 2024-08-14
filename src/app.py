@@ -14,11 +14,7 @@ from api.admin import setup_admin
 from api.commands import setup_commands
 from flask_cors import CORS
 
-# import cloudinary
-# import cloudinary.uploader
-# import cloudinary.api
 
-# from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
@@ -28,7 +24,7 @@ app.url_map.strict_slashes = False
 
 
 CORS(app, resources={r"/*": {"origins": "*"}})
-# https://sturdy-space-memory-7v74r7vxgg9gfpj45-3000.app.github.dev
+
 
 app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY")
 # database condiguration
@@ -43,16 +39,7 @@ else:
     
   
 
-# app.config['CLOUD_NAME'] =  os.getenv("CLOUD_NAME")
-# app.config['API_KEY'] =  os.getenv("API_KEY")
-# app.config['API_SECRET'] =  os.getenv("API_SECRET")
 
-# cloudinary.config(
-#     cloud_name=app.config['CLOUD_NAME'],
-#     api_key=app.config['API_KEY'],
-#     api_secret=app.config['API_SECRET'],
-#     secure=True
-# )
 
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)

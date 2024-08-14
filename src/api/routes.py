@@ -35,10 +35,7 @@ api = Blueprint('api', __name__)
 CORS(api, resources={r"/*": {"origins": "https://sturdy-space-memory-7v74r7vxgg9gfpj45-3000.app.github.dev"}})
 # Obtener todos los usuarios
 
-# @api.route('/users', methods=['GET'])
-# def get_users():
-#     users = User.query.all()
-#     return jsonify([user.serialize() for user in users]), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -98,10 +95,6 @@ def is_inappropriate(content):
     # Aquí definís el listado de palabras no apropiadas
     inappropriate_keywords = ["porno","matar","sexo","suicidio","pastillas","medicamentos"]
     return any(keyword in content.lower() for keyword in inappropriate_keywords)
-
-
-
-
 
 
 
@@ -425,48 +418,7 @@ def register_psychologist():
             "error": str(e)
         }), 500
         
-# @api.route('/register_psychologist', methods=['POST'])
-# def register_psychologist():
-#     try:
-#         if request.content_type == 'application/json':
-#             data = request.json
-#             photo_url = data.get('photo')
-#         else:
-#             data = request.form
-#             if 'photo' in request.files:
-#                 img = request.files['photo']
-#                 try:
-#                     upload_result = cloudinary.uploader.upload(img)
-#                     photo_url = upload_result.get('url')
-#                 except Exception as e:
-#                     return jsonify({"message": "Error subiendo la foto a Cloudinary", "error": str(e)}), 500
-#             else:
-#                 photo_url = None
 
-#         required_fields = ['first_name', 'last_name', 'phone_number', 'email', 'specialty', 'years_of_experience', 'description', 'password']
-#         for field in required_fields:
-#             if field not in data:
-#                 return jsonify({"message": f"Missing required field: {field}"}), 400
-
-#         new_psychologist = Psychologist(
-#             first_name=data['first_name'], 
-#             last_name=data['last_name'],
-#             phone_number=data['phone_number'], 
-#             email=data['email'],
-#             specialty=data['specialty'], 
-#             years_of_experience=data['years_of_experience'],
-#             description=data['description'], 
-#             photo=photo_url
-#         )
-#         new_psychologist.set_password(data['password'])
-#         db.session.add(new_psychologist)
-#         db.session.commit()
-
-#         return jsonify({"message": "Psicólogo creado correctamente"}), 200
-
-#     except Exception as e:
-#         print(f"Unexpected error: {str(e)}")
-#         return jsonify({"message": "Ha habido un error registrando al psicólogo", "error": str(e)}), 500
 
 # Ruta para el inicio de sesión de usuarios
 @api.route('/login', methods=['POST'])
@@ -599,10 +551,3 @@ def user_info():
     load = get_jwt()
     return jsonify({"user":user, "role":load["role"]})
 
-# Ruta protegida de ejemplo
-# @api.route('/protected', methods=['GET'])
-# @jwt_required()
-# def protected():
-#     current_user_id = get_jwt_identity()
-#     user = User.query.get(current_user_id)
-#     return jsonify({'message': f'Hello, {user.username}'}), 200
