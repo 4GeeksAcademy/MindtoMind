@@ -424,7 +424,49 @@ def register_psychologist():
             "message": "An error occurred while registering the psychologist",
             "error": str(e)
         }), 500
+        
+# @api.route('/register_psychologist', methods=['POST'])
+# def register_psychologist():
+#     try:
+#         if request.content_type == 'application/json':
+#             data = request.json
+#             photo_url = data.get('photo')
+#         else:
+#             data = request.form
+#             if 'photo' in request.files:
+#                 img = request.files['photo']
+#                 try:
+#                     upload_result = cloudinary.uploader.upload(img)
+#                     photo_url = upload_result.get('url')
+#                 except Exception as e:
+#                     return jsonify({"message": "Error subiendo la foto a Cloudinary", "error": str(e)}), 500
+#             else:
+#                 photo_url = None
 
+#         required_fields = ['first_name', 'last_name', 'phone_number', 'email', 'specialty', 'years_of_experience', 'description', 'password']
+#         for field in required_fields:
+#             if field not in data:
+#                 return jsonify({"message": f"Missing required field: {field}"}), 400
+
+#         new_psychologist = Psychologist(
+#             first_name=data['first_name'], 
+#             last_name=data['last_name'],
+#             phone_number=data['phone_number'], 
+#             email=data['email'],
+#             specialty=data['specialty'], 
+#             years_of_experience=data['years_of_experience'],
+#             description=data['description'], 
+#             photo=photo_url
+#         )
+#         new_psychologist.set_password(data['password'])
+#         db.session.add(new_psychologist)
+#         db.session.commit()
+
+#         return jsonify({"message": "Psicólogo creado correctamente"}), 200
+
+#     except Exception as e:
+#         print(f"Unexpected error: {str(e)}")
+#         return jsonify({"message": "Ha habido un error registrando al psicólogo", "error": str(e)}), 500
 
 # Ruta para el inicio de sesión de usuarios
 @api.route('/login', methods=['POST'])

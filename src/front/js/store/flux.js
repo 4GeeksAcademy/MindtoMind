@@ -128,34 +128,70 @@ const getState = ({ getStore, getActions, setStore }) => {
           alert("Error al crear usuario");
         }
       },
-      signupPsico: async(dataToSend, photo) => {
-        let formData = new FormData();
-        for (const key in dataToSend) {
-          formData.append(key, dataToSend[key]);
-        }
-        if (photo) {
-          formData.append("photo", photo);
-          
-        }
+      // signupPsico: async(dataToSend, photo) => {
+      //   let formData = new FormData();
+      //     formData.append("first_name",dataToSend.first_name );
+      //     formData.append("last_name", dataToSend.last_name);
+      //     formData.append("phone_number", dataToSend.phone_number);
+      //     formData.append("specialty", dataToSend.specialty);
+      //     formData.append("email", dataToSend.email);
+      //     formData.append("description", dataToSend.description);
+      //     formData.append("photo", photo);
+      //     formData.append("password", dataToSend.password);
+      //     formData.append("years_of_experience", dataToSend.years_of_experience);
+     
 
-        const response = await fetch(apiUrl +"/register_psychologist",
-          {
-            method: "POST",
-            headers: {
+      //   const response = await fetch(apiUrl +"/register_psychologist",
+      //     {
+      //       method: "POST",
+      //       headers: {
               
-              "Access-Control-Allow-Origin":"*"
-            },
-            body: formData,
-          }
-        );
-        console.log(dataToSend);
-        if (response.ok) {
-          const responseData = await response.json();
-          alert("Usuario creado");
-        } else {
-          alert("Error al crear usuario");
-        }
-      },
+      //         "Access-Control-Allow-Origin":"*"
+      //       },
+      //       body: formData,
+      //     }
+      //   );
+      //   console.log(dataToSend);
+      //   if (response.ok) {
+      //     const responseData = await response.json();
+      //     alert("Usuario creado");
+      //   } else {
+      //     alert("Error al crear usuario");
+      //   }
+      // },
+    //   signupPsico: async (dataToSend, photo) => {
+    //     let formData = new FormData();
+    //     for (const key in dataToSend) {
+    //         formData.append(key, dataToSend[key]);
+    //     }
+    //     if (photo) {
+    //         formData.append("photo", photo);
+    //     }
+    
+    //     for (let [key, value] of formData.entries()) {
+    //         console.log(`${key}: ${value}`);
+    //     }
+    
+    //     try {
+    //         const response = await fetch(apiUrl + "/register_psychologist", {
+    //             method: "POST",
+    //             body: formData,
+    //         });
+    
+    //         if (!response.ok) {
+    //             const errorData = await response.json();
+    //             alert(`Error al crear usuario: ${errorData.message}`);
+    //             return;
+    //         }
+    
+    //         const responseData = await response.json();
+    //         alert("Usuario creado exitosamente");
+    //     } catch (error) {
+    //         console.error("Error en el fetch:", error);
+    //         alert("Hubo un error en la solicitud. Por favor, intenta de nuevo.");
+    //     }
+    // },
+
       loadSession: async () => {
 				let storageToken = localStorage.getItem("token");
 				if (!storageToken) return;
@@ -174,6 +210,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				setStore({ userInfo: data });
 				return true;
 			},
+      
 			logout: async () => {
 				let { token } = getStore();
 				let resp = await fetch(apiUrl + "/logout", {
