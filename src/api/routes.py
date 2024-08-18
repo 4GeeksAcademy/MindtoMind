@@ -134,6 +134,11 @@ def handleIA():
             conversation_history.append({"role": "user", "content": content})
             conversation_history.append({"role": "assistant", "content": result})
             save_conversation(conversation_history)
+            print(conversation_history[4]["content"])
+            print(conversation_history[5]["content"])
+
+            
+
 
             return jsonify(response_body), 200
 
@@ -180,12 +185,12 @@ def send_message():
     message_text = data['message']
 
 # estamos comprobando si existe conversation id    
-    conversation = Conversation.query.get(conversation_id)
+    conversation = Conversation.query.filter_by(id=conversation_id).first()
     if conversation is None:
         return jsonify({"error": "La conversación no existe"}), 404
 
 #   Crea una variable para almacenar los 2 en 1 
-    new_message = Message(conversation_id=conversation_id, message=message_text)
+    new_message = Message(conversation_id=conversation.id, message=message_text)
 
 
     db.session.add(new_message)
@@ -197,6 +202,23 @@ def send_message():
 if __name__ == '__main__':
     app.run(debug=True)
   
+@api.route('/messages/<int:id>', methods=['GET'])
+@jwt_required()
+def get_messages_id(id):
+    try:    
+        messages = Message.query.get(id)
+        if not messages:
+            return jsonify({"message":"No hay messages"}),404
+        return jsonify(messages.serialize()), 200
+
+    except Exception as e:
+        print(f"Error en el servidor: {str(e)}")
+
+        return jsonify({
+            "message":"Hay un error en el servidor",
+            "error": str(e)
+        }),500
+
 # Obtener un usuario por ID
 @api.route('/user/<int:id>', methods=['GET'])
 @jwt_required()
@@ -243,22 +265,7 @@ def delete_user(id):
             "error": str(e)
         }), 500
 # mostrar todos los mensajes por ID
-@api.route('/messages/<int:id>', methods=['GET'])
-@jwt_required()
-def get_messages_id(id):
-    try:    
-        messages = Message.query.get(id)
-        if not messages:
-            return jsonify({"message":"No hay messages"}),404
-        return jsonify(messages.serialize()), 200
 
-    except Exception as e:
-        print(f"Error en el servidor: {str(e)}")
-
-        return jsonify({
-            "message":"Hay un error en el servidor",
-            "error": str(e)
-        }),500
         
 
 
@@ -430,7 +437,7 @@ def login():
 
         if user and user.check_password(data['password']):
             access_token = create_access_token(identity=user.id)
-            return jsonify({'token': access_token}), 200
+            return jsonify({'token': access_token, 'user_id':user.id}), 200
         
         return jsonify({'message': 'Invalid credentials'}), 401
 
@@ -544,10 +551,42 @@ def user_change(user_id):
     db.session.commit()
     return jsonify(user.serialize())
 
-@api.route('/userinfo', methods=['GET'])
-@jwt_required()
-def user_info():
-    user = get_jwt_identity()
-    load = get_jwt()
-    return jsonify({"user":user, "role":load["role"]})
+# @api.route('/userinfo', methods=['GET'])
+# @jwt_required()
+# def user_info():
+#     user = get_jwt_identity()
+#     load = get_jwt()
+#     return jsonify({"user":user, "role":load["role"]})
 
+# @app.route('/start_conversation', methods=['POST'])
+# @jwt_required()
+# def start_conversation():
+#     user_id = request.json.get('user_id')
+    
+#     # Crear una nueva conversación
+#     new_conversation = Conversation(user_id=user_id)
+#     db.session.add(new_conversation)
+#     db.session.commit()
+    
+#     return jsonify(new_conversation.serialize()), 201
+@api.route('/start_conversation', methods=['POST'])
+@jwt_required()
+def start_conversation():
+    try:
+        user_id = request.json.get('user_id')
+        print('User ID:', user_id)
+        if not user_id:
+            return jsonify({"message": "User ID is required"}), 400
+
+        # Crear una nueva conversación
+        new_conversation = Conversation(user_id=user_id)
+        db.session.add(new_conversation)
+        db.session.commit()
+        
+        return jsonify(new_conversation.serialize()), 201
+
+    except Exception as e:
+        return jsonify({
+            "message": "An error occurred while starting the conversation",
+            "error": str(e)
+        }), 500

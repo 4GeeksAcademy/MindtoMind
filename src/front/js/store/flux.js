@@ -8,11 +8,13 @@ const getState = ({ getStore, getActions, setStore }) => {
           title: "Eduardo",
           background: "white",
           initial: "white",
+          src:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmSaaddBQKHgvmxPcxZ5f7c6fAFpE7cf9yfw&s",
         },
         {
           title: "Alexis",
           background: "white",
           initial: "white",
+          
         },
         {
           title: "Juan",
@@ -22,6 +24,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       ],
       token: null,
       userinfo: null,
+      conversation_id: null,
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -31,7 +34,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       login: async (email, password) => {
         let resp = await fetch(apiUrl + "/login", {
           method: "POST",
-          body: JSON.stringify({ email, password }),
+          body: JSON.stringify({ email, password}),
           headers: {
             "Content-Type": "application/json",
           },
@@ -41,8 +44,11 @@ const getState = ({ getStore, getActions, setStore }) => {
           return false;
         }
         let data = await resp.json();
-        setStore({ token: data.token });
+        setStore({ token: data.token, user_id:data.user_id });
         localStorage.setItem("token", data.token);
+        localStorage.setItem("user_id", data.user_id);
+        console.log(data.token)
+        console.log(data.user_id)
         return true;
       },
       getMessage: async () => {
@@ -93,14 +99,29 @@ const getState = ({ getStore, getActions, setStore }) => {
         setStore({ demo: demo });
       },
       saveMessage: async (message) => {
+        console.log("no estoy dando error")
         try {
+          
+          const store = getStore();
+          const conversation_id=store.conversation_id
+         
+         
+          if (!conversation_id){
+            throw new Error("ID no encontrada ")
+          }
+          
+          console.log(conversation_id)
+          console.log(message)
           const resp = await fetch(apiUrl + "/enviarmensaje", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              Authorization: "Bearer " + process.env.API_KEY_AI,
+              'Authorization': `Bearer ${store.token}`
             },
-            body: JSON.stringify({ message }),
+            body: JSON.stringify({ 
+              message:message,
+              conversation_id:conversation_id
+            }),
           });
           const data = await resp.json();
           setStore({ message: data.message });
@@ -109,6 +130,35 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("Error saving messages to backend", error);
         }
       },
+
+      startConversation: async (userId) => {
+        const store = getStore();
+        try {
+			const response = await fetch(apiUrl +'/start_conversation', {
+				method: 'POST',
+                headers: {
+					'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${store.token}`  // Asegúrate de enviar el token si es necesario
+                },
+                body: JSON.stringify({
+					user_id: userId
+                })
+            });
+            if (!response.ok) {
+				throw new Error('Failed to start conversation');
+            }
+			
+            const data = await response.json();
+			
+			console.log(data)
+			setStore({ conversation_id: data.id })
+			console.log("[Flux]conversation_id",store.conversation_id)
+            return data;  
+        } catch (error) {
+            console.error('Error starting conversation:', error);
+        }
+    },
+
       signupUsuario: async(dataToSend) => {
         const response = await fetch(apiUrl + "/register",
           {
@@ -128,69 +178,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           alert("Error al crear usuario");
         }
       },
-      // signupPsico: async(dataToSend, photo) => {
-      //   let formData = new FormData();
-      //     formData.append("first_name",dataToSend.first_name );
-      //     formData.append("last_name", dataToSend.last_name);
-      //     formData.append("phone_number", dataToSend.phone_number);
-      //     formData.append("specialty", dataToSend.specialty);
-      //     formData.append("email", dataToSend.email);
-      //     formData.append("description", dataToSend.description);
-      //     formData.append("photo", photo);
-      //     formData.append("password", dataToSend.password);
-      //     formData.append("years_of_experience", dataToSend.years_of_experience);
-     
-
-      //   const response = await fetch(apiUrl +"/register_psychologist",
-      //     {
-      //       method: "POST",
-      //       headers: {
-              
-      //         "Access-Control-Allow-Origin":"*"
-      //       },
-      //       body: formData,
-      //     }
-      //   );
-      //   console.log(dataToSend);
-      //   if (response.ok) {
-      //     const responseData = await response.json();
-      //     alert("Usuario creado");
-      //   } else {
-      //     alert("Error al crear usuario");
-      //   }
-      // },
-    //   signupPsico: async (dataToSend, photo) => {
-    //     let formData = new FormData();
-    //     for (const key in dataToSend) {
-    //         formData.append(key, dataToSend[key]);
-    //     }
-    //     if (photo) {
-    //         formData.append("photo", photo);
-    //     }
-    
-    //     for (let [key, value] of formData.entries()) {
-    //         console.log(`${key}: ${value}`);
-    //     }
-    
-    //     try {
-    //         const response = await fetch(apiUrl + "/register_psychologist", {
-    //             method: "POST",
-    //             body: formData,
-    //         });
-    
-    //         if (!response.ok) {
-    //             const errorData = await response.json();
-    //             alert(`Error al crear usuario: ${errorData.message}`);
-    //             return;
-    //         }
-    
-    //         const responseData = await response.json();
-    //         alert("Usuario creado exitosamente");
-    //     } catch (error) {
-    //         console.error("Error en el fetch:", error);
-    //         alert("Hubo un error en la solicitud. Por favor, intenta de nuevo.");
-    //     }
-    // },
+  
 
       loadSession: async () => {
 				let storageToken = localStorage.getItem("token");
@@ -213,13 +201,13 @@ const getState = ({ getStore, getActions, setStore }) => {
       
 			logout: async () => {
 				let { token } = getStore();
-				let resp = await fetch(apiUrl + "/logout", {
-					method: "POST",
-					headers: {
-						"Authorization": "Bearer " + token
-					},
-				});
-				if (!resp.ok) return false;
+				// let resp = await fetch(apiUrl + "/logout", {
+				// 	method: "POST",
+				// 	headers: {
+				// 		"Authorization": "Bearer " + token
+				// 	},
+				// });
+				// if (!resp.ok) return false;
 				setStore({ token: null, userInfo: null });
 				localStorage.removeItem("token");
 				return true;
