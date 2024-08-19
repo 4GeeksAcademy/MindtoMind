@@ -11,7 +11,7 @@ export const Navbar = () => {
 			<a href="/">
 					<span className="navbar-brand mb-0 h1"><img className="logo" src={logo} alt="Logo"  /></span>
 				</a>
-				<div className="mx-auto"><img className="mindtomind" src="https://cil.com.ve/MTM/images/mindtomind.png" alt="Logo"/></div>
+				
 				{store.token == null ?
 					<div className="ml-auto">
 						<a href="/login">
