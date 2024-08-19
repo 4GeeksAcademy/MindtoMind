@@ -31,6 +31,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       exampleFunction: () => {
         getActions().changeColor(0, "green");
       },
+
+      
       login: async (email, password) => {
         let resp = await fetch(apiUrl + "/login", {
           method: "POST",
@@ -51,6 +53,25 @@ const getState = ({ getStore, getActions, setStore }) => {
         console.log(data.user_id)
         return true;
       },
+
+      login_psychologist: async (email, password) => {
+        let resp = await fetch(apiUrl + "/login_psychologist", {
+          method: "POST",
+          body: JSON.stringify({ email, password }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        if (!resp.ok) {
+          setStore({ token: null });
+          return false;
+        }
+        let data = await resp.json();
+        setStore({ token: data.token });
+        localStorage.setItem("token", data.token);
+        return true;
+      },
+
       getMessage: async () => {
         try {
           // fetching data from the backend
@@ -63,6 +84,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("Error loading message from backend", error);
         }
       },
+
+
       mensajeApi: async (message) => {
         try {
           // fetching data from the backend
@@ -84,6 +107,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("Error loading message from backend", error);
         }
       },
+
+
       changeColor: (index, color) => {
         //get the store
         const store = getStore();
@@ -98,6 +123,8 @@ const getState = ({ getStore, getActions, setStore }) => {
         //reset the global store
         setStore({ demo: demo });
       },
+
+
       saveMessage: async (message) => {
         console.log("no estoy dando error")
         try {
@@ -180,7 +207,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           alert("Error al crear usuario");
         }
       },
-  
+
+     
 
       loadSession: async () => {
 				let storageToken = localStorage.getItem("token");

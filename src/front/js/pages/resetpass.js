@@ -1,51 +1,34 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../store/appContext";
+import { useLocation } from "react-router-dom";
 import "../../styles/home.css";
+import { ResetPassword } from "../component/ResetPassword";
+import { ResetEmail } from "../component/ResetEmail";
+
 
 export const Resetpass = () => {
   const { store, actions } = useContext(Context);
+  const [token, setToken] = useState('');
+  const location = useLocation();
 
+  useEffect(() => {
+    // Extraer el token de la URL
+    const queryParams = new URLSearchParams(location.search);
+    const tokenParam = queryParams.get('token');
+    if (tokenParam) {
+      setToken(tokenParam);
+    }
+  }, [location]);
   return (
-    <div className="container">
-      <form>
-        <div className="mb-3">
-          <label htmlFor="exampleInputEmail" className="form-label mt-3">
-            Email address
-          </label>
-          <input
-            type="email"
-            className="form-control"
-            id="exampleInputEmail1"
-            aria-describedby="emailHelp"
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="exampleInputPassword" className="form-label">
-            Password
-          </label>
-          <input
-            type="password"
-            className="form-control"
-            id="exampleInputPassword"
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="exampleInputPassword1" className="form-label">
-            Repite el Password
-          </label>
-          <input
-            type="password"
-            className="form-control"
-            id="exampleInputPassword1"
-          />
-        </div>
-        <button
-          type="submit"
-          className="btn btn-outline-primary submit-login mb-2"
-        >
-          Submit
-        </button>
-      </form>
+    <div>
+              {token ? (
+        // Mostrar el formulario de restablecimiento de contraseña si hay un token
+        <ResetPassword token={token} />
+      ) : (
+        // Mostrar el formulario para ingresar el correo electrónico de lo contrario
+        <ResetEmail />
+      )}
+
     </div>
   );
 };

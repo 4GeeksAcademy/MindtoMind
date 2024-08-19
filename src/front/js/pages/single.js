@@ -2,26 +2,45 @@ import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
+import '../../styles/single.css';
 
-export const Single = props => {
+export const Single = () => {
 	const { store, actions } = useContext(Context);
 	const params = useParams();
 
 	return (
-		<div className="jumbotron">
-			<h1 className="display-4">This will show the demo element: {store.demo[params.theid].title}</h1>
-			<img src={rigoImageUrl} />
-			<hr className="my-4" />
-
-			<Link to="/">
-				<span className="btn btn-primary btn-lg" href="#" role="button">
-					Back home
-				</span>
-			</Link>
+		
+		<div className="container d-flex  ">
+		<div className="left">
+			<img 
+				src="https://image.freepik.com/free-photo/portrait-happy-young-woman_171337-21183.jpg" 
+				alt="Bertie Norton" 
+				className="profile-img"
+			/>
+			<div className="name">Soy, Dr/a Bertie Norton</div>
+			<div className="image-credit">
+			<i class="fa-solid fa-phone"></i> 654-987-256
+			</div>
 		</div>
-	);
-};
+		<div className="right">
+			<div className="description">Especialidad: Psicoligia Infantil  | Años de Experiencia: 8</div>
+			<div className="details">
+				Sollicitudin ac orci phasellus egestas tellus rutrum. Venenatis cras sed felis eget. Amet risus nullam eget felis eget nunc. 
+				Lacus vestibulum sed arcu non odio euismod. Consectetur adipiscing elit duis tristique. Pharetra magna ac placerat vestibulum 
+				lectus mauris ultrices.Sollicitudin ac orci phasellus egestas tellus rutrum. Venenatis cras sed felis eget. Amet risus nullam eget felis eget nunc. 
+				Lacus vestibulum sed arcu non odio euismod. Consectetur adipiscing elit duis tristique. Pharetra magna ac placerat vestibulum 
+				lectus mauris ultrices.<br></br>
+				Sollicitudin ac orci phasellus egestas tellus rutrum. Venenatis cras sed felis eget. Amet risus nullam eget felis eget nunc. 
+				Lacus vestibulum sed arcu non odio euismod. Consectetur adipiscing elit duis tristique. Pharetra magna ac placerat vestibulum 
+				lectus mauris ultrices.
+			</div>
+			
+		</div>
+	</div>
+	
+);
+}
+	
 
 Single.propTypes = {
 	match: PropTypes.object

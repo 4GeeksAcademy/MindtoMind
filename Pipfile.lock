@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "1215dbb0c513c75b39862082928986395395036cb1790258895f1183bb90327d"
+            "sha256": "fb8c01bb9b6def73a3b00da578a3cc9657008f9c1655d886651e803c09c5c8c2"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -476,6 +476,14 @@
             "markers": "python_version >= '3.8'",
             "version": "==0.5.0"
         },
+        "mailtrap": {
+            "hashes": [
+                "sha256:c043f06c46abebdb8e71547d04c228b9a3ac51172b91ff584374e0f9c01bf5f0",
+                "sha256:d03d6a9ca8ea9869acf75503028cbc993d77e0c1dbe6f66fdf12b23f5c5f9dc3"
+            ],
+            "index": "pypi",
+            "version": "==2.0.1"
+        },
         "mako": {
             "hashes": [
                 "sha256:260f1dbc3a519453a9c856dedfe4beb4e50bd5a26d96386cb6c80856556bb91a",
@@ -552,11 +560,11 @@
         },
         "openai": {
             "hashes": [
-                "sha256:09396cb6e2e15c921a5d872bf92841a60a9425da10dcd962b45fe7c4f48f8395",
-                "sha256:f2ffe907618240938c59d7ccc67dd01dc8c50be203c0077240db6758d2f02480"
+                "sha256:26b81f39b49dce92ff5d30c373625ddb212c2f1050e1574e456d18423730cdd0",
+                "sha256:3b6cca4571667f3e0800442ef8f2bfa6a6f3301c51776bc7626159a4d81c242c"
             ],
             "index": "pypi",
-            "version": "==1.40.3"
+            "version": "==1.41.0"
         },
         "packaging": {
             "hashes": [
