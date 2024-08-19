@@ -16,15 +16,15 @@ export const Login = () => {
 		<div className="container">
 			<form>
 				<div className="mb-3">
-					<label htmlFor="exampleInputEmail1" className="form-label mt-3">Email address</label>
+					<label htmlFor="exampleInputEmail1" className="form-label mt-3">Direccioón de Email</label>
 					<input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" />
-					<div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
+					<div id="emailHelp" className="form-text">Nosotros nunca compartiremos tu correo electrónico con nadie más.</div>
 				</div>
 				<div className="mb-3">
-					<label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+					<label htmlFor="exampleInputPassword1" className="form-label">Contraseña</label>
 					<input type="password" className="form-control" id="exampleInputPassword1" />
 				</div>
-				<button type="submit" className="btn btn-outline-primary submit-login mb-2">Submit</button>
+				<button type="submit" className="btn btn-outline-primary submit-login mb-2">Entrar</button>
 				<button 
 					type="button" // Cambié el tipo de submit a button para evitar enviar el formulario
 					className="btn btn-primary recuperar" 

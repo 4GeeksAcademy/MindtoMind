@@ -37,7 +37,7 @@ export const Psicho = () => {
                                 <div class="col-xl-6">
                                     <label for="message"><strong>Descripción</strong></label>
                                     <textarea class="form-control" name="message" id="message" cols="30" rows="3"></textarea>
-                                    <p>Explica brevemente tu perfil como psicologo</p>
+                                    <p>Explica brevemente tu perfil como psicólogo</p>
                                 </div>
                             </div>
                         </form>
