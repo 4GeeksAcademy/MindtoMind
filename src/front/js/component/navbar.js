@@ -6,7 +6,7 @@ import logo from "../../img/logoMTM.png";
 export const Navbar = () => {
 	const { store, actions } = useContext(Context)
 	return (
-		<nav className="navbar navbar-light bg-light">
+		<nav className="navbar ">
 			<div className="container">
 			<a href="/">
 					<span className="navbar-brand mb-0 h1"><img className="logo" src={logo} alt="Logo"  /></span>

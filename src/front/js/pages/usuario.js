@@ -86,7 +86,7 @@ export const Usuario = () => {
                   />
                 </label>
                 <label htmlFor="confirmPassword" className="col-xl-6">
-                  <strong>Repetir Password</strong>
+                  <strong>Repetir contraseña</strong>
                   <input
                     type="password"
                     id="confirmPassword"

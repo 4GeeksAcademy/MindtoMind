@@ -140,14 +140,18 @@ background-color: #d382f5bb;
 }
 
 /* Estilo del footer */
-footer {
-    background-color: #D5BDAF;
-    color: #fff;
+footer{
+    background-color: #EDEDE9;
+    color: #000000;
     text-align: center;
     padding: 10px 0;
     width: 100%;
     position: fixed;
     bottom: 0;
     left: 0;
+}
+.navbar {
+    background-color: #EDEDE9;
+    
 }
 
