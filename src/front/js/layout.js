@@ -39,9 +39,12 @@ const Layout = () => {
                         <Route path="/Usuario" element={<Usuario />}  />
                         <Route  element={<h1>Not found!</h1>} />
                     </Routes>
-                    <Footer />
+                    
                 </ScrollToTop>
             </BrowserRouter>
+            <div>
+                {/* <Footer /> */}
+            </div>
         </div>
     );
 };

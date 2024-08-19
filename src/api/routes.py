@@ -19,8 +19,8 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 import json
+import mailtrap as mt
 # Allow CORS requests to this API
-
 
 load_dotenv()
 
@@ -72,8 +72,6 @@ def load_conversation():
         return []
 
 
-
-
 def get_openai_response(messages):
     url = "https://api.openai.com/v1/chat/completions"
     headers = {
@@ -95,7 +93,6 @@ def is_inappropriate(content):
     # Aquí definís el listado de palabras no apropiadas
     inappropriate_keywords = ["porno","matar","sexo","suicidio","pastillas","medicamentos"]
     return any(keyword in content.lower() for keyword in inappropriate_keywords)
-
 
 
 @api.route('/demo', methods=['POST'])
@@ -194,9 +191,6 @@ def send_message():
     return jsonify({"message": "Mensaje enviado", "data": new_message.serialize()}), 201
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
-  
 # Obtener un usuario por ID
 @api.route('/user/<int:id>', methods=['GET'])
 @jwt_required()
@@ -242,6 +236,8 @@ def delete_user(id):
             "message": "An error occurred while deleting the user",
             "error": str(e)
         }), 500
+
+
 # mostrar todos los mensajes por ID
 @api.route('/messages/<int:id>', methods=['GET'])
 @jwt_required()
@@ -258,8 +254,7 @@ def get_messages_id(id):
         return jsonify({
             "message":"Hay un error en el servidor",
             "error": str(e)
-        }),500
-        
+        }),500        
 
 
 # mostrar todos los mensajes
@@ -280,6 +275,7 @@ def get_messages():
             "error": str(e)
         }),500
     
+
 # Obtener todos los psicólogos
 @api.route('/psychologists', methods=['GET'])
 @jwt_required()
@@ -479,7 +475,7 @@ def user_logout():
         }), 500
 
 
-
+# Ruta para generar el token de restablecimiento de contraseña y enviar el correo
 @api.route('/generate_reset_token', methods=['POST'])
 def generate_reset_token():
     email = request.json.get('email')
@@ -488,17 +484,41 @@ def generate_reset_token():
     if not user:
         return jsonify({"message": "Email not found"}), 404
 
-    # Genera un token de JWT con un tiempo de expiración
-    reset_token = create_access_token(identity=user.id, expires_delta=datetime.timedelta(minutes=30))
+    # Genera un token JWT con un tiempo de expiración
+    reset_token = create_access_token(identity=user.id , expires_delta=datetime.timedelta(minutes=30))
 
-    return jsonify({"reset_token": reset_token}), 200
+    frontend_url ='https://crispy-couscous-wrvj697556rp29r66-3000.app.github.dev'
+    # Genera el enlace de restablecimiento de contraseña
+    #reset_link = url_for('api.reset_password', _external=True) + f"?token={reset_token}"
+    reset_link = f"{frontend_url}/resetpass?token={reset_token}"
+
+    # Configura los detalles del correo
+    mail = mt.Mail(
+        sender=mt.Address(email="mailtrap@demomailtrap.com", name="MindTOMind"),
+        to=[mt.Address(email=user.email)],
+        subject="Password Reset Request",
+        text=f"Click the following link to reset your password: {reset_link}",
+        category="Password Reset",
+    )
+
+    # Inicializa el cliente con tu token de API de Mailtrap
+    client = mt.MailtrapClient(token="88db215e7f81c5d35dc370d7b77a4bbd")
+
+    try:
+        # Envía el correo
+        client.send(mail)
+        return jsonify({"message": "Reset token sent to your email"}), 200
+
+    except Exception as e:
+        return jsonify({"message": f"Failed to send email: {str(e)}"}), 500
 
 
+
+# Ruta para restablecer la contraseña
 @api.route('/reset_password', methods=['POST'])
 def reset_password():
     reset_token = request.json.get('reset_token')
     new_password = request.json.get('new_password')
-  
     
     try:
         # Decodifica el token JWT para obtener la identidad del usuario
@@ -518,6 +538,8 @@ def reset_password():
         return jsonify({"message": "Token has expired"}), 400
     except jwt.InvalidTokenError:
         return jsonify({"message": "Invalid token"}), 400
+
+
 
 
 
