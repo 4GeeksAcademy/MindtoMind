@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import "../../styles/home.css";
 import { Link, Navigate } from "react-router-dom";
+
 export const Psicho = () => {
     const { store, actions } = useContext(Context);
     const [formData, setFormData] = useState({
@@ -43,8 +44,8 @@ export const Psicho = () => {
         data.append("years_of_experience", formData.years_of_experience);
         data.append("photo", formData.photo); // Agregar el archivo al FormData
         try {
-            const response = await fetch('https://sturdy-space-memory-7v74r7vxgg9gfpj45-3001.app.github.dev/api/register_psychologist', {
-                method: 'POST',
+            const response = await fetch('https://crispy-couscous-wrvj697556rp29r66-3001.app.github.dev/api/register_psychologist', {
+                method: 'POST',          
                 body: data,
             });
             const result = await response.json();
