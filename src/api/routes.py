@@ -19,8 +19,8 @@ import cloudinary
 import cloudinary.uploader
 import cloudinary.api
 import json
+import mailtrap as mt
 # Allow CORS requests to this API
-
 
 load_dotenv()
 
@@ -35,10 +35,7 @@ api = Blueprint('api', __name__)
 CORS(api, resources={r"/*": {"origins": "https://sturdy-space-memory-7v74r7vxgg9gfpj45-3000.app.github.dev"}})
 # Obtener todos los usuarios
 
-# @api.route('/users', methods=['GET'])
-# def get_users():
-#     users = User.query.all()
-#     return jsonify([user.serialize() for user in users]), 200
+
 
 if __name__ == '__main__':
     app.run(debug=True)
@@ -49,6 +46,11 @@ app.config['SECRET_KEY'] =  os.getenv("JWT_SECRET")
 SECRET_KEY = 'SECRET_KEY'
 
 # Configuración de Cloudinary
+app.config['CLOUD_NAME'] =  os.getenv("CLOUD_NAME")
+app.config['API_KEY'] =  os.getenv("API_KEY")
+app.config['API_SECRET'] =  os.getenv("API_SECRET")
+
+
 cloudinary.config( 
   cloud_name = os.getenv("CLOUD_NAME"), 
   api_key = os.getenv("API_KEY"), 
@@ -68,8 +70,6 @@ def load_conversation():
             return json.load(f)
     except FileNotFoundError:
         return []
-
-
 
 
 def get_openai_response(messages):
@@ -93,11 +93,6 @@ def is_inappropriate(content):
     # Aquí definís el listado de palabras no apropiadas
     inappropriate_keywords = ["porno","matar","sexo","suicidio","pastillas","medicamentos"]
     return any(keyword in content.lower() for keyword in inappropriate_keywords)
-
-
-
-
-
 
 
 @api.route('/demo', methods=['POST'])
@@ -196,9 +191,6 @@ def send_message():
     return jsonify({"message": "Mensaje enviado", "data": new_message.serialize()}), 201
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
-  
 # Obtener un usuario por ID
 @api.route('/user/<int:id>', methods=['GET'])
 @jwt_required()
@@ -244,6 +236,8 @@ def delete_user(id):
             "message": "An error occurred while deleting the user",
             "error": str(e)
         }), 500
+
+
 # mostrar todos los mensajes por ID
 @api.route('/messages/<int:id>', methods=['GET'])
 @jwt_required()
@@ -260,8 +254,7 @@ def get_messages_id(id):
         return jsonify({
             "message":"Hay un error en el servidor",
             "error": str(e)
-        }),500
-        
+        }),500        
 
 
 # mostrar todos los mensajes
@@ -282,6 +275,7 @@ def get_messages():
             "error": str(e)
         }),500
     
+
 # Obtener todos los psicólogos
 @api.route('/psychologists', methods=['GET'])
 @jwt_required()
@@ -419,6 +413,7 @@ def register_psychologist():
             "message": "An error occurred while registering the psychologist",
             "error": str(e)
         }), 500
+        
 
 
 # Ruta para el inicio de sesión de usuarios
@@ -480,7 +475,7 @@ def user_logout():
         }), 500
 
 
-
+# Ruta para generar el token de restablecimiento de contraseña y enviar el correo
 @api.route('/generate_reset_token', methods=['POST'])
 def generate_reset_token():
     email = request.json.get('email')
@@ -489,17 +484,41 @@ def generate_reset_token():
     if not user:
         return jsonify({"message": "Email not found"}), 404
 
-    # Genera un token de JWT con un tiempo de expiración
-    reset_token = create_access_token(identity=user.id, expires_delta=datetime.timedelta(minutes=30))
+    # Genera un token JWT con un tiempo de expiración
+    reset_token = create_access_token(identity=user.id , expires_delta=datetime.timedelta(minutes=30))
 
-    return jsonify({"reset_token": reset_token}), 200
+    frontend_url ='https://crispy-couscous-wrvj697556rp29r66-3000.app.github.dev'
+    # Genera el enlace de restablecimiento de contraseña
+    #reset_link = url_for('api.reset_password', _external=True) + f"?token={reset_token}"
+    reset_link = f"{frontend_url}/resetpass?token={reset_token}"
+
+    # Configura los detalles del correo
+    mail = mt.Mail(
+        sender=mt.Address(email="mailtrap@demomailtrap.com", name="MindTOMind"),
+        to=[mt.Address(email=user.email)],
+        subject="Password Reset Request",
+        text=f"Click the following link to reset your password: {reset_link}",
+        category="Password Reset",
+    )
+
+    # Inicializa el cliente con tu token de API de Mailtrap
+    client = mt.MailtrapClient(token="88db215e7f81c5d35dc370d7b77a4bbd")
+
+    try:
+        # Envía el correo
+        client.send(mail)
+        return jsonify({"message": "Reset token sent to your email"}), 200
+
+    except Exception as e:
+        return jsonify({"message": f"Failed to send email: {str(e)}"}), 500
 
 
+
+# Ruta para restablecer la contraseña
 @api.route('/reset_password', methods=['POST'])
 def reset_password():
     reset_token = request.json.get('reset_token')
     new_password = request.json.get('new_password')
-  
     
     try:
         # Decodifica el token JWT para obtener la identidad del usuario
@@ -519,6 +538,8 @@ def reset_password():
         return jsonify({"message": "Token has expired"}), 400
     except jwt.InvalidTokenError:
         return jsonify({"message": "Invalid token"}), 400
+
+
 
 
 
@@ -545,11 +566,10 @@ def user_change(user_id):
     db.session.commit()
     return jsonify(user.serialize())
 
+@api.route('/userinfo', methods=['GET'])
+@jwt_required()
+def user_info():
+    user = get_jwt_identity()
+    load = get_jwt()
+    return jsonify({"user":user, "role":load["role"]})
 
-# Ruta protegida de ejemplo
-# @api.route('/protected', methods=['GET'])
-# @jwt_required()
-# def protected():
-#     current_user_id = get_jwt_identity()
-#     user = User.query.get(current_user_id)
-#     return jsonify({'message': f'Hello, {user.username}'}), 200
