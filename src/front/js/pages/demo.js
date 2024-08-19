@@ -36,13 +36,13 @@ export const Demo = () => {
 
     setMessageData("");
   };
-
+  
   const sendMessage = (e) => {
     if (e.key === "Enter") {
       handleSendMessage(e);
     }
   };
-
+  
   const handleClearConversation = async () => {
     try {
       await actions.saveMessage(messages);
@@ -56,6 +56,10 @@ export const Demo = () => {
       console.error("Error al guardar la conversación:", error);
     }
   };
+
+  // const decodedToken = jwtDecode(token);
+  // const userId = decodedToken.user_id;
+  // console.log('User ID:', userId);
 
   return (
     <div className="container">
@@ -86,6 +90,8 @@ export const Demo = () => {
             ))}
           </ul>
         </div>
+
+        
         {/* Este div contiene la vista del chat */}
 
         <div className="col-6 d-flex flex-column ">
@@ -136,8 +142,10 @@ export const Demo = () => {
                   <Link to={"/single/" + index}>
                     <span>
                       <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmSaaddBQKHgvmxPcxZ5f7c6fAFpE7cf9yfw&s"
+                        src="https://img.freepik.com/foto-gratis/vista-posterior-mujer-haciendo-yoga-al-aire-libre_23-2148769551.jpg"
                         className="rounded-circle w-75"
+                        
+
                       ></img>
                     </span>
                   </Link>
