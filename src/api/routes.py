@@ -22,7 +22,6 @@ import json
 import mailtrap as mt
 # Allow CORS requests to this API
 
-
 load_dotenv()
 
 client = OpenAI(
@@ -58,22 +57,6 @@ cloudinary.config(
   api_secret = os.getenv("API_SECRET"),
   secure = True
 )
-
-
-# # Configura los detalles del correo
-# mail = mt.Mail(
-#     sender=mt.Address(email="mailtrap@demomailtrap.com", name="Mailtrap Test"),
-#     to=[mt.Address(email="er70302409@gmail.com")],
-#     subject="You are awesome!",
-#     text="Congrats for sending test email with Mailtrap!",
-#     category="Integration Test",
-# )
-# Inicializa el cliente con tu token de API de Mailtrap
-# client = mt.MailtrapClient(token="88db215e7f81c5d35dc370d7b77a4bbd")
-
-# Envía el correo
-# client.send(mail)
-
 
 conversation_file = 'conversation_history.json'
 
@@ -492,48 +475,6 @@ def user_logout():
         }), 500
 
 
-
-# @api.route('/generate_reset_token', methods=['POST'])
-# def generate_reset_token():
-#     email = request.json.get('email')
-    
-#     user = User.query.filter_by(email=email).first()
-#     if not user:
-#         return jsonify({"message": "Email not found"}), 404
-
-#     # Genera un token de JWT con un tiempo de expiración
-#     reset_token = create_access_token(identity=user.id, expires_delta=datetime.timedelta(minutes=30))
-
-#     return jsonify({"reset_token": reset_token}), 200
-
-
-# @api.route('/reset_password', methods=['POST'])
-# def reset_password():
-#     reset_token = request.json.get('reset_token')
-#     new_password = request.json.get('new_password')
-  
-    
-#     try:
-#         # Decodifica el token JWT para obtener la identidad del usuario
-#         user_id = decode_token(reset_token)['sub']
-#         user = User.query.get(user_id)
-
-#         if not user:
-#             return jsonify({"message": "Invalid token"}), 404
-
-#         # Aquí puedes implementar una función para hash la nueva contraseña, si no la tienes ya en el modelo.
-#         user.set_password(new_password)
-#         db.session.commit()
-
-#         return jsonify({"message": "Password reset successful"}), 200
-
-#     except jwt.ExpiredSignatureError:
-#         return jsonify({"message": "Token has expired"}), 400
-#     except jwt.InvalidTokenError:
-#         return jsonify({"message": "Invalid token"}), 400
-
-
-
 # Ruta para generar el token de restablecimiento de contraseña y enviar el correo
 @api.route('/generate_reset_token', methods=['POST'])
 def generate_reset_token():
@@ -544,7 +485,7 @@ def generate_reset_token():
         return jsonify({"message": "Email not found"}), 404
 
     # Genera un token JWT con un tiempo de expiración
-    reset_token = create_access_token(identity=user.id, expires_delta=datetime.timedelta(minutes=30))
+    reset_token = create_access_token(identity=user.id , expires_delta=datetime.timedelta(minutes=30))
 
     frontend_url ='https://crispy-couscous-wrvj697556rp29r66-3000.app.github.dev'
     # Genera el enlace de restablecimiento de contraseña
@@ -598,10 +539,6 @@ def reset_password():
     except jwt.InvalidTokenError:
         return jsonify({"message": "Invalid token"}), 400
 
-
-# @app.route('/generate_reset_token', methods=['GET'])
-# def generate_reset_token():
-#     return jsonify({"message": "Route works with GET"}), 200
 
 
 
