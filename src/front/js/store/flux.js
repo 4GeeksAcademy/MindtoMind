@@ -110,7 +110,7 @@ const getState = ({ getStore, getActions, setStore }) => {
             throw new Error("ID no encontrada ")
           }
           
-          console.log(conversation_id)
+          console.log(store.conversation_id)
           console.log(message)
           const resp = await fetch(apiUrl + "/enviarmensaje", {
             method: "POST",
@@ -141,7 +141,7 @@ const getState = ({ getStore, getActions, setStore }) => {
                     'Authorization': `Bearer ${store.token}`  // Asegúrate de enviar el token si es necesario
                 },
                 body: JSON.stringify({
-					user_id: userId
+					        user_id: userId
                 })
             });
             if (!response.ok) {
@@ -152,6 +152,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 			
 			console.log(data)
 			setStore({ conversation_id: data.id })
+      const ides = localStorage.setItem("conversation_id",store.conversation_id)
+  
 			console.log("[Flux]conversation_id",store.conversation_id)
             return data;  
         } catch (error) {
@@ -182,11 +184,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       loadSession: async () => {
 				let storageToken = localStorage.getItem("token");
+        let coversatioStorage=localStorage.getItem("conversation_id")
+        let storageUser = localStorage.getItem("user_id")
+
 				if (!storageToken) return;
 				setStore({ token: storageToken });
+
+        if (!coversatioStorage) return;
+				setStore({ conversation_id: coversatioStorage });
+
+
+        if (!storageUser) return;
+				setStore({ user_id: storageUser });
+
 				let resp = await fetch(apiUrl + "/userinfo", {
 					headers: {
 						Authorization: "Bearer " + storageToken,
+
 					},
 				});
 				if (!resp.ok) {
@@ -210,6 +224,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 				// if (!resp.ok) return false;
 				setStore({ token: null, userInfo: null });
 				localStorage.removeItem("token");
+        localStorage.removeItem("conversationID");
+        localStorage.removeItem("user_id");
+        localStorage.removeItem("conversation_id");
 				return true;
 			},
     },
