@@ -44,7 +44,7 @@ export const Psicho = () => {
         data.append("years_of_experience", formData.years_of_experience);
         data.append("photo", formData.photo); // Agregar el archivo al FormData
         try {
-            const response = await fetch('https://crispy-couscous-wrvj697556rp29r66-3001.app.github.dev/api/register_psychologist', {
+            const response = await fetch('https://sturdy-space-memory-7v74r7vxgg9gfpj45-3001.app.github.dev/api/register_psychologist', {
                 method: 'POST',          
                 body: data,
             });

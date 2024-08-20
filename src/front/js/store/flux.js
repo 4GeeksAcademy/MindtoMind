@@ -165,7 +165,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				method: 'POST',
                 headers: {
 					'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${store.token}`  // Asegúrate de enviar el token si es necesario
+                    'Authorization': `Bearer ${store.token}`  
                 },
                 body: JSON.stringify({
 					        user_id: userId
@@ -211,34 +211,47 @@ const getState = ({ getStore, getActions, setStore }) => {
      
 
       loadSession: async () => {
-				let storageToken = localStorage.getItem("token");
-        let coversatioStorage=localStorage.getItem("conversation_id")
-        let storageUser = localStorage.getItem("user_id")
+        try {
+          let storageToken = localStorage.getItem("token");
+          let coversatioStorage=localStorage.getItem("conversation_id")
+          let storageUser = localStorage.getItem("user_id")
 
-				if (!storageToken) return;
-				setStore({ token: storageToken });
+          if (!storageToken) return;
+          setStore({ token: storageToken });
 
-        if (!coversatioStorage) return;
-				setStore({ conversation_id: coversatioStorage });
+          if (!coversatioStorage) return;
+          setStore({ conversation_id: coversatioStorage });
 
 
-        if (!storageUser) return;
-				setStore({ user_id: storageUser });
+          if (!storageUser) return;
+          setStore({ user_id: storageUser });
 
-				let resp = await fetch(apiUrl + "/userinfo", {
-					headers: {
-						Authorization: "Bearer " + storageToken,
+          let resp = await fetch(apiUrl + "/userinfo", {
+            headers: {
+              Authorization: "Bearer " + storageToken,
 
-					},
-				});
-				if (!resp.ok) {
-					setStore({ token: null });
-					localStorage.removeItem("token")
-					return false;
-				}
-				let data = await resp.json();
-				setStore({ userInfo: data });
-				return true;
+            },
+          });
+
+          if (!resp.ok) {
+            setStore({ token: null, userInfo:null });
+            localStorage.removeItem("token");
+            localStorage.removeItem("conversation_id");
+            localStorage.removeItem("user_id");
+            return false;
+          }
+          let data = await resp.json();
+          setStore({ userInfo: data });
+          return true;
+        } catch (error) {
+          // Manejar errores de la solicitud
+          console.error("Error loading session:", error);
+          setStore({ token: null, userInfo: null });
+          localStorage.removeItem("token");
+          localStorage.removeItem("conversation_id");
+          localStorage.removeItem("user_id");
+          return false;
+        }
 			},
       
 			logout: async () => {

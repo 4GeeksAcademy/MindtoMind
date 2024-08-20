@@ -19,7 +19,7 @@ export const Single = () => {
 			/>
 			<div className="name">Soy, Dr/a Bertie Norton</div>
 			<div className="image-credit">
-			<i class="fa-solid fa-phone"></i> 654-987-256
+			<i className="fa-solid fa-phone"></i> 654-987-256
 			</div>
 		</div>
 		<div className="right">
