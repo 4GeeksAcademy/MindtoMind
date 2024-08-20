@@ -1,0 +1,29 @@
+.resetclass{
+    
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+    margin-top: 10%;
+}
+.inputrest{
+    width: 80%;
+    margin-left: 10%;
+}
+.titlerest{
+    margin-left: 10%;
+    color: #D5BDAF;
+}
+.rest{
+  margin-left: 10%;
+    width: 75%;
+
+    
+}
+.buttonemail{
+    width: 30%;
+  
+}
+h2{
+    margin-left: 25%;
+    color: #D5BDAF;
+}
