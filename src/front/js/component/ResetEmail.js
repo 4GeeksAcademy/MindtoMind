@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 import "../../styles/resetemail.css";
+import { BsEnvelope } from "react-icons/bs";
 
 export const ResetEmail= () => {
     const { store, actions } = useContext(Context);
@@ -38,7 +39,7 @@ export const ResetEmail= () => {
 
                             <div className="titlerest">
                                 <label htmlFor="exampleInputEmail" className="form-label mt-3">
-                                    Correo Electrónico
+                                <BsEnvelope /> Correo Electrónico
                                 </label>
                             </div>
                                 <input
