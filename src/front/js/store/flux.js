@@ -25,6 +25,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       token: null,
       userinfo: null,
       conversation_id: null,
+      psychologists:[],
+
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -270,6 +272,68 @@ const getState = ({ getStore, getActions, setStore }) => {
         localStorage.removeItem("conversation_id");
 				return true;
 			},
+
+      getPsico: async (id) => {
+        try {
+          let resp = await fetch(apiUrl + `/psychologist/${id}`);
+          if (!resp.ok) {
+            console.error("Error en la peticion: ${resp.status}");
+            return;
+          }
+          let data = await resp.json();
+          let psychologist = {
+            id: data.result.id,
+            first_name: data.result.first_name,
+            last_name: data.result.last_name,
+            phone_number: data.result.phone_number,
+            email: data.result.email,
+            specialty: data.result.specialty,
+            years_of_experience: data.result.years_of_experience,
+            description: data.result.description,
+            photo:data.result.photo,
+          };
+
+          const store = getStore();
+          setStore({
+            psychologists: [...store.psychologists, psychologist],
+          });
+        } catch (error) {
+          console.error("Error en la promesa: ${error}");
+          return;
+        }
+      },
+      getAllPsico: async () => {
+
+        try {
+          let resp = await fetch(apiUrl + `/psychologists`,{
+            headers:{
+              "Content-Type":"application/json",
+              "Authorization":"Bearer " + localStorage.getItem("token") 
+            }
+          });
+          if (!resp.ok) {
+            console.error("Error en la peticion: ${resp.status}");
+            return;
+          }
+          let data = await resp.json();
+          
+          setStore({
+            psychologists: data.data
+          });
+        } catch (error) {
+          console.error("Error en la promesa: ${error}");
+          return;
+        }
+      },
+      // loadPsico: async () => {
+      //   const actions = getActions();
+      //   const psicoPromises = [];
+      //   setStore({ psychologists: [] });
+      //   for (let i = 1; i <= 10; i++) {
+      //     psicoPromises.push(actions.getPsico(i));
+      //   }
+      //   await Promise.all(psicoPromises);
+      // },
     },
   };
 };

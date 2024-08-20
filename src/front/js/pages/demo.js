@@ -59,7 +59,10 @@ export const Demo = () => {
       console.error("Error al guardar la conversación:", error);
     }
   };
-
+  useEffect(() => {
+		actions.getAllPsico()
+		console.log("--------------------------------------")
+	  }, []);
   // const decodedToken = jwtDecode(token);
   // const userId = decodedToken.user_id;
   // console.log('User ID:', userId);
@@ -135,18 +138,19 @@ export const Demo = () => {
         <div className="col-3">
          
           <ul className="list-group">
-            {store.demo.map((item, index) => {
+            {store.psychologists.map((psychologist, index) => {
               return (
                 <li
                   key={index}
                   className="list-group-item border border-0"
-                  style={{ background: item.background }}
+                  
                 >
-                  <Link to={"/single/" + index}>
+                  
+                  <Link to={"/single/" + psychologist.id}>
                     <span className="d-flex justify-content-center">
                       <img
-                        src="https://img.freepik.com/foto-gratis/vista-posterior-mujer-haciendo-yoga-al-aire-libre_23-2148769551.jpg"
-                        className="rounded-circle w-100 d-flex"
+                        src={psychologist.photo}
+                        className="rounded-circle w-75 d-flex"
                         
 
                       ></img>
