@@ -515,7 +515,25 @@ def generate_reset_token():
         sender=mt.Address(email="mailtrap@demomailtrap.com", name="MindTOMind"),
         to=[mt.Address(email=user.email)],
         subject="Password Reset Request",
-        text=f"Click the following link to reset your password: {reset_link}",
+        text=f"""
+        Hola,
+
+        Gracias por contactarte con el equipo de MindToMind.
+
+        Hemos recibido una solicitud para restablecer tu contraseña. Para completar este proceso, por favor, Haz clic a el enlace a continuación:
+
+                    {reset_link}
+
+        Nota: Este enlace es válido por 5 minutos. Si no completas el proceso dentro de este plazo, el enlace caducará y deberás solicitar un nuevo enlace de restablecimiento.
+
+        Si no solicitaste un cambio de contraseña, ignora este correo y tu contraseña permanecerá inalterada.
+
+        Si necesitas ayuda adicional, no dudes en ponerte en contacto con nuestro equipo de soporte.
+
+        Saludos cordiales,
+          
+            Equipo  MindToMind.
+        """,
         category="Password Reset",
     )
 
