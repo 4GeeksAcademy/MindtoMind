@@ -99,7 +99,7 @@ export const Usuario = () => {
               </div>
               <div className="card-footer text-body-secondary text-end py-2">
                 <button type="button" className="btn btn-outline-dark">
-                  Cancelar
+                  <a href='/'>Cancelar</a>
                 </button>
                 <button type="submit" className="btn btn-outline-primary ms-2">
                   Enviar
