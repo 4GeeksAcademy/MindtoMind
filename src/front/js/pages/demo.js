@@ -63,9 +63,7 @@ export const Demo = () => {
 		actions.getAllPsico()
 		console.log("--------------------------------------")
 	  }, []);
-  // const decodedToken = jwtDecode(token);
-  // const userId = decodedToken.user_id;
-  // console.log('User ID:', userId);
+
 
   return (
     <div className="container">
@@ -137,7 +135,7 @@ export const Demo = () => {
 
         <div className="col-3">
          
-          <ul className="list-group">
+          <ul className="list-group psicologos flex-nowrap overflow-auto">
             {store.psychologists.map((psychologist, index) => {
               return (
                 <li

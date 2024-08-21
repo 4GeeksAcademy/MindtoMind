@@ -11,6 +11,7 @@ import { Signup } from "./pages/signup";
 import { Psicho } from "./pages/psicho";
 import { Usuario } from "./pages/usuario";
 import { Single } from "./pages/single";
+import { ChangePsico } from "./pages/ChangePsico";
 import injectContext from "./store/appContext";
 
 import { Navbar } from "./component/navbar";
@@ -37,7 +38,7 @@ const Layout = () => {
                             <Route path="/Psicho" element={<Psicho />} />
                             <Route path="/Usuario" element={<Usuario />} />
                             <Route path="/single/:id" element={<Single />} />
-                            
+                            <Route path="/ChangePsico/:id" element={<ChangePsico />} />
 
                             <Route element={<h1>Not found!</h1>} />
                         </Routes>

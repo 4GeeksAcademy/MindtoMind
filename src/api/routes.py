@@ -464,7 +464,7 @@ def login_psychologist():
 
         if psychologist and psychologist.check_password(data['password']):
             access_token = create_access_token(identity=psychologist.id)
-            return jsonify({'token': access_token}), 200
+            return jsonify({'token': access_token, 'psychologist_id':psychologist.id}), 200
         
         return jsonify({'message': 'Invalid credentials'}), 401
     

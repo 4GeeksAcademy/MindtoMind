@@ -26,7 +26,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       userinfo: null,
       conversation_id: null,
       psychologists:[],
-
+      psycologoLogeado:false
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -53,6 +53,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         localStorage.setItem("user_id", data.user_id);
         console.log(data.token)
         console.log(data.user_id)
+        
         return true;
       },
 
@@ -69,8 +70,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           return false;
         }
         let data = await resp.json();
-        setStore({ token: data.token });
+        setStore({ token: data.token, psyco_id:data.psychologist_id });
         localStorage.setItem("token", data.token);
+        localStorage.setItem("psyco_id", data.psychologist_id);
+        setStore({psycologoLogeado: true})
         return true;
       },
 
@@ -111,20 +114,20 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
 
-      changeColor: (index, color) => {
-        //get the store
-        const store = getStore();
+      // changeColor: (index, color) => {
+      //   //get the store
+      //   const store = getStore();
 
-        //we have to loop the entire demo array to look for the respective index
-        //and change its color
-        const demo = store.demo.map((elm, i) => {
-          if (i === index) elm.background = color;
-          return elm;
-        });
+      //   //we have to loop the entire demo array to look for the respective index
+      //   //and change its color
+      //   const demo = store.demo.map((elm, i) => {
+      //     if (i === index) elm.background = color;
+      //     return elm;
+      //   });
 
-        //reset the global store
-        setStore({ demo: demo });
-      },
+      //   //reset the global store
+      //   setStore({ demo: demo });
+      // },
 
 
       saveMessage: async (message) => {
@@ -270,6 +273,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         localStorage.removeItem("conversationID");
         localStorage.removeItem("user_id");
         localStorage.removeItem("conversation_id");
+        localStorage.removeItem("psyco_id");
 				return true;
 			},
 
