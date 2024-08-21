@@ -10,6 +10,8 @@ export const ResetPassword= ({ token }) => {
     const navigate = useNavigate(); // Hook de navegación
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const apiUrl = process.env.BACKEND_URL + "/api";
+
     
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -18,9 +20,9 @@ export const ResetPassword= ({ token }) => {
           alert("Las contraseñas no coinciden");
           return;
         }
-    
+        
         try {
-          const response = await fetch(`https://crispy-couscous-wrvj697556rp29r66-3001.app.github.dev/api/reset_password`, {
+          const response = await fetch(apiUrl + "/reset_password_psychologist", {
             method: "POST",
             headers: {
               "Content-Type": "application/json"

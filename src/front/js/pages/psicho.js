@@ -7,6 +7,8 @@ export const Psicho = () => {
     const { store, actions } = useContext(Context);
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const apiUrl = process.env.BACKEND_URL + "/api";
+
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',
@@ -53,7 +55,7 @@ export const Psicho = () => {
         data.append("years_of_experience", formData.years_of_experience);
         data.append("photo", formData.photo); 
         try {
-            const response = await fetch('https://sturdy-space-memory-7v74r7vxgg9gfpj45-3001.app.github.dev/api/register_psychologist', {
+            const response = await fetch(apiUrl + "/register_psychologist", {
                 method: 'POST',          
                 body: data,
             });
@@ -221,7 +223,7 @@ export const Psicho = () => {
               </div>
               <div className="card-footer text-body-secondary text-end py-2">
                 <button type="button" className="btn btn-outline-dark">
-                  Cancelar
+                  <a href='/'>Cancelar</a>
                 </button>
                 <button type="submit" className="btn btn-outline-primary ms-2">
                   Enviar

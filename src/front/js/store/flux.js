@@ -33,8 +33,75 @@ const getState = ({ getStore, getActions, setStore }) => {
       exampleFunction: () => {
         getActions().changeColor(0, "green");
       },
+      
+      //rest password
+      requestPasswordReset: async (email) => {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+      
+        const body = JSON.stringify({ email: email });
+      
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: body,
+          redirect: "follow"
+        };
+      
+        try {
+          const response = await fetch(apiUrl + "/generate_reset_token", requestOptions);
+          
+          if (!response.ok) {
+            // Muestra un error si el servidor responde con un código de estado no exitoso
+            const error = await response.json();
+            console.error("Error:", error.message);
+          } else {
+            // Si la solicitud fue exitosa, maneja la respuesta
+            const result = await response.json();
+            console.log(result.message);
+            alert("Se ha enviado un enlace para restablecer la contraseña a tu correo.");
+          }
+        } catch (error) {
+          console.error("Fetch error:", error);
+          alert("Ocurrió un problema al intentar enviar la solicitud.");
+        }
+      },
+
+
+      PasswordResetPsycho: async (email) => {
+        const myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
+      
+        const body = JSON.stringify({ email: email });
+      
+        const requestOptions = {
+          method: "POST",
+          headers: myHeaders,
+          body: body,
+          redirect: "follow"
+        };
+      
+        try {
+          const response = await fetch(apiUrl + "/generate_reset_token_psychologist", requestOptions);
+          
+          if (!response.ok) {
+            // Muestra un error si el servidor responde con un código de estado no exitoso
+            const error = await response.json();
+            console.error("Error:", error.message);
+          } else {
+            // Si la solicitud fue exitosa, maneja la respuesta
+            const result = await response.json();
+            console.log(result.message);
+            alert("Se ha enviado un enlace para restablecer la contraseña a tu correo.");
+          }
+        } catch (error) {
+          console.error("Fetch error:", error);
+          alert("Ocurrió un problema al intentar enviar la solicitud.");
+        }
+      },
 
       
+
       login: async (email, password) => {
         let resp = await fetch(apiUrl + "/login", {
           method: "POST",

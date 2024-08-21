@@ -515,7 +515,25 @@ def generate_reset_token():
         sender=mt.Address(email="mailtrap@demomailtrap.com", name="MindTOMind"),
         to=[mt.Address(email=user.email)],
         subject="Password Reset Request",
-        text=f"Click the following link to reset your password: {reset_link}",
+        text=f"""
+        Hola,
+
+        Gracias por contactarte con el equipo de MindToMind.
+
+        Hemos recibido una solicitud para restablecer tu contraseña. Para completar este proceso, por favor, Haz clic a el enlace a continuación:
+
+                    {reset_link}
+
+        Nota: Este enlace es válido por 5 minutos. Si no completas el proceso dentro de este plazo, el enlace caducará y deberás solicitar un nuevo enlace de restablecimiento.
+
+        Si no solicitaste un cambio de contraseña, ignora este correo y tu contraseña permanecerá inalterada.
+
+        Si necesitas ayuda adicional, no dudes en ponerte en contacto con nuestro equipo de soporte.
+
+        Saludos cordiales,
+          
+            Equipo  MindToMind.
+        """,
         category="Password Reset",
     )
 
@@ -557,6 +575,68 @@ def reset_password():
     except jwt.InvalidTokenError:
         return jsonify({"message": "Invalid token"}), 400
 
+
+# Ruta para generar el token de restablecimiento de contraseña y enviar el correo psicologo
+@api.route('/generate_reset_token_psychologist', methods=['POST'])
+def generate_reset_token_psychologist():
+    email = request.json.get('email')
+    
+    psychologist = Psychologist.query.filter_by(email=email).first()
+    if not psychologist:
+        return jsonify({"message": "Email not found"}), 404
+
+    # Genera un token JWT con un tiempo de expiración
+    reset_token = create_access_token(identity=psychologist.id , expires_delta=datetime.timedelta(minutes=30))
+
+    frontend_url ='https://crispy-couscous-wrvj697556rp29r66-3000.app.github.dev'
+   
+    reset_link = f"{frontend_url}/resetpasspsycho?token={reset_token}"
+
+    # Configura los detalles del correo
+    mail = mt.Mail(
+        sender=mt.Address(email="mailtrap@demomailtrap.com", name="MindTOMind"),
+        to=[mt.Address(email=psychologist.email)],
+        subject="Password Reset Request",
+        text=f"Click the following link to reset your password: {reset_link}",
+        category="Password Reset",
+    )
+
+#     # Inicializa el cliente con tu token de API de Mailtrap
+    client = mt.MailtrapClient(token="88db215e7f81c5d35dc370d7b77a4bbd")
+
+    try:
+        # Envía el correo
+        client.send(mail)
+        return jsonify({"message": "Reset token sent to your email"}), 200
+
+    except Exception as e:
+        return jsonify({"message": f"Failed to send email: {str(e)}"}), 500
+
+
+# Ruta para restablecer la contraseña psicologo
+@api.route('/reset_password_psychologist', methods=['POST'])
+def reset_password_psychologist():
+    reset_token = request.json.get('reset_token')
+    new_password = request.json.get('new_password')
+    
+    try:
+        # Decodifica el token JWT para obtener la identidad del usuario
+        psychologist_id = decode_token(reset_token)['sub']
+        psychologist = Psychologist.query.get(psychologist_id )
+
+        if not  psychologist:
+            return jsonify({"message": "Invalid token"}), 404
+
+        # Aquí puedes implementar una función para hash la nueva contraseña, si no la tienes ya en el modelo.
+        psychologist.set_password(new_password)
+        db.session.commit()
+
+        return jsonify({"message": "Password reset successful"}), 200
+
+    except jwt.ExpiredSignatureError:
+        return jsonify({"message": "Token has expired"}), 400
+    except jwt.InvalidTokenError:
+        return jsonify({"message": "Invalid token"}), 400
 
 
 

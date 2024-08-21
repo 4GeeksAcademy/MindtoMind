@@ -4,6 +4,7 @@ import "../../styles/home.css";
 
 export const Signup = () => {
 	const { store, actions } = useContext(Context);
+  
 
 	return ( 
         <div className="container mt-5">

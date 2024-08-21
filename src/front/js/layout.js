@@ -7,6 +7,7 @@ import { Home } from "./pages/home";
 import { Demo } from "./pages/demo";
 import { Login } from "./pages/login";
 import { Resetpass } from "./pages/resetpass";
+import { ResestPassPsycho } from "./pages/ResetPassPsycho";
 import { Signup } from "./pages/signup";
 import { Psicho } from "./pages/psicho";
 import { Usuario } from "./pages/usuario";
@@ -39,6 +40,8 @@ const Layout = () => {
                             <Route path="/Usuario" element={<Usuario />} />
                             <Route path="/single/:id" element={<Single />} />
                             <Route path="/ChangePsico/:id" element={<ChangePsico />} />
+                          
+                            <Route path="/ResetPassPsycho" element={<ResestPassPsycho/>} />
 
                             <Route element={<h1>Not found!</h1>} />
                         </Routes>
