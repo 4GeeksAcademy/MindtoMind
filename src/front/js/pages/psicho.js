@@ -5,6 +5,8 @@ import { Link, Navigate } from "react-router-dom";
 
 export const Psicho = () => {
     const { store, actions } = useContext(Context);
+    const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const apiUrl = process.env.BACKEND_URL + "/api";
 
     const [formData, setFormData] = useState({
@@ -26,6 +28,9 @@ export const Psicho = () => {
             [name]: value,
         });
     };
+    const handleConfirmPasswordChange = (e) => {
+      setConfirmPassword(e.target.value);
+    };
     const handleFileChange = (e) => {
         setFormData({
             ...formData,
@@ -34,8 +39,12 @@ export const Psicho = () => {
     };
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (formData.password !== confirmPassword) {
+          alert("Las contraseñas no coinciden");
+          return;
+        }
         const data = new FormData();
-        // Agregar los datos del formulario al FormData
+        
         data.append("first_name", formData.first_name);
         data.append("last_name", formData.last_name);
         data.append("phone_number", formData.phone_number);
@@ -44,7 +53,7 @@ export const Psicho = () => {
         data.append("description", formData.description);
         data.append("password", formData.password);
         data.append("years_of_experience", formData.years_of_experience);
-        data.append("photo", formData.photo); // Agregar el archivo al FormData
+        data.append("photo", formData.photo); 
         try {
             const response = await fetch(apiUrl + "/register_psychologist", {
                 method: 'POST',          
@@ -80,21 +89,8 @@ export const Psicho = () => {
                     value={formData.first_name}
                     onChange={handleChange}
                     name="first_name"
-                    placeholder="First Name"
+                    placeholder="Nombre"
                     required
-                  />
-                </label>
-                <label className="col-xl-6" htmlFor="first_Name">
-                  <strong>Email</strong>
-                  <input
-                    type="email"
-                    id="email"
-                    className="form-control"
-                    name="email"
-                    placeholder="email"
-                    aria-label="email"
-                    value={formData.email}
-                    onChange={handleChange}
                   />
                 </label>
                 <label className="col-xl-6" htmlFor="lastName">
@@ -110,10 +106,23 @@ export const Psicho = () => {
                     placeholder="Apellido"
                   />
                 </label>
+                <label className="col-xl-6" htmlFor="first_Name">
+                  <strong>Correo electronico</strong>
+                  <input
+                    type="email"
+                    id="email"
+                    className="form-control"
+                    name="email"
+                    placeholder="Correo electronico"
+                    aria-label="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
+                </label>
               </div>
               <div className="row">
                 <label className="col-xl-6" htmlFor="password">
-                  <strong>passwoord</strong>
+                  <strong>Contraseña</strong>
                   <input
                     type="password"
                     id="password"
@@ -125,23 +134,23 @@ export const Psicho = () => {
                     placeholder="Contraseña"
                   />
                 </label>
-                {/* <label className="col-xl-6" htmlFor="rpasswrd">
+                <label className="col-xl-6" htmlFor="rpasswrd">
                   <strong>Repetir contraseña</strong>
                   <input
                     type="password"
-                    id="rpassword"
+                    id="confirmPassword"
                     className="form-control"
-                    aria-label="Last name"
-                    value={formData.ConfirmPassword}
-                    onChange={handleChange}
+                    aria-label="confirmPassword"
+                    value={confirmPassword}
+                    onChange={handleConfirmPasswordChange}
                   />
-                </label> */}
+                </label>
               </div>
               <div className="row">
                 <label className="col-xl-6" htmlFor="phone">
                   <strong>Teléfono</strong>
                   <input
-                    type="number"
+                    type="phone"
                     id="phone"
                     className="form-control"
                     aria-label="Last name"
@@ -170,7 +179,7 @@ export const Psicho = () => {
                     type="number"
                     className="form-control number-input"
                     id="years"
-                    placeholder="XXXXX"
+                    
                     value={formData.years_of_experience}
                     onChange={handleChange}
                     name="years_of_experience"
@@ -207,9 +216,9 @@ export const Psicho = () => {
                     rows="3"
                     value={formData.description}
                     onChange={handleChange}
-                    placeholder="Descripcion"
+                    placeholder="Explica brevemente tu perfil como psicologo"
                   ></textarea>
-                  <p>Explica brevemente tu perfil como psicologo</p>
+                  
                 </div>
               </div>
               <div className="card-footer text-body-secondary text-end py-2">

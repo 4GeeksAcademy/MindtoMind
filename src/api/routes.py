@@ -464,7 +464,7 @@ def login_psychologist():
 
         if psychologist and psychologist.check_password(data['password']):
             access_token = create_access_token(identity=psychologist.id)
-            return jsonify({'token': access_token}), 200
+            return jsonify({'token': access_token, 'psychologist_id':psychologist.id}), 200
         
         return jsonify({'message': 'Invalid credentials'}), 401
     
@@ -505,7 +505,7 @@ def generate_reset_token():
     # Genera un token JWT con un tiempo de expiración
     reset_token = create_access_token(identity=user.id , expires_delta=datetime.timedelta(minutes=30))
 
-    frontend_url ='https://crispy-couscous-wrvj697556rp29r66-3000.app.github.dev'
+    frontend_url ='https://sturdy-space-memory-7v74r7vxgg9gfpj45-3000.app.github.dev'
     # Genera el enlace de restablecimiento de contraseña
     #reset_link = url_for('api.reset_password', _external=True) + f"?token={reset_token}"
     reset_link = f"{frontend_url}/resetpass?token={reset_token}"
@@ -664,24 +664,16 @@ def user_change(user_id):
     db.session.commit()
     return jsonify(user.serialize())
 
-# @api.route('/userinfo', methods=['GET'])
-# @jwt_required()
-# def user_info():
-#     user = get_jwt_identity()
-#     load = get_jwt()
-#     return jsonify({"user":user, "role":load["role"]})
+@api.route('/userinfo', methods=['GET'])
+@jwt_required()
+def user_info():
+    user = get_jwt_identity()
 
-# @app.route('/start_conversation', methods=['POST'])
-# @jwt_required()
-# def start_conversation():
-#     user_id = request.json.get('user_id')
     
-#     # Crear una nueva conversación
-#     new_conversation = Conversation(user_id=user_id)
-#     db.session.add(new_conversation)
-#     db.session.commit()
-    
-#     return jsonify(new_conversation.serialize()), 201
+    return jsonify({"user":user})
+
+
+
 @api.route('/start_conversation', methods=['POST'])
 @jwt_required()
 def start_conversation():

@@ -25,6 +25,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       token: null,
       userinfo: null,
       conversation_id: null,
+      psychologists:[],
+      psycologoLogeado:false
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -118,6 +120,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         localStorage.setItem("user_id", data.user_id);
         console.log(data.token)
         console.log(data.user_id)
+        
         return true;
       },
 
@@ -134,8 +137,10 @@ const getState = ({ getStore, getActions, setStore }) => {
           return false;
         }
         let data = await resp.json();
-        setStore({ token: data.token });
+        setStore({ token: data.token, psyco_id:data.psychologist_id });
         localStorage.setItem("token", data.token);
+        localStorage.setItem("psyco_id", data.psychologist_id);
+        setStore({psycologoLogeado: true})
         return true;
       },
 
@@ -176,20 +181,20 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
 
-      changeColor: (index, color) => {
-        //get the store
-        const store = getStore();
+      // changeColor: (index, color) => {
+      //   //get the store
+      //   const store = getStore();
 
-        //we have to loop the entire demo array to look for the respective index
-        //and change its color
-        const demo = store.demo.map((elm, i) => {
-          if (i === index) elm.background = color;
-          return elm;
-        });
+      //   //we have to loop the entire demo array to look for the respective index
+      //   //and change its color
+      //   const demo = store.demo.map((elm, i) => {
+      //     if (i === index) elm.background = color;
+      //     return elm;
+      //   });
 
-        //reset the global store
-        setStore({ demo: demo });
-      },
+      //   //reset the global store
+      //   setStore({ demo: demo });
+      // },
 
 
       saveMessage: async (message) => {
@@ -232,7 +237,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 				method: 'POST',
                 headers: {
 					'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${store.token}`  // Asegúrate de enviar el token si es necesario
+                    'Authorization': `Bearer ${store.token}`  
                 },
                 body: JSON.stringify({
 					        user_id: userId
@@ -278,34 +283,47 @@ const getState = ({ getStore, getActions, setStore }) => {
      
 
       loadSession: async () => {
-				let storageToken = localStorage.getItem("token");
-        let coversatioStorage=localStorage.getItem("conversation_id")
-        let storageUser = localStorage.getItem("user_id")
+        try {
+          let storageToken = localStorage.getItem("token");
+          let coversatioStorage=localStorage.getItem("conversation_id")
+          let storageUser = localStorage.getItem("user_id")
 
-				if (!storageToken) return;
-				setStore({ token: storageToken });
+          if (!storageToken) return;
+          setStore({ token: storageToken });
 
-        if (!coversatioStorage) return;
-				setStore({ conversation_id: coversatioStorage });
+          if (!coversatioStorage) return;
+          setStore({ conversation_id: coversatioStorage });
 
 
-        if (!storageUser) return;
-				setStore({ user_id: storageUser });
+          if (!storageUser) return;
+          setStore({ user_id: storageUser });
 
-				let resp = await fetch(apiUrl + "/userinfo", {
-					headers: {
-						Authorization: "Bearer " + storageToken,
+          let resp = await fetch(apiUrl + "/userinfo", {
+            headers: {
+              Authorization: "Bearer " + storageToken,
 
-					},
-				});
-				if (!resp.ok) {
-					setStore({ token: null });
-					localStorage.removeItem("token")
-					return false;
-				}
-				let data = await resp.json();
-				setStore({ userInfo: data });
-				return true;
+            },
+          });
+
+          if (!resp.ok) {
+            setStore({ token: null, userInfo:null });
+            localStorage.removeItem("token");
+            localStorage.removeItem("conversation_id");
+            localStorage.removeItem("user_id");
+            return false;
+          }
+          let data = await resp.json();
+          setStore({ userInfo: data });
+          return true;
+        } catch (error) {
+          // Manejar errores de la solicitud
+          console.error("Error loading session:", error);
+          setStore({ token: null, userInfo: null });
+          localStorage.removeItem("token");
+          localStorage.removeItem("conversation_id");
+          localStorage.removeItem("user_id");
+          return false;
+        }
 			},
       
 			logout: async () => {
@@ -322,8 +340,71 @@ const getState = ({ getStore, getActions, setStore }) => {
         localStorage.removeItem("conversationID");
         localStorage.removeItem("user_id");
         localStorage.removeItem("conversation_id");
+        localStorage.removeItem("psyco_id");
 				return true;
 			},
+
+      getPsico: async (id) => {
+        try {
+          let resp = await fetch(apiUrl + `/psychologist/${id}`);
+          if (!resp.ok) {
+            console.error("Error en la peticion: ${resp.status}");
+            return;
+          }
+          let data = await resp.json();
+          let psychologist = {
+            id: data.result.id,
+            first_name: data.result.first_name,
+            last_name: data.result.last_name,
+            phone_number: data.result.phone_number,
+            email: data.result.email,
+            specialty: data.result.specialty,
+            years_of_experience: data.result.years_of_experience,
+            description: data.result.description,
+            photo:data.result.photo,
+          };
+
+          const store = getStore();
+          setStore({
+            psychologists: [...store.psychologists, psychologist],
+          });
+        } catch (error) {
+          console.error("Error en la promesa: ${error}");
+          return;
+        }
+      },
+      getAllPsico: async () => {
+
+        try {
+          let resp = await fetch(apiUrl + `/psychologists`,{
+            headers:{
+              "Content-Type":"application/json",
+              "Authorization":"Bearer " + localStorage.getItem("token") 
+            }
+          });
+          if (!resp.ok) {
+            console.error("Error en la peticion: ${resp.status}");
+            return;
+          }
+          let data = await resp.json();
+          
+          setStore({
+            psychologists: data.data
+          });
+        } catch (error) {
+          console.error("Error en la promesa: ${error}");
+          return;
+        }
+      },
+      // loadPsico: async () => {
+      //   const actions = getActions();
+      //   const psicoPromises = [];
+      //   setStore({ psychologists: [] });
+      //   for (let i = 1; i <= 10; i++) {
+      //     psicoPromises.push(actions.getPsico(i));
+      //   }
+      //   await Promise.all(psicoPromises);
+      // },
     },
   };
 };

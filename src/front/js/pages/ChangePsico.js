@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import '../../styles/single.css';
-import { TrSingle } from "../component/TrSingle";
+import { PhSingle } from "../component/PhSingle";
 
-export const Single = () => {
+export const ChangePsico = () => {
 	const { store, actions } = useContext(Context);
 	const {id} = useParams();
 
@@ -15,7 +15,7 @@ export const Single = () => {
 		<div className="container mt-2">
 		<div className="row justify-content-center">
 		  <div className="col-12">
-			<TrSingle />
+			<PhSingle />
 		  </div>
 		</div>
 	  </div>
@@ -25,6 +25,6 @@ export const Single = () => {
 }
 	
 
-Single.propTypes = {
+ChangePsico.propTypes = {
 	match: PropTypes.object
 };
