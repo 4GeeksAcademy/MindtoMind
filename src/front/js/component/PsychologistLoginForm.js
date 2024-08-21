@@ -25,7 +25,7 @@ export const PsychologistLoginForm = () => {
     } 
     const handleResetPassword = (e) => {
         e.preventDefault(); // Evita el comportamiento por defecto del botón
-        navigate("/resetpass"); // Navega al componente Resetpass
+        navigate("/resetpasspsycho"); // Navega al componente Resetpass
     };
 
     return (
