@@ -590,7 +590,7 @@ def generate_reset_token_psychologist():
 
     frontend_url ='https://crispy-couscous-wrvj697556rp29r66-3000.app.github.dev'
    
-    reset_link = f"{frontend_url}/resetpass?token={reset_token}"
+    reset_link = f"{frontend_url}/resetpasspsycho?token={reset_token}"
 
     # Configura los detalles del correo
     mail = mt.Mail(
@@ -601,7 +601,7 @@ def generate_reset_token_psychologist():
         category="Password Reset",
     )
 
-    # Inicializa el cliente con tu token de API de Mailtrap
+#     # Inicializa el cliente con tu token de API de Mailtrap
     client = mt.MailtrapClient(token="88db215e7f81c5d35dc370d7b77a4bbd")
 
     try:
