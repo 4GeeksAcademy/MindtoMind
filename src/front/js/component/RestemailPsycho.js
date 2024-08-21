@@ -15,7 +15,7 @@ export const ResetEmail= () => {
         let email = formData.get("email");
         
         console.log({ email });
-        let success = await actions.requestPasswordReset(email);
+        let success = await actions.PasswordResetPsycho(email);
         
         if (success) {
             navigate("/");
