@@ -5,6 +5,8 @@ import { Link, Navigate } from "react-router-dom";
 
 export const Psicho = () => {
     const { store, actions } = useContext(Context);
+    const apiUrl = process.env.BACKEND_URL + "/api";
+
     const [formData, setFormData] = useState({
         first_name: '',
         last_name: '',
@@ -44,7 +46,7 @@ export const Psicho = () => {
         data.append("years_of_experience", formData.years_of_experience);
         data.append("photo", formData.photo); // Agregar el archivo al FormData
         try {
-            const response = await fetch('https://crispy-couscous-wrvj697556rp29r66-3001.app.github.dev/api/register_psychologist', {
+            const response = await fetch(apiUrl + "/register_psychologist", {
                 method: 'POST',          
                 body: data,
             });

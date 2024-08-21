@@ -2,6 +2,8 @@ import React from "react";
 import { useContext } from "react"; 
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
+import { BsLock } from "react-icons/bs";
+import { BsEnvelope } from "react-icons/bs";
 
 export const PsychologistLoginForm = () => { 
     const { store, actions } = useContext(Context);
@@ -23,17 +25,17 @@ export const PsychologistLoginForm = () => {
     } 
     const handleResetPassword = (e) => {
         e.preventDefault(); // Evita el comportamiento por defecto del botón
-        navigate("/resetpass"); // Navega al componente Resetpass
+        navigate("/resetpasspsycho"); // Navega al componente Resetpass
     };
 
     return (
         <form onSubmit={submitform}>
             <div className="mb-3">
-                <label>Correo Electrónico</label>
+                <label className="text2"><BsEnvelope /> Correo Electrónico</label>
                 <input name="email" id="exampleInputEmail1" aria-describedby="emailHelp" type="email" className="form-control" required />
             </div>
             <div className="mb-3">
-                <label>Contraseña</label>
+                <label className="text2"><BsLock /> Contraseña</label>
                 <input name="password" id="exampleInputPassword1" type="password" className="form-control" required />
             </div>
             <a
