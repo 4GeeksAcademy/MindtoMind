@@ -21,6 +21,7 @@ export const Psicho = () => {
     photo: null,
   });
   const [responseMessage, setResponseMessage] = useState("");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -28,15 +29,18 @@ export const Psicho = () => {
       [name]: value,
     });
   };
+
   const handleConfirmPasswordChange = (e) => {
     setConfirmPassword(e.target.value);
   };
+  
   const handleFileChange = (e) => {
     setFormData({
       ...formData,
       photo: e.target.files[0],
     });
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (formData.password !== confirmPassword) {

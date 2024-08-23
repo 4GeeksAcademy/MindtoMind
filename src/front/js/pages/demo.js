@@ -63,9 +63,10 @@ export const Demo = () => {
   
   useEffect(() => {
 		actions.getAllPsico()
-		
+		actions.getUserMessages(4)
 	  }, []);
 
+console.log(store.userMessages)
 
   return (
     <div className="container">

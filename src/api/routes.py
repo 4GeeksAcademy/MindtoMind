@@ -196,25 +196,46 @@ def send_message():
     return jsonify({"message": "Mensaje enviado", "data": new_message.serialize()}), 201
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
   
+# @api.route('/messages/<int:id>', methods=['GET'])
+# @jwt_required()
+# def get_messages_id(id):
+#     try:    
+#         messages = Message.query.get(id)
+#         if not messages:
+#             return jsonify({"message":"No hay messages"}),404
+#         return jsonify(messages.serialize()), 200
+
+#     except Exception as e:
+#         print(f"Error en el servidor: {str(e)}")
+
+#         return jsonify({
+#             "message":"Hay un error en el servidor",
+#             "error": str(e)
+#         }),500
+    
+
 @api.route('/messages/<int:id>', methods=['GET'])
 @jwt_required()
 def get_messages_id(id):
-    try:    
-        messages = Message.query.get(id)
-        if not messages:
-            return jsonify({"message":"No hay messages"}),404
-        return jsonify(messages.serialize()), 200
+    try:
+        message = Message.query.get(id)
+
+        if not message:
+            return jsonify({"message": "No se encontró el mensaje"}), 404
+            
+        return jsonify(message.serialize()), 200
 
     except Exception as e:
         print(f"Error en el servidor: {str(e)}")
 
         return jsonify({
-            "message":"Hay un error en el servidor",
+            "message": "Error interno en el servidor",
             "error": str(e)
-        }),500
+        }), 500
+    
+
 
 # Obtener un usuario por ID
 @api.route('/user/<int:id>', methods=['GET'])
@@ -715,5 +736,35 @@ def start_conversation():
     except Exception as e:
         return jsonify({
             "message": "An error occurred while starting the conversation",
+            "error": str(e)
+        }), 500
+
+
+@api.route('/users/<int:user_id>/messages', methods=['GET'])
+@jwt_required()  
+def get_user_messages(user_id):
+    try:
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({"message": "Usuario no encontrado"}), 404
+        
+        conversations = Conversation.query.filter_by(user_id=user_id).all()
+        
+        if not conversations:
+            return jsonify({"message": "No hay conversaciones para este usuario"}), 404
+
+        user_messages = []
+
+        for conversation in conversations:
+            messages = Message.query.filter_by(conversation_id=conversation.id).all()
+            for message in messages:
+                user_messages.append(message.serialize())
+        
+        return jsonify(user_messages), 200
+
+    except Exception as e:
+        print(f"Error en el servidor: {str(e)}")
+        return jsonify({
+            "message": "Hay un error en el servidor",
             "error": str(e)
         }), 500

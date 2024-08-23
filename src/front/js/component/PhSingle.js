@@ -6,6 +6,7 @@ import "../../styles/single.css";
 export const PhSingle = () => {
   const { store, actions } = useContext(Context);
   const { id } = useParams();
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -46,7 +47,10 @@ export const PhSingle = () => {
   };
 
   const handleSubmit = () => {
-    actions.saveContactPsico(formData);
+    actions.updatePsico(formData);
+    const modalElement = document.getElementById("exampleModal");
+    const modal = bootstrap.Modal.getInstance(modalElement);
+    modal.hide();
   };
 
   return (

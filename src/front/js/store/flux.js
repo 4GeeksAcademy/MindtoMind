@@ -28,7 +28,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       psychologists:[],
       psychologist:[],
       psycologoLogeado:false,
-      psicologoGuardado: {}
+      psicologoGuardado: {},
+      userMessages:[]
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -439,6 +440,51 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.error("Error en la promesa: ${error}");
           return;
         }
+      },
+      updatePsico: async (nuevosDatosPsico) => {
+        const store = getStore();
+        try {
+          const response = await fetch(apiUrl + `/psico/${store.psychologist.id}`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(nuevosDatosPsico)
+          });
+
+          if (response.ok) {
+            const data = await response.json();
+            setStore({ psychologist: data }); 
+            console.log("Datos del psicólogo actualizados:", data);
+          } else {
+            console.error("Error al actualizar los datos del psicólogo:", response.statusText);
+          }
+        } catch (error) {
+          console.error("Error en la actualización de los datos:", error);
+        }
+      },
+      getUserMessages: async (userId) => {
+        const store = getStore();
+        try {
+            const response = await fetch(apiUrl + `/users/${userId}/messages`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${store.token}`
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al obtener los mensajes");
+            }
+
+            const data = await response.json();
+            setStore({ userMessages: data });
+
+        } catch (error) {
+            console.error("Error con el fetch de los mensajes:", error);
+        }
+         
       },
       // saveContactPsico: (psicologo) => {
       //   setStore({psicologoGuardado:psicologo})
