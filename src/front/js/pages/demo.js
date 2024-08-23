@@ -59,9 +59,11 @@ export const Demo = () => {
       console.error("Error al guardar la conversación:", error);
     }
   };
+
+  
   useEffect(() => {
 		actions.getAllPsico()
-		console.log("--------------------------------------")
+		
 	  }, []);
 
 

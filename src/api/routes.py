@@ -642,27 +642,49 @@ def reset_password_psychologist():
 
 
 # Cambio de contraseña
-@api.route('/user/<int:user_id>', methods=['PATCH'])
-def user_change(user_id):
-    user=User.query.filter_by(id=user_id).first()
+@api.route('/psico/<int:psico_id>', methods=['PATCH'])
+def user_change(psico_id):
+    user=Psychologist.query.filter_by(id=psico_id).first()
+
     if user is None:
         return jsonify({"info":"Not found"}), 404
     user_body=request.get_json()
 
-    if "username" in user_body:
-        user.username=user_body["username"]
+    if "first_name" in user_body:
+        user.first_name=user_body["first_name"]
 
+
+    if "last_name" in user_body:
+        user.last_name=user_body["last_name"]
+    
+    if "phone_number" in user_body:
+        user.phone_number=user_body["phone_number"]
 
     if "email" in user_body:
         user.email=user_body["email"]
 
-    if "password" in user_body:
-        user.password=user_body["password"]
+    if "specialty" in user_body:
+        user.specialty=user_body["specialty"]
+
+    if "years_of_experience" in user_body:
+        user.years_of_experience=user_body["years_of_experience"]
+
+    if "description" in user_body:
+        user.description=user_body["description"]
+
+    if "password_hash" in user_body:
+        user.password_hash=user_body["password_hash"]
+
+    
+    if "photo" in user_body:
+        user.photo=user_body["photo"]
 
     
     db.session.add(user)
     db.session.commit()
     return jsonify(user.serialize())
+
+
 
 @api.route('/userinfo', methods=['GET'])
 @jwt_required()

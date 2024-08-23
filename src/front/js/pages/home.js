@@ -8,7 +8,7 @@ export const Home = () => {
 	return (
     <div>
     <div>
-        <div id="carouselExampleCaptions" class="carousel slide  ">
+        <div id="carouselExampleCaptions" className="carousel slide  ">
       <div className="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" className="active" aria-current="true" aria-label="Slide 1"></button>
         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -31,7 +31,7 @@ export const Home = () => {
         </div>
         <div className="carousel-item">
           <img src="https://www.cil.com.ve/MTM/images/image.jpg" className="d-block w-100" alt="..." />
-          <div class="carousel-caption d-none d-md-block">
+          <div className="carousel-caption d-none d-md-block">
             <h5>Estoy en un proceso de crecimiento y aprendizaje</h5>
             <p>Esta frase nos ayuda a recordarnos a nosotros mismos que estamos en constante evolución, y que todos los desafíos que enfrentamos, incluyendo la ansiedad, son oportunidades para crecer y aprender.</p>
           </div>
@@ -85,12 +85,12 @@ export const Home = () => {
                         <i className="fa fa-bullhorn" aria-hidden="true"></i>
                         <div className="contenedor-eleccion">
                             <h4>Cuando no consigues nadie con quien hablar</h4>
-                            <p class="hidden-md-down">Puedes venir y hablar con nuestra IA la cual te dara consejos práticos al momento y siempre contaras con nuestros profesionales médicos.</p>
+                            <p className="hidden-md-down">Puedes venir y hablar con nuestra IA la cual te dara consejos práticos al momento y siempre contaras con nuestros profesionales médicos.</p>
                         </div>
                     </li>
                     <li className="wow zoomIn" data-wow-duration=".3s" data-wow-delay="1.1s">
 
-                    <i class="fa-solid fa-robot"></i>
+                    <i className="fa-solid fa-robot"></i>
 
                         <div className="contenedor-eleccion">
                             <h4>Recuerda este es un sitio web aplicando IA</h4>

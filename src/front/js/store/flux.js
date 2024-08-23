@@ -26,7 +26,9 @@ const getState = ({ getStore, getActions, setStore }) => {
       userinfo: null,
       conversation_id: null,
       psychologists:[],
-      psycologoLogeado:false
+      psychologist:[],
+      psycologoLogeado:false,
+      psicologoGuardado: {}
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -287,7 +289,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           let storageToken = localStorage.getItem("token");
           let coversatioStorage=localStorage.getItem("conversation_id")
           let storageUser = localStorage.getItem("user_id")
-
+          let id =localStorage.getItem("idPsyco")
+          let bool=localStorage.getItem("booleano")
           if (!storageToken) return;
           setStore({ token: storageToken });
 
@@ -310,6 +313,8 @@ const getState = ({ getStore, getActions, setStore }) => {
             localStorage.removeItem("token");
             localStorage.removeItem("conversation_id");
             localStorage.removeItem("user_id");
+            localStorage.removeItem("idPsyco")
+            localStorage.removeItem("booleano")
             return false;
           }
           let data = await resp.json();
@@ -341,9 +346,11 @@ const getState = ({ getStore, getActions, setStore }) => {
         localStorage.removeItem("user_id");
         localStorage.removeItem("conversation_id");
         localStorage.removeItem("psyco_id");
+        localStorage.removeItem("idPsyco")
+        localStorage.removeItem("booleano")
 				return true;
 			},
-
+// trae la info desde user
       getPsico: async (id) => {
         try {
           let resp = await fetch(apiUrl + `/psychologist/${id}`);
@@ -368,11 +375,48 @@ const getState = ({ getStore, getActions, setStore }) => {
           setStore({
             psychologists: [...store.psychologists, psychologist],
           });
+
+          setStore({
+            psychologist: data.data
+          });
+
         } catch (error) {
           console.error("Error en la promesa: ${error}");
           return;
         }
       },
+      // trae la info desde psicologo
+      getPsychologistById: async (id) => {
+        try {
+            const response = await fetch(apiUrl + `/psychologist/${id}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': "Bearer " + localStorage.getItem("token") 
+                }
+            });
+    
+            if (!response.ok) {
+                if (response.status === 404) {
+                    console.error("Psicologo no encontrado");
+                } else {
+                    console.error("Error con el fetch del psicólogo:", response.statusText);
+                }
+                return null;
+            }
+    
+            const data = await response.json();
+            console.log("Información del psicólogo:", data);
+            setStore({
+                psychologist: data.data
+               }); 
+    
+        } catch (error) {
+            console.error("Error con el fetch:", error);
+            return null;
+        }
+    },
+
       getAllPsico: async () => {
 
         try {
@@ -396,6 +440,11 @@ const getState = ({ getStore, getActions, setStore }) => {
           return;
         }
       },
+      // saveContactPsico: (psicologo) => {
+      //   setStore({psicologoGuardado:psicologo})
+      // },
+
+      
       // loadPsico: async () => {
       //   const actions = getActions();
       //   const psicoPromises = [];
