@@ -4,6 +4,8 @@ import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import '../../styles/single.css';
 import { PhSingle } from "../component/PhSingle";
+import { ModalPerfil } from "../component/ModalPerfil";
+
 
 export const ChangePsico = () => {
 	const { store, actions } = useContext(Context);
@@ -16,6 +18,7 @@ export const ChangePsico = () => {
 		<div className="row justify-content-center">
 		  <div className="col-12">
 			<PhSingle />
+			
 		  </div>
 		</div>
 	  </div>

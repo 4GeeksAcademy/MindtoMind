@@ -12,7 +12,6 @@ export const Demo = () => {
   const [messages, setMessages] = useState([]);
   const [savedConversations, setSavedConversations] = useState([]);
 
- 
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (messageData.trim() === "") return;
@@ -39,13 +38,13 @@ export const Demo = () => {
 
     setMessageData("");
   };
-  
+
   const sendMessage = (e) => {
     if (e.key === "Enter") {
       handleSendMessage(e);
     }
   };
-  
+
   const handleClearConversation = async () => {
     try {
       await actions.saveMessage(messages);
@@ -54,23 +53,21 @@ export const Demo = () => {
         { id: Date.now(), messages },
       ]);
       setMessages([]);
-      
     } catch (error) {
       console.error("Error al guardar la conversación:", error);
     }
   };
-  useEffect(() => {
-		actions.getAllPsico()
-		console.log("--------------------------------------")
-	  }, []);
 
+  useEffect(() => {
+    actions.getAllPsico();
+    // actions.getUserMessages(10)
+  }, []);
 
   return (
-    <div className="container">
+    <div className="container mb-5">
       <div className="row ">
         {/* Este div contiene las conversaciones guardadas */}
         <div className="col-3">
-          
           <ul className="lista-chat list-group flex-nowrap overflow-auto">
             {savedConversations.map((conversation) => (
               <li key={conversation.id} className="list-group-item">
@@ -95,10 +92,9 @@ export const Demo = () => {
           </ul>
         </div>
 
-        
         {/* Este div contiene la vista del chat */}
 
-        <div className="col-6 d-flex flex-column flex-nowrap overflow-auto">
+        <div className="vistachat col-6 d-flex flex-column flex-nowrap overflow-auto">
           <div className="messages-container  flex-grow-1 overflow-auto">
             {/* align-items-end */}
             {messages.map((msg, index) => (
@@ -118,7 +114,7 @@ export const Demo = () => {
               </div>
             ))}
           </div>
-          <div className="mt-auto input-container">
+          <div className=" input-container">
             <input
               onChange={(e) => setMessageData(e.target.value)}
               onKeyDown={sendMessage}
@@ -134,27 +130,18 @@ export const Demo = () => {
         {/* Este div contiene los psicologos */}
 
         <div className="col-3">
-         
           <ul className="list-group psicologos flex-nowrap overflow-auto">
             {store.psychologists.map((psychologist, index) => {
               return (
-                <li
-                  key={index}
-                  className="list-group-item border border-0"
-                  
-                >
-                  
+                <li key={index} className="list-group-item border border-0">
                   <Link to={"/single/" + psychologist.id}>
                     <span className="d-flex justify-content-center">
                       <img
                         src={psychologist.photo}
-                        className="rounded-circle w-75 d-flex"
-                        
-
+                        className="img-size rounded-circle w-75 d-flex"
                       ></img>
                     </span>
                   </Link>
-                 
                 </li>
               );
             })}

@@ -4,71 +4,73 @@ import "../../styles/home.css";
 import { Link, Navigate } from "react-router-dom";
 
 export const Psicho = () => {
-    const { store, actions } = useContext(Context);
-    const [password, setPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const apiUrl = process.env.BACKEND_URL + "/api";
+  const { store, actions } = useContext(Context);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const apiUrl = process.env.BACKEND_URL + "/api";
 
-    const [formData, setFormData] = useState({
-        first_name: '',
-        last_name: '',
-        phone_number: '',
-        email: '',
-        specialty: '',
-        years_of_experience: '',
-        description: '',
-        password: '',
-        photo: null,
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    phone_number: "",
+    email: "",
+    specialty: "",
+    years_of_experience: "",
+    description: "",
+    password: "",
+    photo: null,
+  });
+  const [responseMessage, setResponseMessage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
-    const [responseMessage, setResponseMessage] = useState('');
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
-    const handleConfirmPasswordChange = (e) => {
-      setConfirmPassword(e.target.value);
-    };
-    const handleFileChange = (e) => {
-        setFormData({
-            ...formData,
-            photo: e.target.files[0], 
-        });
-    };
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (formData.password !== confirmPassword) {
-          alert("Las contraseñas no coinciden");
-          return;
-        }
-        const data = new FormData();
-        
-        data.append("first_name", formData.first_name);
-        data.append("last_name", formData.last_name);
-        data.append("phone_number", formData.phone_number);
-        data.append("email", formData.email);
-        data.append("specialty", formData.specialty);
-        data.append("description", formData.description);
-        data.append("password", formData.password);
-        data.append("years_of_experience", formData.years_of_experience);
-        data.append("photo", formData.photo); 
-        try {
-            const response = await fetch(apiUrl + "/register_psychologist", {
-                method: 'POST',          
-                body: data,
-            });
-            const result = await response.json();
-            setResponseMessage(result.message || "Success");
-        } catch (error) {
-            setResponseMessage('An error occurred: ' + error.message);
-        }
-        
-    };
-    return (
-      
-      <div className="d-flex justify-content-center align-items-center">
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+  };
+  
+  const handleFileChange = (e) => {
+    setFormData({
+      ...formData,
+      photo: e.target.files[0],
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (formData.password !== confirmPassword) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+    const data = new FormData();
+
+    data.append("first_name", formData.first_name);
+    data.append("last_name", formData.last_name);
+    data.append("phone_number", formData.phone_number);
+    data.append("email", formData.email);
+    data.append("specialty", formData.specialty);
+    data.append("description", formData.description);
+    data.append("password", formData.password);
+    data.append("years_of_experience", formData.years_of_experience);
+    data.append("photo", formData.photo);
+    try {
+      const response = await fetch(apiUrl + "/register_psychologist", {
+        method: "POST",
+        body: data,
+      });
+      const result = await response.json();
+      setResponseMessage(result.message || "Success");
+    } catch (error) {
+      setResponseMessage("An error occurred: " + error.message);
+    }
+  };
+  return (
+    <div className="d-flex justify-content-center align-items-center">
       <div className="container-fluid text-center w-75">
         <div className="card">
           <div className="card-header">
@@ -179,7 +181,6 @@ export const Psicho = () => {
                     type="number"
                     className="form-control number-input"
                     id="years"
-                    
                     value={formData.years_of_experience}
                     onChange={handleChange}
                     name="years_of_experience"
@@ -218,12 +219,11 @@ export const Psicho = () => {
                     onChange={handleChange}
                     placeholder="Explica brevemente tu perfil como psicologo"
                   ></textarea>
-                  
                 </div>
               </div>
               <div className="card-footer text-body-secondary text-end py-2">
                 <button type="button" className="btn btn-outline-dark">
-                  <a href='/'>Cancelar</a>
+                  <a href="/">Cancelar</a>
                 </button>
                 <button type="submit" className="btn btn-outline-primary ms-2">
                   Enviar
@@ -236,8 +236,4 @@ export const Psicho = () => {
       </div>
     </div>
   );
-}
-
-
-
-
+};

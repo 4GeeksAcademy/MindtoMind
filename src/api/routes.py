@@ -196,25 +196,46 @@ def send_message():
     return jsonify({"message": "Mensaje enviado", "data": new_message.serialize()}), 201
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
   
+# @api.route('/messages/<int:id>', methods=['GET'])
+# @jwt_required()
+# def get_messages_id(id):
+#     try:    
+#         messages = Message.query.get(id)
+#         if not messages:
+#             return jsonify({"message":"No hay messages"}),404
+#         return jsonify(messages.serialize()), 200
+
+#     except Exception as e:
+#         print(f"Error en el servidor: {str(e)}")
+
+#         return jsonify({
+#             "message":"Hay un error en el servidor",
+#             "error": str(e)
+#         }),500
+    
+
 @api.route('/messages/<int:id>', methods=['GET'])
 @jwt_required()
 def get_messages_id(id):
-    try:    
-        messages = Message.query.get(id)
-        if not messages:
-            return jsonify({"message":"No hay messages"}),404
-        return jsonify(messages.serialize()), 200
+    try:
+        message = Message.query.get(id)
+
+        if not message:
+            return jsonify({"message": "No se encontró el mensaje"}), 404
+            
+        return jsonify(message.serialize()), 200
 
     except Exception as e:
         print(f"Error en el servidor: {str(e)}")
 
         return jsonify({
-            "message":"Hay un error en el servidor",
+            "message": "Error interno en el servidor",
             "error": str(e)
-        }),500
+        }), 500
+    
+
 
 # Obtener un usuario por ID
 @api.route('/user/<int:id>', methods=['GET'])
@@ -642,27 +663,49 @@ def reset_password_psychologist():
 
 
 # Cambio de contraseña
-@api.route('/user/<int:user_id>', methods=['PATCH'])
-def user_change(user_id):
-    user=User.query.filter_by(id=user_id).first()
+@api.route('/psico/<int:psico_id>', methods=['PATCH'])
+def user_change(psico_id):
+    user=Psychologist.query.filter_by(id=psico_id).first()
+
     if user is None:
         return jsonify({"info":"Not found"}), 404
     user_body=request.get_json()
 
-    if "username" in user_body:
-        user.username=user_body["username"]
+    if "first_name" in user_body:
+        user.first_name=user_body["first_name"]
 
+
+    if "last_name" in user_body:
+        user.last_name=user_body["last_name"]
+    
+    if "phone_number" in user_body:
+        user.phone_number=user_body["phone_number"]
 
     if "email" in user_body:
         user.email=user_body["email"]
 
-    if "password" in user_body:
-        user.password=user_body["password"]
+    if "specialty" in user_body:
+        user.specialty=user_body["specialty"]
+
+    if "years_of_experience" in user_body:
+        user.years_of_experience=user_body["years_of_experience"]
+
+    if "description" in user_body:
+        user.description=user_body["description"]
+
+    if "password_hash" in user_body:
+        user.password_hash=user_body["password_hash"]
+
+    
+    if "photo" in user_body:
+        user.photo=user_body["photo"]
 
     
     db.session.add(user)
     db.session.commit()
     return jsonify(user.serialize())
+
+
 
 @api.route('/userinfo', methods=['GET'])
 @jwt_required()
@@ -693,5 +736,35 @@ def start_conversation():
     except Exception as e:
         return jsonify({
             "message": "An error occurred while starting the conversation",
+            "error": str(e)
+        }), 500
+
+
+@api.route('/users/<int:user_id>/messages', methods=['GET'])
+@jwt_required()  
+def get_user_messages(user_id):
+    try:
+        user = User.query.get(user_id)
+        if not user:
+            return jsonify({"message": "Usuario no encontrado"}), 404
+        
+        conversations = Conversation.query.filter_by(user_id=user_id).all()
+        
+        if not conversations:
+            return jsonify({"message": "No hay conversaciones para este usuario"}), 404
+
+        user_messages = []
+
+        for conversation in conversations:
+            messages = Message.query.filter_by(conversation_id=conversation.id).all()
+            for message in messages:
+                user_messages.append(message.serialize())
+        
+        return jsonify(user_messages), 200
+
+    except Exception as e:
+        print(f"Error en el servidor: {str(e)}")
+        return jsonify({
+            "message": "Hay un error en el servidor",
             "error": str(e)
         }), 500

@@ -14,6 +14,7 @@ export const TrSingle = () => {
 		
 		<div className="container d-flex  ">
 		<div className="left">
+			{/* {dataPsico ? : } */}
 			<img 
 				src={dataPsico.photo}
 			
