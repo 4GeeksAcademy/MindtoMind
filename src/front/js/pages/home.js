@@ -6,7 +6,7 @@ export const Home = () => {
   const { store, actions } = useContext(Context);
 
 	return (
-    <div>
+    <div className="no-horizontal-scroll">
     <div>
         <div id="carouselExampleCaptions" className="carousel slide  ">
       <div className="carousel-indicators">
@@ -14,23 +14,23 @@ export const Home = () => {
         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
       </div>
-      <div className="carousel-inner rounded-start-4 rounded-end-4 my-5 mx-2">
+      <div className="carousel-inner rounded-start-4 rounded-end-4 my-5  mx-1">
         <div className="carousel-item active">
-          <img src="https://www.cil.com.ve/MTM/images/ia-salut.png" className="d-block w-100" alt="..." />
+          <img src="https://www.cil.com.ve/MTM/images/ansiedad-depresion.jpg" className="d-block vh-100 mx-1" alt="..." />
           <div className="carousel-caption d-none d-md-block">
             <h5>Cada día es una nueva oportunidad para reinventarme</h5>
             <p>La ansiedad puede hacernos sentir atrapados en un ciclo de preocupaciones y miedos, pero esta frase nos ayuda a recordarnos a nosotros mismos que cada día es una nueva oportunidad.</p>
           </div>
         </div>
         <div className="carousel-item">
-        <img src="https://www.cil.com.ve/MTM/images/ansiedad-social-tratamiento.jpg" className="d-block w-100" alt="..." />
+        <img src="https://www.cil.com.ve/MTM/images/ansiedad-social-tratamiento.jpg" className="d-block vh-100" alt="..." />
           <div className="carousel-caption d-none d-md-block">
             <h5>Respiro profundo y suelto lo que no puedo controlar</h5>
             <p>El acto de respirar profundo puede ser de gran ayuda para calmar la ansiedad.</p>
           </div>
         </div>
         <div className="carousel-item">
-          <img src="https://www.cil.com.ve/MTM/images/image.jpg" className="d-block w-100" alt="..." />
+          <img src="https://www.cil.com.ve/MTM/images/image.jpg" className="d-block vh-100 objet-fit-cover" alt="..." />
           <div className="carousel-caption d-none d-md-block">
             <h5>Estoy en un proceso de crecimiento y aprendizaje</h5>
             <p>Esta frase nos ayuda a recordarnos a nosotros mismos que estamos en constante evolución, y que todos los desafíos que enfrentamos, incluyendo la ansiedad, son oportunidades para crecer y aprender.</p>
@@ -47,7 +47,7 @@ export const Home = () => {
       </button>
     </div>
 
-    <div className="rounded-start-4 rounded-end-4 ps-5 agencia pt-3 my-3 mx-2">
+    <div className="rounded-start-4 rounded-end-4 ps-5 agencia pt-3 my-3 mx-3">
 
 
             <div className="row">
@@ -72,7 +72,7 @@ export const Home = () => {
             </p>
 
             <div className="row">
-                <ul className="col-xs-6 col-lg-4 text-xs-center text-lg-left">
+                <ul className="col-6 text-xs-center text-lg-left">
                     <li className="wow zoomIn" data-wow-duration=".3s" data-wow-delay=".3s">
                         <i className="fa fa-briefcase" aria-hidden="true"></i>
 
@@ -99,7 +99,7 @@ export const Home = () => {
                     </li>
                 </ul>
 
-                <div className="col-lg-6">
+                <div className="cont col-lg-6 mb-5">
                     <img className="imagenomm" src="https://www.cil.com.ve/MTM/images/imagen45.jpg" alt="omm" />
                 </div>
 
