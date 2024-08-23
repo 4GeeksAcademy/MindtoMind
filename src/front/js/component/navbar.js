@@ -23,10 +23,13 @@ export const Navbar = () => {
 	const handle = async () => {
 		console.log('psyco ID:', store.psyco_id);
      
-            navigate(`/single/${store.psyco_id}`);  // Navega a la nueva conversación
-
+            // navigate(`/single/${store.psyco_id}`);  // Navega a la nueva conversación
+		 navigate(`/changePsico/${store.psyco_id}`); 
         
     };
+	
+	localStorage.setItem("booleano", store.psycologoLogeado)
+	localStorage.setItem("idPsyco",store.psyco_id)
 	
 	async function submitform(e) {
 		e.preventDefault();  // Previene cualquier comportamiento predeterminado del formulario
@@ -44,14 +47,9 @@ export const Navbar = () => {
 		
 		
 	}
-
+		// navigate(`/changePsico/${store.psyco_id}`); 
+        
 		
-		
-		
-		
-		navigate(`/changePsico/${store.psyco_id}`); 
-        localStorage.setItem("idPsyco",store.psyco_id)
-		localStorage.setItem("booleano", store.psycologoLogeado)
 		
    
 	useEffect(() => {
@@ -75,14 +73,14 @@ export const Navbar = () => {
 						<button className="btn btn-outline-primary">Ingressa</button>
 					</a>
 
-					<div class="dropdown ms-3">
-						<a class="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+					<div className="dropdown ms-3">
+						<a className="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							Registrarse
 						</a>
 
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="/usuario">Registrarse como Usuario</a></li>
-							<li><a class="dropdown-item" href="/psicho">Registrarse como Psicólogo</a></li>
+						<ul className="dropdown-menu">
+							<li><a className="dropdown-item" href="/usuario">Registrarse como Usuario</a></li>
+							<li><a className="dropdown-item" href="/psicho">Registrarse como Psicólogo</a></li>
 						</ul>
 					</div>
 

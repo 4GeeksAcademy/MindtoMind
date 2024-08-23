@@ -5,11 +5,10 @@ import "../../styles/home.css";
 
 
 export const Psicho = () => {
-    const { store, actions } = useContext(Context);
-    const [confirmPassword, setConfirmPassword] = useState("");
-    const apiUrl = process.env.BACKEND_URL + "/api";
-    const navigate = useNavigate();
-
+  const { store, actions } = useContext(Context);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const apiUrl = process.env.BACKEND_URL + "/api";
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -22,67 +21,54 @@ export const Psicho = () => {
     photo: null,
   });
   const [responseMessage, setResponseMessage] = useState("");
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
       [name]: value,
     });
-    const [responseMessage, setResponseMessage] = useState('');
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
-    const handleConfirmPasswordChange = (e) => {
-      setConfirmPassword(e.target.value);
-    };
-    const handleFileChange = (e) => {
-        setFormData({
-            ...formData,
-            photo: e.target.files[0], 
-        });
-    };
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (formData.password !== confirmPassword) {
-          alert("Las contraseñas no coinciden");
-          return;
-        }
-        const data = new FormData();
-        
-        data.append("first_name", formData.first_name);
-        data.append("last_name", formData.last_name);
-        data.append("phone_number", formData.phone_number);
-        data.append("email", formData.email);
-        data.append("specialty", formData.specialty);
-        data.append("description", formData.description);
-        data.append("password", formData.password);
-        data.append("years_of_experience", formData.years_of_experience);
-        data.append("photo", formData.photo); 
-        try {
-            const response = await fetch(apiUrl + "/register_psychologist", {
-                method: 'POST',          
-                body: data,
-            });
-            const result = await response.json();
-            setResponseMessage(result.message || "Success");
-
-            if(result){
-              navigate('/login')
-            }
-
-        } catch (error) {
-            setResponseMessage('An error occurred: ' + error.message);
-        }
-        
-    };
-    return (
-      
-      <div className="d-flex justify-content-center align-items-center">
+  };
+  const handleConfirmPasswordChange = (e) => {
+    setConfirmPassword(e.target.value);
+  };
+  const handleFileChange = (e) => {
+    setFormData({
+      ...formData,
+      photo: e.target.files[0],
+    });
+  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (formData.password !== confirmPassword) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+    const data = new FormData();
+    data.append("first_name", formData.first_name);
+    data.append("last_name", formData.last_name);
+    data.append("phone_number", formData.phone_number);
+    data.append("email", formData.email);
+    data.append("specialty", formData.specialty);
+    data.append("description", formData.description);
+    data.append("password", formData.password);
+    data.append("years_of_experience", formData.years_of_experience);
+    data.append("photo", formData.photo);
+    try {
+      const response = await fetch(apiUrl + "/register_psychologist", {
+        method: "POST",
+        body: data,
+      });
+      const result = await response.json();
+      setResponseMessage(result.message || "Success");
+      if (result) {
+        navigate("/login");
+      }
+    } catch (error) {
+      setResponseMessage("An error occurred: " + error.message);
+    }
+  };
+  return (
+    <div className="d-flex justify-content-center align-items-center">
       <div className="container-fluid text-center w-75">
         <div className="card">
           <div className="card-header">
@@ -248,5 +234,25 @@ export const Psicho = () => {
       </div>
     </div>
   );
-}
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

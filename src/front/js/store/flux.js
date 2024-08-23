@@ -188,20 +188,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
       },
 
-      // changeColor: (index, color) => {
-      //   //get the store
-      //   const store = getStore();
-
-      //   //we have to loop the entire demo array to look for the respective index
-      //   //and change its color
-      //   const demo = store.demo.map((elm, i) => {
-      //     if (i === index) elm.background = color;
-      //     return elm;
-      //   });
-
-      //   //reset the global store
-      //   setStore({ demo: demo });
-      // },
 
       saveMessage: async (message) => {
         console.log("no estoy dando error");
@@ -300,6 +286,12 @@ const getState = ({ getStore, getActions, setStore }) => {
 
           if (!storageUser) return;
           setStore({ user_id: storageUser });
+
+          if (!id) return;
+          setStore({ psycho_id: id });
+
+          if (!bool) return;
+          setStore({ Boolean: bool });
 
           let resp = await fetch(apiUrl + "/userinfo", {
             headers: {
