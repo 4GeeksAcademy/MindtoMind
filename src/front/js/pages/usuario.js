@@ -1,5 +1,6 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 import "../../styles/home.css";
 
 export const Usuario = () => {
@@ -8,6 +9,7 @@ export const Usuario = () => {
   const [password, setPassword] = useState("");
   const [username, setUserName] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navegate = useNavigate();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -28,7 +30,13 @@ export const Usuario = () => {
       return;
     }
     const dataToSend = { email, password, username };
-    actions.signupUsuario(dataToSend);
+      const success = actions.signupUsuario(dataToSend);
+
+      if(success){
+        
+        alert("Usuario creado con éxito");
+        navegate('/login')
+      }
   };
 
   // username,email,password

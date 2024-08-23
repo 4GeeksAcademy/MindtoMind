@@ -1,13 +1,14 @@
 import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
+import { useNavigate } from "react-router-dom";
 import "../../styles/home.css";
-import { Link, Navigate } from "react-router-dom";
+
 
 export const Psicho = () => {
     const { store, actions } = useContext(Context);
-    const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const apiUrl = process.env.BACKEND_URL + "/api";
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         first_name: '',
@@ -61,6 +62,11 @@ export const Psicho = () => {
             });
             const result = await response.json();
             setResponseMessage(result.message || "Success");
+
+            if(result){
+              navigate('/login')
+            }
+
         } catch (error) {
             setResponseMessage('An error occurred: ' + error.message);
         }
