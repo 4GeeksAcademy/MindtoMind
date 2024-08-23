@@ -10,16 +10,24 @@ export const Psicho = () => {
     const apiUrl = process.env.BACKEND_URL + "/api";
     const navigate = useNavigate();
 
-    const [formData, setFormData] = useState({
-        first_name: '',
-        last_name: '',
-        phone_number: '',
-        email: '',
-        specialty: '',
-        years_of_experience: '',
-        description: '',
-        password: '',
-        photo: null,
+  const [formData, setFormData] = useState({
+    first_name: "",
+    last_name: "",
+    phone_number: "",
+    email: "",
+    specialty: "",
+    years_of_experience: "",
+    description: "",
+    password: "",
+    photo: null,
+  });
+  const [responseMessage, setResponseMessage] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
     const [responseMessage, setResponseMessage] = useState('');
     const handleChange = (e) => {
@@ -185,7 +193,6 @@ export const Psicho = () => {
                     type="number"
                     className="form-control number-input"
                     id="years"
-                    
                     value={formData.years_of_experience}
                     onChange={handleChange}
                     name="years_of_experience"
@@ -224,12 +231,11 @@ export const Psicho = () => {
                     onChange={handleChange}
                     placeholder="Explica brevemente tu perfil como psicologo"
                   ></textarea>
-                  
                 </div>
               </div>
               <div className="card-footer text-body-secondary text-end py-2">
                 <button type="button" className="btn btn-outline-dark">
-                  <a href='/'>Cancelar</a>
+                  <a href="/">Cancelar</a>
                 </button>
                 <button type="submit" className="btn btn-outline-primary ms-2">
                   Enviar
@@ -243,7 +249,4 @@ export const Psicho = () => {
     </div>
   );
 }
-
-
-
-
+};

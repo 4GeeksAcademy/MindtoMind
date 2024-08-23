@@ -8,12 +8,14 @@ export const Home = () => {
   const { store, actions } = useContext(Context);
 
 	return (
+  <div className="no-horizontal-scroll">
     <div>
       
       <Homecarousel/>
 
       <Home2/>
 
+  </div>
 </div>
 		);
 };

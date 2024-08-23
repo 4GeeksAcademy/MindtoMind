@@ -1,5 +1,5 @@
 const apiUrl = process.env.BACKEND_URL + "/api";
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from '../store/appContext'
 import logo from "../../img/logoMTM.png";
@@ -14,11 +14,12 @@ export const Navbar = () => {
 
     const handleClick = async () => {
 		console.log('User ID:', store.user_id);
-        const conversation = await actions.startConversation(store.user_id);  // Usa el ID del usuario que está en el store
+        const conversation = await actions.startConversation(store.user_id);  
         if (conversation) {
-            navigate(`/demo`);  // Navega a la nueva conversación
+            navigate(`/demo`);  
         }
     };
+	
 	const handle = async () => {
 		console.log('psyco ID:', store.psyco_id);
      
@@ -47,6 +48,17 @@ export const Navbar = () => {
 		
 		
 		
+		
+		navigate(`/changePsico/${store.psyco_id}`); 
+        localStorage.setItem("idPsyco",store.psyco_id)
+		localStorage.setItem("booleano", store.psycologoLogeado)
+		
+   
+	useEffect(() => {
+		
+		actions.getPsychologistById()
+	
+	  }, []);
 
 	
 	return (
@@ -98,6 +110,7 @@ export const Navbar = () => {
 				) : (
     <>
 				{store.psycologoLogeado == false ? (
+					
 					<div className="ml-auto">
 						<button onClick={submitform} className="btn btn-primary">logout</button>
 						<button onClick={handleClick} className="btn btn-primary ms-2">Habla con nuestro chat</button>
