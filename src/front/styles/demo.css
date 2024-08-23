@@ -2,7 +2,7 @@
     position: sticky;
     bottom: 0;
     background-color: white; 
-    padding: 10px; 
+    
   }
 .messages-container{
   height: 400px;
@@ -24,4 +24,15 @@
   color: #fff;
   background-color: #D6CCC2;
   border-color: #D5BDAF
+}
+.img-size{
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.vistachat{
+  background-color: #F5EBE0;
+  margin-top: 20px;
+  border-radius: 15px;
 }
