@@ -177,7 +177,13 @@ SECCION TU MEJOR ELECCI├ôN
     width: 650px;
     border-radius: 50%;
    }
-  
+
+.cont {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Esto es opcional, depende de cómo quieras que se centre la imagen */
+  }
 
   
   .tu-mejor-eleccion ul,
@@ -216,4 +222,8 @@ SECCION TU MEJOR ELECCI├ôN
 .text2{
    
     color: #D5BDAF;
+}
+
+.no-horizontal-scroll {
+    overflow-x: hidden;
 }
