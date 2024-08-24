@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 export const Navbar = () => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
+	
 
 
 
@@ -47,7 +48,7 @@ export const Navbar = () => {
 		
 		
 	}
-		// navigate(`/changePsico/${store.psyco_id}`); 
+		
         
 		
 		
@@ -70,7 +71,7 @@ export const Navbar = () => {
 				<div className="ml-auto d-flex">
 					
 					<a href="/login">
-						<button className="btn btn-outline-primary">Ingressa</button>
+						<button className="btn btn-outline-primary">Ingresa</button>
 					</a>
 
 					<div className="dropdown ms-3">

@@ -110,7 +110,33 @@ const getState = ({ getStore, getActions, setStore }) => {
           alert("Ocurrió un problema al intentar enviar la solicitud.");
         }
       },
+      
 
+      deletePsico: async (id) => {
+        try {
+          const resp = await fetch(`https://crispy-couscous-wrvj697556rp29r66-3001.app.github.dev/api/psychologist/${id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          });
+      
+          if (!resp.ok) {
+            console.error(`Error en la petición: ${resp.status}`);
+            return;
+          }
+      
+          console.log(`Psicólogo con id ${id} eliminado`);
+          // this.getAllPsico(); // Actualiza la lista después de eliminar
+      
+        } catch (error) {
+          console.error(`Error en la promesa: ${error}`);
+        }
+      },
+      
+
+      
       login: async (email, password) => {
         let resp = await fetch(apiUrl + "/login", {
           method: "POST",
@@ -431,6 +457,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           return;
         }
       },
+
       updatePsico: async (nuevosDatosPsico) => {
         const store = getStore();
         try {
