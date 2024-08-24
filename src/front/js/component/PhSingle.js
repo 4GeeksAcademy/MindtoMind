@@ -2,6 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/single.css";
+import { BsTelephone } from "react-icons/bs";
+import { BsEnvelope } from "react-icons/bs";
 
 export const PhSingle = () => {
   const { store, actions } = useContext(Context);
@@ -219,15 +221,15 @@ export const PhSingle = () => {
             Soy, Dr/a {formData.first_name} {formData.last_name}
           </div>
           <div className="image-credit">
-            <i className="fa-solid fa-phone"></i> {formData.phone_number}
+          <BsTelephone /> {formData.phone_number}
           </div>
-          <div className="image-credit">email: {formData.email}</div>
+          <div className="image-credit"><BsEnvelope /> {formData.email}</div>
         </div>
         <div className="right">
           <div className="description">
             Especialidad: {formData.specialty} | Años de Experiencia: {formData.years_of_experience}
           </div>
-          <div className="details">{formData.description}</div>
+          <div className="details ms-4 me-4">{formData.description}</div>
         </div>
       </div>
     </div>

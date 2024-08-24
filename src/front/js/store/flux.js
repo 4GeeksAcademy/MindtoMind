@@ -29,6 +29,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       psycologoLogeado: false,
       psicologoGuardado: {},
       userMessages: [],
+      idPsyco: null,
+      booleano: null,
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -292,6 +294,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           let storageUser = localStorage.getItem("user_id");
           let id = localStorage.getItem("idPsyco");
           let bool = localStorage.getItem("booleano");
+          let psyco_id = localStorage.getItem("IdPsicologo");
+
           if (!storageToken) return;
           setStore({ token: storageToken });
 
@@ -300,6 +304,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 
           if (!storageUser) return;
           setStore({ user_id: storageUser });
+
+          if (!id) return;
+          setStore({ idPsyco: id });
+
+          if (bool !== null) {
+            setStore({ psycologoLogeado: bool === "true" });
+          }
+
+          if (!psyco_id) return;
+          setStore({ IdPsicologo: psyco_id });
 
           let resp = await fetch(apiUrl + "/userinfo", {
             headers: {
@@ -323,9 +337,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           // Manejar errores de la solicitud
           console.error("Error loading session:", error);
           setStore({ token: null, userInfo: null });
-          localStorage.removeItem("token");
-          localStorage.removeItem("conversation_id");
-          localStorage.removeItem("user_id");
+          localStorage.clear();
           return false;
         }
       },
@@ -385,6 +397,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       // trae la info desde psicologo
       getPsychologistById: async (id) => {
+        console.log(id);
         try {
           const response = await fetch(apiUrl + `/psychologist/${id}`, {
             method: "GET",
@@ -410,7 +423,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("Información del psicólogo:", data);
           setStore({
             psychologist: data.data,
+            psycologoLogeado: true,
           });
+          localStorage.setItem("booleano", "true");
         } catch (error) {
           console.error("Error con el fetch:", error);
           return null;
@@ -488,7 +503,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       //     console.error("Error con el fetch de los mensajes:", error);
       //   }
       // },
-      
+
       // saveContactPsico: (psicologo) => {
       //   setStore({psicologoGuardado:psicologo})
       // },
