@@ -19,12 +19,12 @@ export const Home2 = () => {
                         {/* <p className="branco" > Explora nuestro directorio de psicólogos y busque el profesional adecuado para ti, Agenda una cita directamente con el profesional. Nuestros consejeros están disponibles  las 24 horas del día, para escucharte y ofrecerte apoyo cuando más lo necesites, Ya sea para hablar, o simplemente para un poco de orientación. Accede a artículos y herramientas para manejar el estrés, la ansiedad y otros desafíos emocionales. Te brindamos las claves para cuidar tu bienestar mental.</p> */}
                         <h3 className="branco">Bienvenido a Mind To Mind </h3>
 
-                        <p className="branco" > Explora nuestro directorio de psicólogos y busque el profesional adecuado para ti, Agenda una cita directamente con el profesional.</p>
+                        <p className="branco" > Explora nuestro directorio de psicólogos y busque el profesional adecuado para ti, agenda una cita directamente con el profesional.</p>
 
-                        <p className="branco" >  Nuestros consejeros están disponibles  las 24 horas del día, para escucharte y ofrecerte apoyo cuando más lo necesites, Ya sea para hablar, o simplemente para un poco de orientación.</p>
+                        <p className="branco" >  Nuestro chat consejero están disponibles las 24 horas del día, para escucharte y ofrecerte apoyo cuando lo necesites, sea para hablar, o simplemente para una orientación.</p>
                         
 
-                        <p className="branco" > Accede a artículos y herramientas para manejar el estrés, la ansiedad y otros desafíos emocionales. Te brindamos las claves para cuidar tu bienestar mental.</p>
+                        <p className="branco" > Accede a artículos y herramientas para manejar el estrés y otros desafíos emocionales. Te brindamos las claves para cuidar tu bienestar mental.</p>
 
                     </div>
                 </div>
