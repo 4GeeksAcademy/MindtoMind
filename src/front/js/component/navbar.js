@@ -3,13 +3,13 @@ import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Context } from '../store/appContext'
 import logo from "../../img/logoMTM.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 
 export const Navbar = () => {
     const { store, actions } = useContext(Context);
     const navigate = useNavigate();
-	
+	const { id } = useParams();
 
 
 
@@ -48,7 +48,18 @@ export const Navbar = () => {
 		
 		
 	}
-		
+	
+	const handletwo = () =>{
+      
+		const userId = localStorage.getItem("user_id");
+		actions.deleteUser(userId);
+
+		actions.logout();
+	 
+		navigate(`/`)
+	  
+  
+	}
         
 		
 		
@@ -113,6 +124,7 @@ export const Navbar = () => {
 					<div className="ml-auto">
 						<button onClick={submitform} className="btn btn-primary">logout</button>
 						<button onClick={handleClick} className="btn btn-primary ms-2">Habla con nuestro chat</button>
+						<button type="button" className="btn btn-primary ms-2" onClick={handletwo}>Eliminar cuenta</button>
 					</div>
 				) : (
 					<div className="ml-auto">

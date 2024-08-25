@@ -54,9 +54,10 @@ export const PhSingle = () => {
     modal.hide();
   };
   const handletwo = () =>{
-    actions.logout(),
-     actions.deletePsico(id);
-
+      
+      
+      actions.deletePsico(id);
+      actions.logout();
    
       navigate(`/`)
     
