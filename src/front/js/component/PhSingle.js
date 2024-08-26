@@ -127,12 +127,6 @@ export const PhSingle = () => {
               <h1 className="modal-title fs-5 branco" id="exampleModalLabel">
                Formulario
               </h1>
-              {/* <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button> */}
             </div>
             <div className="modal-body">
               <form>
@@ -273,7 +267,7 @@ export const PhSingle = () => {
           <div className="image-credit"><BsEnvelope /> {formData.email}</div>
         </div>
         <div className="right">
-          <div className="description">
+          <div className="description ">
             Especialidad: {formData.specialty} | Años de Experiencia: {formData.years_of_experience}
           </div>
           <div className="details ms-4 me-4">{formData.description}</div>
