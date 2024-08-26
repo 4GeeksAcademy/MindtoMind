@@ -5,7 +5,7 @@ export const Home2 = () => {
 
     return(
        
-        <div className="fundo">
+        <div className="fundo ">
             
 
 {/* 
@@ -75,7 +75,7 @@ export const Home2 = () => {
        </div>
 
 
-            <div className="flex-grid black-wrapper">
+            <div className=" flex-grid black-wrapper">
 
                 <div className="col">
                     <h3 className="branco">Sobre Nosotros </h3>

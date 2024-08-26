@@ -3,12 +3,12 @@ import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 import "../../styles/home.css";
 
-
 export const Psicho = () => {
   const { store, actions } = useContext(Context);
   const [confirmPassword, setConfirmPassword] = useState("");
   const apiUrl = process.env.BACKEND_URL + "/api";
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -20,6 +20,7 @@ export const Psicho = () => {
     password: "",
     photo: null,
   });
+
   const [responseMessage, setResponseMessage] = useState("");
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,6 +51,7 @@ export const Psicho = () => {
       return;
     }
     const data = new FormData();
+
     data.append("first_name", formData.first_name);
     data.append("last_name", formData.last_name);
     data.append("phone_number", formData.phone_number);
@@ -66,6 +68,7 @@ export const Psicho = () => {
       });
       const result = await response.json();
       setResponseMessage(result.message || "Success");
+
       if (result) {
         navigate("/login");
       }
