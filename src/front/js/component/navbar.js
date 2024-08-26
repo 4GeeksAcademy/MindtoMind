@@ -172,6 +172,7 @@ export const Navbar = () => {
                 <button onClick={handleClick} className="btn btn-primary ms-2">
                   Habla con nuestro chat
                 </button>
+				        <button type="button" className="btn btn-primary ms-2" onClick={handletwo}>Eliminar cuenta</button>
                 {console.log(store.psycologoLogeado)}
               </div>
             ) : (
