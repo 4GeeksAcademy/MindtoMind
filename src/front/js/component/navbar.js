@@ -42,7 +42,7 @@ export const Navbar = () => {
 		if (success) {
 			console.log('Cierre de sesión exitoso, navegando a home...');
 			navigate('/');   
-			console.error('Error durante el logout, no se pudo navegar.');
+			
 		}
 		
 		
@@ -63,11 +63,11 @@ export const Navbar = () => {
 		
 		
    
-	useEffect(() => {
+	// useEffect(() => {
 		
-		actions.getPsychologistById()
+	// 	actions.getPsychologistById()
 	
-	  }, []);
+	//   }, []);
 	  
 	   useEffect(() => {
     const idPsyco = localStorage.getItem("psyco_id");
