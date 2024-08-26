@@ -1,38 +1,45 @@
 .input-container {
-    position: sticky;
-    bottom: 0;
-    background-color: white; 
-    
-  }
-.messages-container{
+  position: sticky;
+  bottom: 0;
+  background-color: white;
+}
+.messages-container {
   height: 400px;
 }
-.lista-chat{
+.lista-chat {
   height: 400px;
 }
 
 .boton-demo {
-  color: #D5BDAF;
-  border-color: #D5BDAF
+  color: #d5bdaf;
+  border-color: #d5bdaf;
 }
-.psicologos{
+.psicologos {
   height: 500px;
 }
 
-
 .boton-demo:hover {
   color: #fff;
-  background-color: #D6CCC2;
-  border-color: #D5BDAF
+  background-color: #d6ccc2;
+  border-color: #d5bdaf;
 }
-.img-size{
+.img-size {
   width: 150px;
   height: 150px;
   object-fit: cover;
 }
 
-.vistachat{
-  background-color: #F5EBE0;
+.vistachat {
+  background-color: #f5ebe0;
   margin-top: 20px;
   border-radius: 15px;
+}
+.vistaPsicologos {
+  margin-top: 20px;
+  border-radius: 15px;
+}
+.vistaConversaciones {
+  margin-top: 20px;
+  border-radius: 15px;
+  padding-bottom: 80px;
 }

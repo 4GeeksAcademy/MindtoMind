@@ -5,6 +5,28 @@ import "../../styles/demo.css";
 
 import { Context } from "../store/appContext";
 
+const processMessage = (message) => {
+ 
+  const listRegex = /^(\d+\.\s|•\s|-+\s)/gm;
+
+  if (listRegex.test(message)) {
+
+    const listItems = message.split(listRegex).filter(item => item.trim() !== "");
+
+    return (
+      <div className="p-2 rounded bg-light">
+        {listItems.map((item, index) => (
+          <p key={index}>{item.trim()}</p>
+        ))}
+      </div>
+    );
+  }
+
+  
+  return <p className="p-2 rounded bg-light">{message}</p>;
+};
+
+
 export const Demo = () => {
   const { store, actions } = useContext(Context);
 
@@ -26,7 +48,7 @@ export const Demo = () => {
 
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: response.message || "No response", type: "ai" },
+        { text: processMessage(response.message || "No response"), type: "ai" },
       ]);
     } catch (error) {
       console.error("Error al enviar el mensaje:", error);
@@ -60,11 +82,11 @@ export const Demo = () => {
 
   useEffect(() => {
     actions.getAllPsico();
-    // actions.getUserMessages(10)
+   
   }, []);
 
   return (
-    <div className="container mb-5">
+    <div className="container vistaConversaciones ">
       <div className="row ">
         {/* Este div contiene las conversaciones guardadas */}
         <div className="col-3">
@@ -129,7 +151,7 @@ export const Demo = () => {
         </div>
         {/* Este div contiene los psicologos */}
 
-        <div className="col-3">
+        <div className="col-3 vistaPsicologos">
           <ul className="list-group psicologos flex-nowrap overflow-auto">
             {store.psychologists.map((psychologist, index) => {
               return (

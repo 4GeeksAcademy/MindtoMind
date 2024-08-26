@@ -29,6 +29,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       psycologoLogeado: false,
       psicologoGuardado: {},
       userMessages: [],
+      idPsyco: null,
+      booleano: null,
     },
     actions: {
       // Use getActions to call a function within a fuction
@@ -155,11 +157,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       getMessage: async () => {
         try {
-          // fetching data from the backend
+   
           const resp = await fetch(apiUrl + "/hello");
           const data = await resp.json();
           setStore({ message: data.message });
-          // don't forget to return something, that is how the async resolves
+         
           return data;
         } catch (error) {
           console.log("Error loading message from backend", error);
@@ -168,7 +170,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       mensajeApi: async (message) => {
         try {
-          // fetching data from the backend
+        
           const resp = await fetch(apiUrl + "/demo", {
             method: "POST",
             headers: {
@@ -181,13 +183,14 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
 
           const data = await resp.json();
-          // console.log(data);
+  
           return data;
         } catch (error) {
           console.log("Error loading message from backend", error);
         }
       },
 
+      
 
       saveMessage: async (message) => {
         console.log("no estoy dando error");
@@ -278,6 +281,8 @@ const getState = ({ getStore, getActions, setStore }) => {
           let storageUser = localStorage.getItem("user_id");
           let id = localStorage.getItem("idPsyco");
           let bool = localStorage.getItem("booleano");
+          let psyco_id = localStorage.getItem("IdPsicologo");
+
           if (!storageToken) return;
           setStore({ token: storageToken });
 
@@ -288,6 +293,14 @@ const getState = ({ getStore, getActions, setStore }) => {
           setStore({ user_id: storageUser });
 
           if (!id) return;
+          setStore({ idPsyco: id });
+
+          if (bool !== null) {
+            setStore({ psycologoLogeado: bool === "true" });
+          }
+
+          if (!psyco_id) return;
+          setStore({ IdPsicologo: psyco_id });
           setStore({ psycho_id: id });
 
           if (!bool) return;
@@ -315,9 +328,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           // Manejar errores de la solicitud
           console.error("Error loading session:", error);
           setStore({ token: null, userInfo: null });
-          localStorage.removeItem("token");
-          localStorage.removeItem("conversation_id");
-          localStorage.removeItem("user_id");
+          localStorage.clear();
           return false;
         }
       },
@@ -377,6 +388,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
       // trae la info desde psicologo
       getPsychologistById: async (id) => {
+        console.log(id);
         try {
           const response = await fetch(apiUrl + `/psychologist/${id}`, {
             method: "GET",
@@ -402,7 +414,9 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.log("Información del psicólogo:", data);
           setStore({
             psychologist: data.data,
+            psycologoLogeado: true,
           });
+          localStorage.setItem("booleano", "true");
         } catch (error) {
           console.error("Error con el fetch:", error);
           return null;
@@ -480,7 +494,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       //     console.error("Error con el fetch de los mensajes:", error);
       //   }
       // },
-      
+
       // saveContactPsico: (psicologo) => {
       //   setStore({psicologoGuardado:psicologo})
       // },

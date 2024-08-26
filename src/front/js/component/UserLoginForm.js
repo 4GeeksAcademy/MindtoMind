@@ -7,7 +7,7 @@ import { BsEnvelope } from "react-icons/bs";
 
 export const UserLoginForm = () => {
     const { store, actions } = useContext(Context);
-    const navigate = useNavigate(); // Hook de navegación
+    const navigate = useNavigate(); 
     
         async function submitform(e) {
             e.preventDefault();
@@ -25,8 +25,8 @@ export const UserLoginForm = () => {
         } 
 
         const handleResetPassword = (e) => {
-            		e.preventDefault(); // Evita el comportamiento por defecto del botón
-            		navigate("/resetpass"); // Navega al componente Resetpass
+            		e.preventDefault(); 
+            		navigate("/resetpass");
             	};
 
     return (
@@ -40,7 +40,7 @@ export const UserLoginForm = () => {
                 <input name="password" id="exampleInputPassword1" type="password" className="form-control" required />
             </div>
             <a
-                // Cambié el tipo de submit a button para evitar enviar el formulario
+         
                 href=""
 				onClick={handleResetPassword}>
                     ¿Has olvidado tu contraseña?
