@@ -301,6 +301,10 @@ const getState = ({ getStore, getActions, setStore }) => {
 
           if (!psyco_id) return;
           setStore({ IdPsicologo: psyco_id });
+          setStore({ psycho_id: id });
+
+          if (!bool) return;
+          setStore({ Boolean: bool });
 
           let resp = await fetch(apiUrl + "/userinfo", {
             headers: {

@@ -22,7 +22,6 @@ export const Psicho = () => {
   });
 
   const [responseMessage, setResponseMessage] = useState("");
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -239,3 +238,24 @@ export const Psicho = () => {
     </div>
   );
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

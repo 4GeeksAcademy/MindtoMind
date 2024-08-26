@@ -1,6 +1,6 @@
 const apiUrl = process.env.BACKEND_URL + "/api";
 import React, { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+
 import { Context } from "../store/appContext";
 import logo from "../../img/logoMTM.png";
 import { useNavigate } from "react-router-dom";
@@ -22,25 +22,55 @@ export const Navbar = () => {
     localStorage.setItem("idPsyco", store.psyco_id);
     localStorage.setItem("booleano", store.psycologoLogeado);
 
-    navigate(`/changePsico/${store.psyco_id}`);
+    navigate(`/changePsico/${store.psyco_id}`); 
   };
+   
+	
+	
+	
+	
+	
+	async function submitform(e) {
+		e.preventDefault();  // Previene cualquier comportamiento predeterminado del formulario
+	
+		console.log('Intentando cerrar sesión...');
+		
+		let success = await actions.logout();
+		
+		console.log('Resultado de logout:', success);
+		if (success) {
+			console.log('Cierre de sesión exitoso, navegando a home...');
+			navigate('/');   
+			console.error('Error durante el logout, no se pudo navegar.');
+		}
+		
+  }
+	
+	
+        
+		
+		
+   
+	useEffect(() => {
+		
+		actions.getPsychologistById()
+	
+	  }, []);
 
-  async function submitform(e) {
-    e.preventDefault();
-
-    console.log("Intentando cerrar sesión...");
-
-    let success = await actions.logout();
-
-    console.log("Resultado de logout:", success);
-    if (success) {
-      console.log("Cierre de sesión exitoso, navegando a home...");
-      navigate("/");
-      console.error("Error durante el logout, no se pudo navegar.");
-    }
+    
 
   
-  }
+  
+					<div className="dropdown ms-3">
+						<a className="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							Registrarse
+						</a>
+
+						<ul className="dropdown-menu">
+							<li><a className="dropdown-item" href="/usuario">Registrarse como Usuario</a></li>
+							<li><a className="dropdown-item" href="/psicho">Registrarse como Psicólogo</a></li>
+						</ul>
+					</div>
 
   
 
@@ -166,3 +196,4 @@ export const Navbar = () => {
     </nav>
   );
 };
+
