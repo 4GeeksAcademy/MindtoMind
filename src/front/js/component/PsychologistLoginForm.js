@@ -24,8 +24,8 @@ export const PsychologistLoginForm = () => {
         }
     } 
     const handleResetPassword = (e) => {
-        e.preventDefault(); // Evita el comportamiento por defecto del botón
-        navigate("/resetpasspsycho"); // Navega al componente Resetpass
+        e.preventDefault();
+        navigate("/resetpasspsycho");
     };
 
     return (
@@ -39,7 +39,7 @@ export const PsychologistLoginForm = () => {
                 <input name="password" id="exampleInputPassword1" type="password" className="form-control" required />
             </div>
             <a
-                // Cambié el tipo de submit a button para evitar enviar el formulario
+             
                 href=""
 				onClick={handleResetPassword}>
                     ¿Has olvidado tu contraseña?

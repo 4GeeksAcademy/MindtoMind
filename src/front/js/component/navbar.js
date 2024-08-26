@@ -39,12 +39,10 @@ export const Navbar = () => {
       console.error("Error durante el logout, no se pudo navegar.");
     }
 
-    // navigate(`/changePsico/${store.psyco_id}`);
+  
   }
 
-  // useEffect(() => {
-  //   actions.getPsychologistById(localStorage.getItem.psyco_id);
-  // }, []);
+  
 
   useEffect(() => {
     const idPsyco = localStorage.getItem("psyco_id");
@@ -65,7 +63,7 @@ export const Navbar = () => {
         {store.token == null ? (
           <div className="ml-auto d-flex">
             <a href="/login">
-              <button className="btn btn-outline-primary">Ingressa</button>
+              <button className="btn btn-outline-primary">Iniciar sesión</button>
             </a>
 
             <div className="dropdown ms-3">
@@ -144,7 +142,7 @@ export const Navbar = () => {
             {store.psycologoLogeado == false ? (
               <div className="ml-auto">
                 <button onClick={submitform} className="btn btn-primary">
-                  logout
+                  Cerrar sesión
                 </button>
                 <button onClick={handleClick} className="btn btn-primary ms-2">
                   Habla con nuestro chat
@@ -155,7 +153,7 @@ export const Navbar = () => {
               <div className="ml-auto">
                 {console.log(store.psycologoLogeado)}
                 <button onClick={submitform} className="btn btn-primary">
-                  logout
+                Cerrar sesión
                 </button>
                 <button onClick={handle} className="btn btn-primary ms-2">
                   Ve a tu perfil

@@ -82,11 +82,11 @@ export const Demo = () => {
 
   useEffect(() => {
     actions.getAllPsico();
-    // actions.getUserMessages(10)
+   
   }, []);
 
   return (
-    <div className="container mb-5">
+    <div className="container vistaConversaciones ">
       <div className="row ">
         {/* Este div contiene las conversaciones guardadas */}
         <div className="col-3">
@@ -151,7 +151,7 @@ export const Demo = () => {
         </div>
         {/* Este div contiene los psicologos */}
 
-        <div className="col-3">
+        <div className="col-3 vistaPsicologos">
           <ul className="list-group psicologos flex-nowrap overflow-auto">
             {store.psychologists.map((psychologist, index) => {
               return (
