@@ -82,19 +82,19 @@ export const Psicho = () => {
       <div className="container-fluid text-center w-75">
         <div className="card">
           <div className="card-header">
-            <strong>Psicólogo</strong>
+            <strong className="branco">Psicólogo</strong>
           </div>
           <div className="card-body">
-            <div className="fill-all p-2" role="alert">
+            <div className="fill-all p-2 meutexto" role="alert">
               Por favor rellena todos los datos
             </div>
             <form onSubmit={handleSubmit}>
               <div className="row">
                 <label className="col-xl-6" htmlFor="first_Name">
-                  <strong>Nombre</strong>
+                  <strong className="branco">Nombre</strong>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control branco"
                     aria-label="First name"
                     value={formData.first_name}
                     onChange={handleChange}
@@ -104,11 +104,11 @@ export const Psicho = () => {
                   />
                 </label>
                 <label className="col-xl-6" htmlFor="lastName">
-                  <strong>Apellido</strong>
+                  <strong className="branco">Apellido</strong>
                   <input
                     type="text"
                     id="lastName"
-                    className="form-control"
+                    className="form-control branco"
                     ariast_name_namea-label="Last name"
                     value={formData.last_name}
                     onChange={handleChange}
@@ -117,11 +117,11 @@ export const Psicho = () => {
                   />
                 </label>
                 <label className="col-xl-6" htmlFor="first_Name">
-                  <strong>Correo electronico</strong>
+                  <strong className="branco">Correo electronico</strong>
                   <input
                     type="email"
                     id="email"
-                    className="form-control"
+                    className="form-control branco"
                     name="email"
                     placeholder="Correo electronico"
                     aria-label="email"
@@ -132,11 +132,11 @@ export const Psicho = () => {
               </div>
               <div className="row">
                 <label className="col-xl-6" htmlFor="password">
-                  <strong>Contraseña</strong>
+                  <strong className="branco">Contraseña</strong>
                   <input
                     type="password"
                     id="password"
-                    className="form-control"
+                    className="form-control branco"
                     aria-label="First name"
                     value={formData.password}
                     onChange={handleChange}
@@ -145,11 +145,12 @@ export const Psicho = () => {
                   />
                 </label>
                 <label className="col-xl-6" htmlFor="rpasswrd">
-                  <strong>Repetir contraseña</strong>
+                  <strong className="branco">Repetir contraseña</strong>
                   <input
                     type="password"
                     id="confirmPassword"
-                    className="form-control"
+                    placeholder="Repetir contraseña"
+                    className="form-control branco"
                     aria-label="confirmPassword"
                     value={confirmPassword}
                     onChange={handleConfirmPasswordChange}
@@ -158,11 +159,11 @@ export const Psicho = () => {
               </div>
               <div className="row">
                 <label className="col-xl-6" htmlFor="phone">
-                  <strong>Teléfono</strong>
+                  <strong className="branco">Teléfono</strong>
                   <input
                     type="phone"
                     id="phone"
-                    className="form-control"
+                    className="form-control branco"
                     aria-label="Last name"
                     value={formData.phone_number}
                     onChange={handleChange}
@@ -171,11 +172,11 @@ export const Psicho = () => {
                   />
                 </label>
                 <label htmlFor="especiality" className="col-xl-3">
-                  <strong>Especialidad</strong>
+                  <strong className="branco">Especialidad</strong>
                   <input
                     type="text"
                     id="especialidad"
-                    className="form-control"
+                    className="form-control branco"
                     aria-label="Last name"
                     value={formData.specialty}
                     onChange={handleChange}
@@ -184,10 +185,11 @@ export const Psicho = () => {
                   />
                 </label>
                 <label htmlFor="years" className="form-label col-xl-3">
-                  <strong>Años de experiencia</strong>
+                  <strong className="branco">Años de experiencia</strong>
                   <input
                     type="number"
-                    className="form-control number-input"
+                    placeholder="Años de experiencia"
+                    className="form-control number-input branco"
                     id="years"
                     value={formData.years_of_experience}
                     onChange={handleChange}
@@ -198,13 +200,13 @@ export const Psicho = () => {
               <div className="row">
                 <div className="col-xl-6">
                   <label>
-                    <strong>Subir Foto:</strong>
+                    <strong className="branco">Subir Foto:</strong>
                   </label>
                   <div className="input-group">
                     <input
                       type="file"
                       name="photo"
-                      className="form-control"
+                      className="form-control branco"
                       id="inputGroupFile04"
                       aria-describedby="inputGroupFileAddon04"
                       aria-label="Upload"
@@ -215,10 +217,10 @@ export const Psicho = () => {
                 </div>
                 <div className="col-xl-6">
                   <label htmlFor="message">
-                    <strong>Descripción</strong>
+                    <strong className="branco">Descripción</strong>
                   </label>
                   <textarea
-                    className="form-control"
+                    className="form-control branco"
                     name="description"
                     id="message"
                     cols="30"

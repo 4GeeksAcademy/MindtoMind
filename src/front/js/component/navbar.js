@@ -117,7 +117,7 @@ export const Navbar = () => {
             </div>
 
             <button
-              className="btn btn-outline-primary ms-3"
+              className="btn btn-outline-primary ms-3 OBOTAO"
               data-bs-toggle="modal"
               data-bs-target="#exampleModal"
             >
@@ -132,8 +132,8 @@ export const Navbar = () => {
               aria-hidden="true"
             >
               <div className="modal-dialog">
-                <div className="modal-content">
-                  <div className="modal-header">
+                <div className="modal-content d-flex">
+                  <div className="modal-header justify-content-center">
                     <h1
                       className="modal-title fs-5 branco"
                       id="exampleModalLabel"
@@ -169,10 +169,32 @@ export const Navbar = () => {
                 <button onClick={submitform} className="btn btn-primary">
                   Cerrar sesión
                 </button>
-                <button onClick={handleClick} className="btn btn-primary ms-2">
+                <button onClick={handleClick} className="btn btn-primary ms-2 ">
                   Habla con nuestro chat
                 </button>
-				        <button type="button" className="btn btn-primary ms-2" onClick={handletwo}>Eliminar cuenta</button>
+
+                <button type="button" className="btn btn-primary ms-2" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  Eliminar cuenta
+                </button>
+                <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div className="modal-dialog">
+                    <div className="modal-content d-flex">
+                      <div className="modal-header justify-content-center">
+                        <h1 className="modal-title fs-5 branco" id="exampleModalLabel"> ¡ATENCION!</h1>
+                        
+                      </div>
+                      <div className="modal-body">
+                        <h6 className="branco">¿Realmente deseas borrar tu cuenta? Esta acción es irreversible y perderás toda la información asociada. Haz clic en 'Confirmar' para proceder o en 'Cancelar' para mantener tu cuenta activa.</h6>
+                      </div>
+                      <div className="modal-footer">
+                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={handletwo}>Confirmar</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+				       
                 {console.log(store.psycologoLogeado)}
               </div>
             ) : (

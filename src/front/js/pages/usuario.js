@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Context } from "../store/appContext";
 import { useNavigate } from "react-router-dom";
 import "../../styles/home.css";
+import { BiColor } from "react-icons/bi";
 
 export const Usuario = () => {
   const { store, actions } = useContext(Context);
@@ -49,20 +50,21 @@ export const Usuario = () => {
       <div className="container-fluid text-center w-50">
         <div className="card">
           <div className="card-header">
-            <strong>Usuario</strong>
+            <strong className="branco">Usuario</strong>
           </div>
           <div className="card-body">
-            <div className="fill-all p-2" role="alert">
+            <div  className="fill-all p-2 meutexto" role="alert">
               Por favor rellena todos los datos
             </div>
             <form onSubmit={handleSubmit}>
               <div className="form-group row">
                 <label className="col-xl-12" htmlFor="username">
-                  <strong>Nombre de Usuario</strong>
+                  <strong className="branco">Nombre de Usuario</strong>
                   <input
                     type="text"
                     id="username"
-                    className="form-control"
+                    placeholder="Nombre de Usuario"
+                    className="form-control branco"
                     aria-label="User Name"
                     value={username}
                     onChange={handleUserNameChange}
@@ -72,11 +74,12 @@ export const Usuario = () => {
               </div>
               <div className="row">
                 <label className="col-xl-12" htmlFor="Email">
-                  <strong>Email</strong>
+                  <strong className="branco">Correo electronico</strong>
                   <input
                     type="email"
                     id="email"
-                    className="form-control"
+                    className="form-control branco"
+                    placeholder="Correo electronico"
                     aria-label="Email"
                     value={email}
                     onChange={handleEmailChange}
@@ -86,23 +89,25 @@ export const Usuario = () => {
               </div>
               <div className="row">
                 <label className="col-xl-6" htmlFor="password">
-                  <strong>Contraseña</strong>
+                  <strong className="branco">Contraseña</strong>
                   <input
                     type="password"
                     id="password"
+                    placeholder="Contraseña"
                     value={password}
                     onChange={handlePasswordChange}
-                    className="form-control"
+                    className="form-control branco"
                     aria-label="password"
                     required
                   />
                 </label>
                 <label htmlFor="confirmPassword" className="col-xl-6">
-                  <strong>Repetir contraseña</strong>
+                  <strong className="branco">Repetir contraseña</strong>
                   <input
                     type="password"
+                    placeholder="Repetir contraseña"
                     id="confirmPassword"
-                    className="form-control"
+                    className="form-control branco"
                     aria-label="confirmPassword"
                     value={confirmPassword}
                     onChange={handleConfirmPasswordChange}
