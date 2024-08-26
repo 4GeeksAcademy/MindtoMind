@@ -30,9 +30,9 @@ client = OpenAI(
 )
 
 app = Flask(__name__)
-CORS(app, resources={r"/*": {"origins": "https://sturdy-space-memory-7v74r7vxgg9gfpj45-3000.app.github.dev"}})
+CORS(app, resources={r"/*": {"origins": os.getenv("FRONTURL")}})
 api = Blueprint('api', __name__)
-CORS(api, resources={r"/*": {"origins": "https://sturdy-space-memory-7v74r7vxgg9gfpj45-3000.app.github.dev"}})
+CORS(api, resources={r"/*": {"origins": os.getenv("FRONTURL")}})
 # Obtener todos los usuarios
 
 
@@ -197,24 +197,6 @@ def send_message():
 
 
 
-  
-# @api.route('/messages/<int:id>', methods=['GET'])
-# @jwt_required()
-# def get_messages_id(id):
-#     try:    
-#         messages = Message.query.get(id)
-#         if not messages:
-#             return jsonify({"message":"No hay messages"}),404
-#         return jsonify(messages.serialize()), 200
-
-#     except Exception as e:
-#         print(f"Error en el servidor: {str(e)}")
-
-#         return jsonify({
-#             "message":"Hay un error en el servidor",
-#             "error": str(e)
-#         }),500
-    
 
 @api.route('/messages/<int:id>', methods=['GET'])
 @jwt_required()
@@ -282,18 +264,6 @@ def delete_user(id):
             "message": "An error occurred while deleting the user",
             "error": str(e)
         }), 500
-
-
-# mostrar todos los mensajes por ID
-
-        
-    # except Exception as e:
-    #     print(f"Error en el servidor: {str(e)}")
-
-    #     return jsonify({
-    #         "message":"Hay un error en el servidor",
-    #         "error": str(e)
-    #     }),500        
 
 
 # mostrar todos los mensajes
@@ -526,7 +496,7 @@ def generate_reset_token():
     # Genera un token JWT con un tiempo de expiración
     reset_token = create_access_token(identity=user.id , expires_delta=datetime.timedelta(minutes=30))
 
-    frontend_url ='https://sturdy-space-memory-7v74r7vxgg9gfpj45-3000.app.github.dev'
+    frontend_url = os.getenv("FRONTURL")
     # Genera el enlace de restablecimiento de contraseña
     #reset_link = url_for('api.reset_password', _external=True) + f"?token={reset_token}"
     reset_link = f"{frontend_url}/resetpass?token={reset_token}"
@@ -541,9 +511,7 @@ def generate_reset_token():
 
         Gracias por contactarte con el equipo de MindToMind.
 
-        Hemos recibido una solicitud para restablecer tu contraseña. Para completar este proceso, por favor, Haz clic a el enlace a continuación:
-
-                    {reset_link}
+        Hemos recibido una solicitud para restablecer tu contraseña. Para completar este proceso, por favor, Haz clic a el enlace a continuación: {reset_link}
 
         Nota: Este enlace es válido por 5 minutos. Si no completas el proceso dentro de este plazo, el enlace caducará y deberás solicitar un nuevo enlace de restablecimiento.
 
@@ -609,7 +577,7 @@ def generate_reset_token_psychologist():
     # Genera un token JWT con un tiempo de expiración
     reset_token = create_access_token(identity=psychologist.id , expires_delta=datetime.timedelta(minutes=30))
 
-    frontend_url ='https://crispy-couscous-wrvj697556rp29r66-3000.app.github.dev'
+    frontend_url = os.getenv("FRONTURL")
    
     reset_link = f"{frontend_url}/resetpasspsycho?token={reset_token}"
 
@@ -618,7 +586,25 @@ def generate_reset_token_psychologist():
         sender=mt.Address(email="mailtrap@demomailtrap.com", name="MindTOMind"),
         to=[mt.Address(email=psychologist.email)],
         subject="Password Reset Request",
-        text=f"Click the following link to reset your password: {reset_link}",
+        text=f"""
+        Hola,
+
+        Gracias por contactarte con el equipo de MindToMind.
+
+        Hemos recibido una solicitud para restablecer tu contraseña. Para completar este proceso, por favor, Haz clic a el enlace a continuación: 
+        
+            {reset_link}
+        
+        Nota: Este enlace es válido por 5 minutos. Si no completas el proceso dentro de este plazo, el enlace caducará y deberás solicitar un nuevo enlace de restablecimiento.
+
+        Si no solicitaste un cambio de contraseña, ignora este correo y tu contraseña permanecerá inalterada.
+
+        Si necesitas ayuda adicional, no dudes en ponerte en contacto con nuestro equipo de soporte.
+
+        Saludos cordiales,
+          
+        Equipo  MindToMind.
+        """,
         category="Password Reset",
     )
 

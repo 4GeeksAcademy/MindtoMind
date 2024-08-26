@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
 import "../../styles/single.css";
 import { BsTelephone } from "react-icons/bs";
@@ -7,6 +7,7 @@ import { BsEnvelope } from "react-icons/bs";
 
 export const PhSingle = () => {
   const { store, actions } = useContext(Context);
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const [formData, setFormData] = useState({
@@ -54,9 +55,22 @@ export const PhSingle = () => {
     const modal = bootstrap.Modal.getInstance(modalElement);
     modal.hide();
   };
+  const handletwo = () =>{
+      
+      
+      actions.deletePsico(id);
+      actions.logout();
+   
+      navigate(`/`)
+    
+
+  }
 
   return (
     <div>
+
+      <button type="button" className="btn btn-primary me-2" onClick={handletwo}>Eliminar cuenta</button>
+      
       <button
         type="button"
         className="btn btn-primary"

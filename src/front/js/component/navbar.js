@@ -3,11 +3,12 @@ import React, { useContext, useState, useEffect } from "react";
 
 import { Context } from "../store/appContext";
 import logo from "../../img/logoMTM.png";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export const Navbar = () => {
-  const { store, actions } = useContext(Context);
-  const navigate = useNavigate();
+    const { store, actions } = useContext(Context);
+    const navigate = useNavigate();
+	const { id } = useParams();
 
   const handleClick = async () => {
     console.log("User ID:", store.user_id);
@@ -44,9 +45,20 @@ export const Navbar = () => {
 			console.error('Error durante el logout, no se pudo navegar.');
 		}
 		
-  }
+		
+	}
 	
-	
+	const handletwo = () =>{
+      
+		const userId = localStorage.getItem("user_id");
+		actions.deleteUser(userId);
+
+		actions.logout();
+	 
+		navigate(`/`)
+	  
+  
+	}
         
 		
 		
@@ -56,32 +68,15 @@ export const Navbar = () => {
 		actions.getPsychologistById()
 	
 	  }, []);
-
-    
-
-  
-  
-					<div className="dropdown ms-3">
-						<a className="btn btn-outline-primary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-							Registrarse
-						</a>
-
-						<ul className="dropdown-menu">
-							<li><a className="dropdown-item" href="/usuario">Registrarse como Usuario</a></li>
-							<li><a className="dropdown-item" href="/psicho">Registrarse como Psicólogo</a></li>
-						</ul>
-					</div>
-
-  
-
-  useEffect(() => {
+	  
+	   useEffect(() => {
     const idPsyco = localStorage.getItem("psyco_id");
     if (idPsyco) {
       actions.getPsychologistById(idPsyco);
     }
-  }, []);
+  }, []); 
 
-  return (
+	  return (
     <nav className="navbar ">
       <div className="container ">
         <a href="/">
@@ -196,4 +191,6 @@ export const Navbar = () => {
     </nav>
   );
 };
+	
 
+	

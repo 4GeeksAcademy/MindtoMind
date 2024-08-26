@@ -112,7 +112,56 @@ const getState = ({ getStore, getActions, setStore }) => {
           alert("Ocurrió un problema al intentar enviar la solicitud.");
         }
       },
+      
+      //Delete Psico
+      deletePsico: async (id) => {
+        try {
+          const resp = await fetch(`${apiUrl}/psychologist/${id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          });
+      
+          if (!resp.ok) {
+            console.error(`Error en la petición: ${resp.status}`);
+            return;
+          }
+      
+          console.log(`Psicólogo con id ${id} eliminado`);
+          // this.getAllPsico(); // Actualiza la lista después de eliminar
+      
+        } catch (error) {
+          console.error(`Error en la promesa: ${error}`);
+        }
+      },
+      
+      //Delete User
+      deleteUser: async (id) => {
+        try {
+          const resp = await fetch(`${apiUrl}/user/${id}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          });
+      
+          if (!resp.ok) {
+            console.error(`Error en la petición: ${resp.status}`);
+            return;
+          }
+      
+          console.log(`Usuario con id ${id} eliminado`);
+          
+      
+        } catch (error) {
+          console.error(`Error en la promesa: ${error}`);
+        }
+      },
 
+      //Login User
       login: async (email, password) => {
         let resp = await fetch(apiUrl + "/login", {
           method: "POST",
@@ -135,6 +184,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         return true;
       },
 
+      //Login Psycho
       login_psychologist: async (email, password) => {
         let resp = await fetch(apiUrl + "/login_psychologist", {
           method: "POST",
@@ -155,6 +205,7 @@ const getState = ({ getStore, getActions, setStore }) => {
         return true;
       },
 
+      
       getMessage: async () => {
         try {
    
@@ -445,6 +496,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           return;
         }
       },
+
       updatePsico: async (nuevosDatosPsico) => {
         const store = getStore();
         try {
