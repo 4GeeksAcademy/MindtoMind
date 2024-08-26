@@ -6,12 +6,12 @@ import "../../styles/demo.css";
 import { Context } from "../store/appContext";
 
 const processMessage = (message) => {
- 
   const listRegex = /^(\d+\.\s|•\s|-+\s)/gm;
 
   if (listRegex.test(message)) {
-
-    const listItems = message.split(listRegex).filter(item => item.trim() !== "");
+    const listItems = message
+      .split(listRegex)
+      .filter((item) => item.trim() !== "");
 
     return (
       <div className="p-2 rounded bg-light">
@@ -22,10 +22,8 @@ const processMessage = (message) => {
     );
   }
 
-  
   return <p className="p-2 rounded bg-light">{message}</p>;
 };
-
 
 export const Demo = () => {
   const { store, actions } = useContext(Context);
@@ -82,7 +80,6 @@ export const Demo = () => {
 
   useEffect(() => {
     actions.getAllPsico();
-   
   }, []);
 
   return (
@@ -100,13 +97,13 @@ export const Demo = () => {
                       msg.type === "user" ? "text-end mb-2" : "text-start mb-2"
                     }`}
                   >
-                    <p
+                    <div
                       className={`p-2 rounded ${
                         msg.type === "user" ? "bg-purple " : "bg-light"
                       }`}
                     >
                       {msg.text}
-                    </p>
+                    </div>
                   </div>
                 ))}
               </li>
@@ -126,13 +123,13 @@ export const Demo = () => {
                   msg.type === "user" ? "text-end mb-2" : "text-start mb-2"
                 }`}
               >
-                <p
+                <div
                   className={` p-2 rounded ${
                     msg.type === "user" ? "bg-purple " : "bg-light"
                   }`}
                 >
                   {msg.text}
-                </p>
+                </div>
               </div>
             ))}
           </div>
