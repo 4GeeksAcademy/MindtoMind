@@ -251,3 +251,10 @@ SECCION TU MEJOR ELECCI├ôN
 .caracola {
   margin-bottom: 50px;
 }
+.meutexto{
+  color: white;
+}
+.OBOTAO:focus {
+  outline: none;
+  box-shadow: none;
+}

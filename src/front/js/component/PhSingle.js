@@ -69,7 +69,40 @@ export const PhSingle = () => {
   return (
     <div>
 
-      <button type="button" className="btn btn-primary me-2" onClick={handletwo}>Eliminar cuenta</button>
+      
+          
+                <button
+                   type="button"
+                   className="btn btn-primary me-2"
+                    data-bs-toggle="modal"
+                    data-bs-target="#deleteModal"
+                        >
+                  Eliminar cuenta
+                  </button>
+
+                    
+                        <div
+                            className="modal fade"
+                            id="deleteModal"
+                            tabIndex="-1"
+                            aria-labelledby="deleteModalLabel"
+                            aria-hidden="true"
+                        >
+                          <div className="modal-dialog">
+                                <div className="modal-content d-flex">
+                                    <div className="modal-header justify-content-center">
+                                        <h1 className="modal-title fs-5 branco" id="deleteModalLabel">¡ATENCIÓN!</h1>
+                                    </div>
+                                    <div className="modal-body">
+                                        <h6 className="branco">¿Realmente deseas borrar tu cuenta? Esta acción es irreversible y perderás toda la información asociada. Haz clic en 'Confirmar' para proceder o en 'Cancelar' para mantener tu cuenta activa.</h6>
+                                    </div>
+                                    <div className="modal-footer">
+                                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal">Cancelar</button>
+                                        <button type="button" className="btn btn-primary" data-bs-dismiss="modal" onClick={handletwo}>Confirmar</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
       
       <button
         type="button"
@@ -89,27 +122,27 @@ export const PhSingle = () => {
         aria-hidden="true"
       >
         <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h1 className="modal-title fs-5" id="exampleModalLabel">
-                New message
+          <div className="modal-content d-flex">
+            <div className="modal-header justify-content-center">
+              <h1 className="modal-title fs-5 branco" id="exampleModalLabel">
+               Formulario
               </h1>
-              <button
+              {/* <button
                 type="button"
                 className="btn-close"
                 data-bs-dismiss="modal"
                 aria-label="Close"
-              ></button>
+              ></button> */}
             </div>
             <div className="modal-body">
               <form>
                 <div className="mb-3">
-                  <label htmlFor="first_name" className="col-form-label">
+                  <label htmlFor="first_name" className="col-form-label branco">
                     Nombre
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control branco"
                     id="first_name"
                     name="first_name"
                     value={formData.first_name}
@@ -117,12 +150,12 @@ export const PhSingle = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="last_name" className="col-form-label">
+                  <label htmlFor="last_name" className="col-form-label branco">
                     Apellido
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control branco"
                     id="last_name"
                     name="last_name"
                     value={formData.last_name}
@@ -130,12 +163,12 @@ export const PhSingle = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="phone_number" className="col-form-label">
+                  <label htmlFor="phone_number" className="col-form-label branco">
                     Telefono
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control branco"
                     id="phone_number"
                     name="phone_number"
                     value={formData.phone_number}
@@ -143,12 +176,12 @@ export const PhSingle = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="email" className="col-form-label">
+                  <label htmlFor="email" className="col-form-label branco">
                     Correo electronico
                   </label>
                   <input
                     type="email"
-                    className="form-control"
+                    className="form-control branco"
                     id="email"
                     name="email"
                     value={formData.email}
@@ -156,11 +189,11 @@ export const PhSingle = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="specialty" className="col-form-label">
+                  <label htmlFor="specialty" className="col-form-label branco">
                     Especialidad
                   </label>
                   <textarea
-                    className="form-control"
+                    className="form-control branco"
                     id="specialty"
                     name="specialty"
                     value={formData.specialty}
@@ -170,19 +203,19 @@ export const PhSingle = () => {
                   ></textarea>
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="years_of_experience" className="col-form-label">
+                  <label htmlFor="years_of_experience" className="col-form-label branco">
                     Años de experiencia
                   </label>
                   <input
                     type="number"
-                    className="form-control"
+                    className="form-control branco"
                     id="years_of_experience"
                     name="years_of_experience"
                     value={formData.years_of_experience}
                     onChange={handleChange}
                   />
                 </div>
-                <div className="mb-3">
+                {/* <div className="mb-3">
                   <label htmlFor="photo" className="col-form-label">
                     Foto
                   </label>
@@ -194,14 +227,14 @@ export const PhSingle = () => {
                     value={formData.photo}
                     onChange={handleChange}
                   />
-                </div>
+                </div> */}
                 <div className="mb-3">
-                  <label htmlFor="description" className="col-form-label">
+                  <label htmlFor="description" className="col-form-label branco">
                     Descripcion
                   </label>
                   <input
                     type="text"
-                    className="form-control"
+                    className="form-control branco"
                     id="description"
                     name="description"
                     value={formData.description}
@@ -213,7 +246,7 @@ export const PhSingle = () => {
             <div className="modal-footer">
               <button
                 type="button"
-                className="btn btn-secondary"
+                className=" btn btn-primary"
                 data-bs-dismiss="modal"
               >
                 Close
