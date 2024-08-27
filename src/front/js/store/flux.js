@@ -532,20 +532,49 @@ const getState = ({ getStore, getActions, setStore }) => {
       //       method: "GET",
       //       headers: {
       //         "Content-Type": "application/json",
-      //         Authorization: `Bearer ${store.token}`,
+      //         Authorization: "Bearer " + localStorage.getItem("token"),
       //       },
       //     });
 
       //     if (!response.ok) {
       //       throw new Error("Error al obtener los mensajes");
       //     }
-
+          
       //     const data = await response.json();
       //     setStore({ userMessages: data });
+          
       //   } catch (error) {
       //     console.error("Error con el fetch de los mensajes:", error);
       //   }
       // },
+      getUserMessages: async (userId) => {
+        const store = getStore();
+        try {
+            const response = await fetch(`${apiUrl}/users/${userId}/messages`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + localStorage.getItem("token"),
+                },
+            });
+    
+            if (!response.ok) {
+               
+                if (response.status === 404) {
+                    throw new Error("Usuario no encontrado o no tiene mensajes.");
+                } else {
+                    throw new Error("Error al obtener los mensajes del servidor.");
+                }
+            }
+    
+            const data = await response.json();
+            setStore({ userMessages: data });
+    
+        } catch (error) {
+       
+            console.error("Error al obtener los mensajes:", error.message);
+        }
+    },
 
       // saveContactPsico: (psicologo) => {
       //   setStore({psicologoGuardado:psicologo})
