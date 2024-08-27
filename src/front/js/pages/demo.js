@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-
+import { RiSpeakLine } from "react-icons/ri";
+import { PiFlowerLotusDuotone } from "react-icons/pi";
 import "../../styles/demo.css";
 
 import { Context } from "../store/appContext";
@@ -46,7 +47,7 @@ export const Demo = () => {
 
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text:response.message || "No response", type: "ai" },
+        { text: response.message || "No response", type: "ai" },
       ]);
     } catch (error) {
       console.error("Error al enviar el mensaje:", error);
@@ -76,23 +77,33 @@ export const Demo = () => {
     } catch (error) {
       console.error("Error al guardar la conversación:", error);
     }
+    actions.getUserMessages(store.user_id);
   };
 
   useEffect(() => {
     actions.getAllPsico();
+    actions.getUserMessages(store.user_id);
+    
   }, []);
 
   return (
+
     <div className="container vistaConversaciones ">
       <div className="row ">
         {/* Este div contiene las conversaciones guardadas */}
         <div className="col-3">
           <ul className="lista-chat list-group flex-nowrap overflow-auto">
-            {savedConversations.map((conversation) => (
-              <li key={conversation.id} className="list-group-item">
-                {conversation.messages.map((msg, index) => (
+
+            {/* {store.userMessages.map((conversation))} */}
+            {store.userMessages.map((conversation, index) => (
+              <li key={index} className="list-group-item">
+                  
+
+                
+                {conversation.message.map((msg, idx) => (
+
                   <div
-                    key={index}
+                    key={idx}
                     className={`message ${
                       msg.type === "user" ? "text-end mb-2" : "text-start mb-2"
                     }`}
@@ -102,10 +113,13 @@ export const Demo = () => {
                         msg.type === "user" ? "bg-purple " : "bg-light"
                       }`}
                     >
-                     {processMessage(msg.text)}
+                      {processMessage(msg.text)}
                     </div>
                   </div>
+
+
                 ))}
+                <small>{new Date(conversation.timestamp).toLocaleString()}</small>
               </li>
             ))}
           </ul>
@@ -128,7 +142,8 @@ export const Demo = () => {
                     msg.type === "user" ? "bg-purple " : "bg-light"
                   }`}
                 >
-                 {processMessage(msg.text)}
+<PiFlowerLotusDuotone />
+                  {processMessage(msg.text)}
                 </div>
               </div>
             ))}
