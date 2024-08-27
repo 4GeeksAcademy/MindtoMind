@@ -14,7 +14,7 @@ const processMessage = (message) => {
       .filter((item) => item.trim() !== "");
 
     return (
-      <div className="p-2 rounded bg-light">
+      <div className="p-2 rounded ">
         {listItems.map((item, index) => (
           <p key={index}>{item.trim()}</p>
         ))}
@@ -22,7 +22,7 @@ const processMessage = (message) => {
     );
   }
 
-  return <p className="p-2 rounded bg-light">{message}</p>;
+  return <p className="p-2 rounded">{message}</p>;
 };
 
 export const Demo = () => {
@@ -46,7 +46,7 @@ export const Demo = () => {
 
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: processMessage(response.message || "No response"), type: "ai" },
+        { text:response.message || "No response", type: "ai" },
       ]);
     } catch (error) {
       console.error("Error al enviar el mensaje:", error);
@@ -102,7 +102,7 @@ export const Demo = () => {
                         msg.type === "user" ? "bg-purple " : "bg-light"
                       }`}
                     >
-                      {msg.text}
+                     {processMessage(msg.text)}
                     </div>
                   </div>
                 ))}
@@ -128,7 +128,7 @@ export const Demo = () => {
                     msg.type === "user" ? "bg-purple " : "bg-light"
                   }`}
                 >
-                  {msg.text}
+                 {processMessage(msg.text)}
                 </div>
               </div>
             ))}
