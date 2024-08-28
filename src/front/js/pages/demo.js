@@ -83,43 +83,58 @@ export const Demo = () => {
   useEffect(() => {
     actions.getAllPsico();
     actions.getUserMessages(store.user_id);
-    
   }, []);
 
   return (
-
     <div className="container vistaConversaciones ">
       <div className="row ">
         {/* Este div contiene las conversaciones guardadas */}
-        <div className="col-3">
+        <div className="col-3 vistaPsicologos">
           <ul className="lista-chat list-group flex-nowrap overflow-auto">
-
-            {/* {store.userMessages.map((conversation))} */}
             {store.userMessages.map((conversation, index) => (
               <li key={index} className="list-group-item">
-                  
-
-                
-                {conversation.message.map((msg, idx) => (
-
-                  <div
-                    key={idx}
-                    className={`message ${
-                      msg.type === "user" ? "text-end mb-2" : "text-start mb-2"
-                    }`}
-                  >
+                <div className="accordion" id={`accordionExample-${index}`}>
+                  <div className="accordion-item ">
+                    <h2 className="accordion-header">
+                      <button
+                        className="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target={`#collapse-${index}`}
+                        aria-expanded="false"
+                        aria-controls={`collapse-${index}`}
+                      >
+                        {new Date(conversation.timestamp).toLocaleString()}
+                      </button>
+                    </h2>
                     <div
-                      className={`p-2 rounded ${
-                        msg.type === "user" ? "bg-purple " : "bg-light"
-                      }`}
+                      id={`collapse-${index}`}
+                      className="accordion-collapse collapse"
+                      data-bs-parent={`#accordionExample-${index}`}
                     >
-                      {processMessage(msg.text)}
+                      <div className="accordion-body">
+                        {conversation.message.map((msg, idx) => (
+                          <div
+                            key={idx}
+                            className={`message ${
+                              msg.type === "user"
+                                ? "text-end mb-2"
+                                : "text-start mb-2"
+                            }`}
+                          >
+                            <div
+                              className={`p-2 rounded ${
+                                msg.type === "user" ? "bg-purple " : "bg-light"
+                              }`}
+                            >
+                              {processMessage(msg.text)}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
-
-
-                ))}
-                <small>{new Date(conversation.timestamp).toLocaleString()}</small>
+                </div>
               </li>
             ))}
           </ul>
@@ -142,7 +157,7 @@ export const Demo = () => {
                     msg.type === "user" ? "bg-purple " : "bg-light"
                   }`}
                 >
-<PiFlowerLotusDuotone />
+                  <PiFlowerLotusDuotone />
                   {processMessage(msg.text)}
                 </div>
               </div>
