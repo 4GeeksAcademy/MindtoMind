@@ -1,32 +1,11 @@
-.input-container {
-  position: sticky;
-  bottom: 0;
-  background-color: white;
-}
-.messages-container {
-  height: 400px;
-}
-.lista-chat {
-  height: 400px;
-}
-
-.boton-demo {
-  color: #d5bdaf;
-  border-color: #d5bdaf;
-}
-.psicologos {
-  height: 500px;
-}
-
-.boton-demo:hover {
-  color: #fff;
-  background-color: #d6ccc2;
-  border-color: #d5bdaf;
-}
 .img-size {
-  width: 150px;
-  height: 150px;
+  width: 100%;
+  max-width: 150px;
+  height: auto;
+  aspect-ratio: 1 / 1;
   object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #d5bdaf; /* Opcional: borde para las imágenes */
 }
 
 .vistachat {
@@ -34,12 +13,92 @@
   margin-top: 20px;
   border-radius: 15px;
 }
+
 .vistaPsicologos {
   margin-top: 20px;
   border-radius: 15px;
 }
+
 .vistaConversaciones {
   margin-top: 20px;
   border-radius: 15px;
   padding-bottom: 80px;
+}
+
+.input-container {
+  position: sticky;
+  bottom: 0;
+  background-color: white;/* Ajustar para que no se quede pegado al fondo en pantallas pequeñas */
+}
+
+
+.messages-container {
+  height: calc(80vh - 200px); 
+}
+
+.lista-chat {
+  height: calc(80vh - 200px); 
+}
+
+.boton-demo {
+  color: #d5bdaf;
+  border-color: #d5bdaf;
+}
+
+.boton-demo:hover {
+  color: #fff;
+  background-color: #d6ccc2;
+  border-color: #d5bdaf;
+}
+
+.psicologos {
+  height: calc(80vh - 200px); 
+}
+/* Define las clases para los mensajes y las fechas */
+.message {
+  font-size: 1rem; /* Tamaño de fuente predeterminado */
+}
+
+.accordion-button {
+  font-size: 1rem; /* Tamaño de fuente para las fechas en la vista de conversaciones */
+}
+
+/* Media queries para ajustar el tamaño de fuente */
+@media (max-width: 992px) {
+  .message {
+    font-size: 0.9rem;
+  }
+
+  .accordion-button {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .message {
+    font-size: 0.8rem;
+  }
+
+  .accordion-button {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .message {
+    font-size: 0.7rem;
+  }
+
+  .accordion-button {
+    font-size: 0.7rem;
+  }
+}
+@media (max-width: 337px) {
+  .message {
+    font-size: 0.7rem;
+  }
+
+  .accordion-button {
+    font-size: 0.7rem;
+  }
 }
