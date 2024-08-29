@@ -74,7 +74,6 @@ dist/*
 !.env.example
 .now
 .env
-migrations
 # backend stuff
 .venv
 database.database
