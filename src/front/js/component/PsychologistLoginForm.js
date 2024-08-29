@@ -14,7 +14,7 @@ export const PsychologistLoginForm = () => {
         let formData = new FormData(e.target);
         let email = formData.get("email");
         let password = formData.get("password");
-        console.log({ email, password });
+        //console.log({ email, password });
         let logged = await actions.login_psychologist(email, password);
         
         if (logged) {

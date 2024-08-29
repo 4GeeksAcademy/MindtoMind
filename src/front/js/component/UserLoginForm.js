@@ -6,6 +6,7 @@ import { BsLock } from "react-icons/bs";
 import { BsEnvelope } from "react-icons/bs";
 
 export const UserLoginForm = () => {
+    
     const { store, actions } = useContext(Context);
     const navigate = useNavigate(); 
     
@@ -14,7 +15,7 @@ export const UserLoginForm = () => {
             let formData = new FormData(e.target);
             let email = formData.get("email");
             let password = formData.get("password");
-            console.log({ email, password });
+            //console.log({ email, password });
             let logged = await actions.login(email, password);
             
             if (logged) {

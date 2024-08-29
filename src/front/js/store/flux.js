@@ -316,7 +316,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           },
           body: JSON.stringify(dataToSend),
         });
-        console.log(dataToSend);
+        //console.log(dataToSend);
         const responseData = await response.json();
         if (response.ok) {
           alert("Usuario creado");
@@ -462,7 +462,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           }
 
           const data = await response.json();
-          console.log("Información del psicólogo:", data);
+          //console.log("Información del psicólogo:", data);
           setStore({
             psychologist: data.data,
             psycologoLogeado: true,

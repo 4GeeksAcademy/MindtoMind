@@ -6,6 +6,7 @@ import "../../styles/resetemail.css";
 import { BsLock } from "react-icons/bs";
 
 export const ResetPassword= ({ token }) => {
+    const apiUrl = process.env.BACKEND_URL + "/api";
     const { store, actions } = useContext(Context);
     const navigate = useNavigate(); // Hook de navegación
     const [password, setPassword] = useState('');
@@ -20,7 +21,7 @@ export const ResetPassword= ({ token }) => {
         }
     
         try {
-          const response = await fetch(`https://crispy-couscous-wrvj697556rp29r66-3001.app.github.dev/api/reset_password`, {
+          const response = await fetch(apiUrl + "/reset_password", {
             method: "POST",
             headers: {
               "Content-Type": "application/json"
