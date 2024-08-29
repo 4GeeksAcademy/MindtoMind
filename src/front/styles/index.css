@@ -5,7 +5,29 @@ a {
   color: #d5bdaf;
 }
 .logo {
-  width: 60px;
+  width: 60px; /* Tamaño por defecto para pantallas grandes */
+  height: auto; /* Mantiene la proporción del logo */
+}
+
+/* Ajustes para pantallas medianas */
+@media (max-width: 992px) {
+  .logo {
+    width: 50px; /* Tamaño reducido para pantallas medianas */
+  }
+}
+
+/* Ajustes para pantallas pequeñas (tablets y móviles) */
+@media (max-width: 768px) {
+  .logo {
+    width: 40px; /* Tamaño reducido para pantallas pequeñas */
+  }
+}
+
+/* Ajustes para pantallas extra pequeñas (móviles) */
+@media (max-width: 576px) {
+  .logo {
+    width: 30px; /* Tamaño aún más reducido para pantallas extra pequeñas */
+  }
 }
 
 .mindtomind {
@@ -164,12 +186,34 @@ footer {
   background-color: #edede9;
   color: #000000;
   text-align: center;
-  padding: 10px 0;
+  padding: 0.5em 0;
   width: 100%;
   position: fixed;
   bottom: 0;
   left: 0;
+  box-sizing: border-box;
+  font-size: 0.7rem; 
+  min-height: 1.5em; 
 }
+
+
+@media (max-width: 768px) {
+  footer {
+    padding: 0.75em 0;
+    font-size: 0.6rem; 
+    min-height: 1.5em; 
+  }
+}
+
+
+@media (max-width: 480px) {
+  footer {
+    padding: 0.5em 0; 
+    font-size: 0.5rem; 
+    min-height: 1em; 
+  }
+}
+
 .navbar {
   background-color: #edede9;
 }
