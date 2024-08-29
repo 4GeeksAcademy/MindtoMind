@@ -1,41 +1,210 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import { RiSpeakLine } from "react-icons/ri";
+import { PiFlowerLotusDuotone } from "react-icons/pi";
+import "../../styles/demo.css";
 
 import { Context } from "../store/appContext";
 
-export const Demo = () => {
-	const { store, actions } = useContext(Context);
+const processMessage = (message) => {
+  const listRegex = /^(\d+\.\s|•\s|-+\s)/gm;
 
-	return (
-		<div className="container">
-			<ul className="list-group">
-				{store.demo.map((item, index) => {
-					return (
-						<li
-							key={index}
-							className="list-group-item d-flex justify-content-between"
-							style={{ background: item.background }}>
-							<Link to={"/single/" + index}>
-								<span>Link to: {item.title}</span>
-							</Link>
-							{// Conditional render example
-							// Check to see if the background is orange, if so, display the message
-							item.background === "orange" ? (
-								<p style={{ color: item.initial }}>
-									Check store/flux.js scroll to the actions to see the code
-								</p>
-							) : null}
-							<button className="btn btn-success" onClick={() => actions.changeColor(index, "orange")}>
-								Change Color
-							</button>
-						</li>
-					);
-				})}
-			</ul>
-			<br />
-			<Link to="/">
-				<button className="btn btn-primary">Back home</button>
-			</Link>
-		</div>
-	);
+  if (listRegex.test(message)) {
+    const listItems = message
+      .split(listRegex)
+      .filter((item) => item.trim() !== "");
+
+    return (
+      <div className="p-2 rounded ">
+        {listItems.map((item, index) => (
+          <p key={index}>{item.trim()}</p>
+        ))}
+      </div>
+    );
+  }
+
+  return <p className="p-2 rounded">{message}</p>;
+};
+
+export const Demo = () => {
+  const { store, actions } = useContext(Context);
+
+  const [messageData, setMessageData] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [savedConversations, setSavedConversations] = useState([]);
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (messageData.trim() === "") return;
+
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { text: messageData, type: "user" },
+    ]);
+
+    try {
+      const response = await actions.mensajeApi(messageData);
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: response.message || "No response", type: "ai" },
+      ]);
+    } catch (error) {
+      console.error("Error al enviar el mensaje:", error);
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { text: "Hubo un error al enviar el mensaje.", type: "error" },
+      ]);
+    }
+
+    setMessageData("");
+  };
+
+  const sendMessage = (e) => {
+    if (e.key === "Enter") {
+      handleSendMessage(e);
+    }
+  };
+
+  const handleClearConversation = async () => {
+    try {
+      await actions.saveMessage(messages);
+      setSavedConversations((prevSavedConversations) => [
+        ...prevSavedConversations,
+        { id: Date.now(), messages },
+      ]);
+      setMessages([]);
+    } catch (error) {
+      console.error("Error al guardar la conversación:", error);
+    }
+    actions.getUserMessages(store.user_id);
+  };
+
+  useEffect(() => {
+    actions.getAllPsico();
+    actions.getUserMessages(store.user_id);
+  }, []);
+
+  return (
+    <div className="container vistaConversaciones ">
+      <div className="row ">
+        {/* Este div contiene las conversaciones guardadas */}
+        <div className="col-3 vistaPsicologos">
+          <ul className="lista-chat list-group flex-nowrap overflow-auto">
+            {store.userMessages.map((conversation, index) => (
+              <li key={index} className="list-group-item">
+                <div className="accordion" id={`accordionExample-${index}`}>
+                  <div className="accordion-item ">
+                    <h2 className="accordion-header">
+                      <button
+                        className="accordion-button collapsed"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target={`#collapse-${index}`}
+                        aria-expanded="false"
+                        aria-controls={`collapse-${index}`}
+                      >
+                        {new Date(conversation.timestamp).toLocaleString()}
+                      </button>
+                    </h2>
+                    <div
+                      id={`collapse-${index}`}
+                      className="accordion-collapse collapse"
+                      data-bs-parent={`#accordionExample-${index}`}
+                    >
+                      <div className="accordion-body">
+                        {conversation.message.map((msg, idx) => (
+                          <div
+                            key={idx}
+                            className={`message ${
+                              msg.type === "user"
+                                ? "text-end mb-2"
+                                : "text-start mb-2"
+                            }`}
+                          >
+                            <div
+                              className={`p-2 rounded ${
+                                msg.type === "user" ? "bg-purple " : "bg-light"
+                              }`}
+                            >
+                              {processMessage(msg.text)}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Este div contiene la vista del chat */}
+
+        <div className="vistachat col-6 d-flex flex-column flex-nowrap overflow-auto">
+          <div className="messages-container  flex-grow-1 overflow-auto">
+            {/* align-items-end */}
+            {messages.map((msg, index) => (
+              <div
+                key={index}
+                className={`message ${
+                  msg.type === "user" ? "text-end mb-2" : "text-start mb-2"
+                }`}
+              >
+                <div
+                  className={` p-2 rounded ${
+                    msg.type === "user" ? "bg-purple " : "bg-light"
+                  }`}
+                >
+                  <PiFlowerLotusDuotone />
+                  {processMessage(msg.text)}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className=" input-container">
+            <input
+              onChange={(e) => setMessageData(e.target.value)}
+              onKeyDown={sendMessage}
+              value={messageData}
+              type="text"
+              className="form-control "
+              id="message"
+              name="message"
+              placeholder="Escribe aqui tu mensaje"
+            />
+          </div>
+        </div>
+        {/* Este div contiene los psicologos */}
+
+        <div className="col-3 vistaPsicologos">
+          <ul className="list-group psicologos flex-nowrap overflow-auto">
+            {store.psychologists.map((psychologist, index) => {
+              return (
+                <li key={index} className="list-group-item border border-0">
+                  <Link to={"/single/" + psychologist.id}>
+                    <span className="d-flex justify-content-center">
+                      <img
+                        src={psychologist.photo}
+                        className="img-size rounded-circle w-75 d-flex"
+                      ></img>
+                    </span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </div>
+
+      <br />
+      <Link to="/">
+        <button className="boton-demo btn ">Volver</button>
+      </Link>
+      <button className="boton-demo btn ms-2" onClick={handleClearConversation}>
+        Generar nueva conversacion
+      </button>
+    </div>
+  );
 };
