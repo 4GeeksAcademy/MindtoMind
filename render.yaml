@@ -24,12 +24,12 @@ services:
         fromService:
           name: mindtomind
           type: web
-          prompt: host
+          property: host
       - key: BACKEND_URL
         fromService:
           name: mindtomind
           type: web
-          prompt: host
+          property: host
       - key: DATABASE_URL
         fromDatabase:
           name: postgresql-trapezoidal-42170
