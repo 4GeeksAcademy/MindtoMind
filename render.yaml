@@ -34,7 +34,7 @@ services:
         fromDatabase:
           name: postgresql-trapezoidal-42170
           property: connectionString
-      - fromGroup: MindtoMind
+      - fromGroup: mindtomind
 databases:
   - name: postgresql-trapezoidal-42170
     region: ohio
