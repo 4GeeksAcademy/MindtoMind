@@ -15,6 +15,12 @@ services:
             value: /
           - key: FLASK_APP # Imported from Heroku app
             value: src/app.py
+          - key: FLASK_APP_KEY # Imported from Heroku app
+            value: hola mundo
+          - key: FLASK_DEBUG # Imported from Heroku app
+            value: 0
+          - key: DEBUG # Imported from Heroku app
+            value: FALSE
           - key: FLASK_DEBUG # Imported from Heroku app
             value: 0
           - key: PYTHON_VERSION
