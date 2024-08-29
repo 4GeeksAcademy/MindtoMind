@@ -387,13 +387,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       logout: async () => {
         let { token } = getStore();
-        // let resp = await fetch(apiUrl + "/logout", {
-        // 	method: "POST",
-        // 	headers: {
-        // 		"Authorization": "Bearer " + token
-        // 	},
-        // });
-        // if (!resp.ok) return false;
+        let resp = await fetch(apiUrl + "/logout", {
+        	method: "POST",
+        	headers: {
+        		"Authorization": "Bearer " + token
+        	},
+        });
+        if (!resp.ok) return false;
         setStore({ token: null, userInfo: null });
         localStorage.removeItem("token");
         localStorage.removeItem("conversationID");
