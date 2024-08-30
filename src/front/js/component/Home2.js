@@ -102,7 +102,7 @@ export const Home2 = () => {
             creado una comunidad donde puedes encontrar el respaldo emocional
             que necesitas, en cualquier momento y en cualquier lugar.
           </p>
-          <p className="branco">
+          <p className="branco mb-5">
             Ofrecemos un espacio donde las personas pueden recibir apoyo
             emocional inmediato a través de nuestro chat con IA, y también la
             posibilidad de conectarse con psicólogos para una atención más

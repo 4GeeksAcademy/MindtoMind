@@ -62,7 +62,8 @@
 
 .center {
   text-align: center;
-  margin: 0 auto;
+  margin-bottom: 50px;
+  margin-left: 190px;
 }
 
 .minhaclasse {
@@ -72,7 +73,7 @@
 
 .branco {
   color: #d5bdaf;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
 }
 
 .fundo {
