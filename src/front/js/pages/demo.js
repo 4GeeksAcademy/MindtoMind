@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { RiSpeakLine } from "react-icons/ri";
 import { PiFlowerLotusDuotone } from "react-icons/pi";
@@ -15,7 +15,7 @@ const processMessage = (message) => {
       .filter((item) => item.trim() !== "");
 
     return (
-      <div className="p-2 rounded ">
+      <div className="p-2 rounded">
         {listItems.map((item, index) => (
           <p key={index}>{item.trim()}</p>
         ))}
@@ -86,15 +86,15 @@ export const Demo = () => {
   }, []);
 
   return (
-    <div className="container vistaConversaciones ">
-      <div className="row ">
-        {/* Este div contiene las conversaciones guardadas */}
-        <div className="col-3 vistaPsicologos">
+    <div className="container vistaConversaciones">
+      <div className="row">
+        {/* Vista de las conversaciones guardadas */}
+        <div className="col-12 col-md-3 vistaPsicologos">
           <ul className="lista-chat list-group flex-nowrap overflow-auto">
             {store.userMessages.map((conversation, index) => (
               <li key={index} className="list-group-item">
                 <div className="accordion" id={`accordionExample-${index}`}>
-                  <div className="accordion-item ">
+                  <div className="accordion-item">
                     <h2 className="accordion-header">
                       <button
                         className="accordion-button collapsed"
@@ -124,7 +124,9 @@ export const Demo = () => {
                           >
                             <div
                               className={`p-2 rounded ${
-                                msg.type === "user" ? "bg-purple " : "bg-light"
+                                msg.type === "user"
+                                  ? "bg-purple"
+                                  : "bg-light"
                               }`}
                             >
                               {processMessage(msg.text)}
@@ -140,11 +142,9 @@ export const Demo = () => {
           </ul>
         </div>
 
-        {/* Este div contiene la vista del chat */}
-
-        <div className="vistachat col-6 d-flex flex-column flex-nowrap overflow-auto">
-          <div className="messages-container  flex-grow-1 overflow-auto">
-            {/* align-items-end */}
+        {/* Vista del chat */}
+        <div className="col-12 col-md-6 vistachat d-flex flex-column flex-nowrap overflow-auto">
+          <div className="messages-container flex-grow-1 overflow-auto">
             {messages.map((msg, index) => (
               <div
                 key={index}
@@ -153,8 +153,8 @@ export const Demo = () => {
                 }`}
               >
                 <div
-                  className={` p-2 rounded ${
-                    msg.type === "user" ? "bg-purple " : "bg-light"
+                  className={`p-2 rounded ${
+                    msg.type === "user" ? "bg-purple" : "bg-light"
                   }`}
                 >
                   <PiFlowerLotusDuotone />
@@ -163,22 +163,22 @@ export const Demo = () => {
               </div>
             ))}
           </div>
-          <div className=" input-container">
+          <div className="input-container">
             <input
               onChange={(e) => setMessageData(e.target.value)}
               onKeyDown={sendMessage}
               value={messageData}
               type="text"
-              className="form-control "
+              className="form-control"
               id="message"
               name="message"
-              placeholder="Escribe aqui tu mensaje"
+              placeholder="Escribe aquí tu mensaje"
             />
           </div>
         </div>
-        {/* Este div contiene los psicologos */}
 
-        <div className="col-3 vistaPsicologos">
+        {/* Vista de los psicólogos */}
+        <div className="col-12 col-md-3 vistaPsicologos">
           <ul className="list-group psicologos flex-nowrap overflow-auto">
             {store.psychologists.map((psychologist, index) => {
               return (
@@ -187,8 +187,9 @@ export const Demo = () => {
                     <span className="d-flex justify-content-center">
                       <img
                         src={psychologist.photo}
-                        className="img-size rounded-circle w-75 d-flex"
-                      ></img>
+                        className="img-size rounded-circle w-75"
+                        alt="Psychologist"
+                      />
                     </span>
                   </Link>
                 </li>
@@ -198,13 +199,17 @@ export const Demo = () => {
         </div>
       </div>
 
-      <br />
-      <Link to="/">
-        <button className="boton-demo btn ">Volver</button>
-      </Link>
-      <button className="boton-demo btn ms-2" onClick={handleClearConversation}>
-        Generar nueva conversacion
-      </button>
+      <div className="d-flex justify-content-center mt-3">
+        <Link to="/">
+          <button className="boton-demo btn">Volver</button>
+        </Link>
+        <button
+          className="boton-demo btn ms-2"
+          onClick={handleClearConversation}
+        >
+          Generar nueva conversación
+        </button>
+      </div>
     </div>
   );
 };
