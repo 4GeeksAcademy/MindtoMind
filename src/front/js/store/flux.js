@@ -190,6 +190,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           method: "POST",
           body: JSON.stringify({ email, password }),
           headers: {
+            "Access-Control-Allow-Origin": "*",
             "Content-Type": "application/json",
           },
         });
@@ -308,7 +309,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       signupUsuario: async (dataToSend) => {
-        const response = await fetch(apiUrl + "/register", {
+        const response = await fetch( `${apiUrl}/register`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -386,13 +387,13 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       logout: async () => {
         let { token } = getStore();
-        // let resp = await fetch(apiUrl + "/logout", {
-        // 	method: "POST",
-        // 	headers: {
-        // 		"Authorization": "Bearer " + token
-        // 	},
-        // });
-        // if (!resp.ok) return false;
+        let resp = await fetch(apiUrl + "/logout", {
+        	method: "POST",
+        	headers: {
+        		"Authorization": "Bearer " + token
+        	},
+        });
+        if (!resp.ok) return false;
         setStore({ token: null, userInfo: null });
         localStorage.removeItem("token");
         localStorage.removeItem("conversationID");
@@ -525,34 +526,14 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.error("Error en la actualización de los datos:", error);
         }
       },
-      // getUserMessages: async (userId) => {
-      //   const store = getStore();
-      //   try {
-      //     const response = await fetch(apiUrl + `/users/${userId}/messages`, {
-      //       method: "GET",
-      //       headers: {
-      //         "Content-Type": "application/json",
-      //         Authorization: "Bearer " + localStorage.getItem("token"),
-      //       },
-      //     });
-
-      //     if (!response.ok) {
-      //       throw new Error("Error al obtener los mensajes");
-      //     }
-          
-      //     const data = await response.json();
-      //     setStore({ userMessages: data });
-          
-      //   } catch (error) {
-      //     console.error("Error con el fetch de los mensajes:", error);
-      //   }
-      // },
+      
       getUserMessages: async (userId) => {
         const store = getStore();
         try {
             const response = await fetch(`${apiUrl}/users/${userId}/messages`, {
                 method: "GET",
                 headers: {
+                    "Access-Control-Allow-Origin": "*",
                     "Content-Type": "application/json",
                     Authorization: "Bearer " + localStorage.getItem("token"),
                 },
@@ -576,19 +557,6 @@ const getState = ({ getStore, getActions, setStore }) => {
         }
     },
 
-      // saveContactPsico: (psicologo) => {
-      //   setStore({psicologoGuardado:psicologo})
-      // },
-
-      // loadPsico: async () => {
-      //   const actions = getActions();
-      //   const psicoPromises = [];
-      //   setStore({ psychologists: [] });
-      //   for (let i = 1; i <= 10; i++) {
-      //     psicoPromises.push(actions.getPsico(i));
-      //   }
-      //   await Promise.all(psicoPromises);
-      // },
     },
   };
 };
