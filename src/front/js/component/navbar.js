@@ -56,10 +56,10 @@ export const Navbar = () => {
     }, []);
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg ">
             <div className="container-fluid">
                 <a href="/">
-                    <span className="navbar-brand mb-0 h1">
+                    <span className="navbar-brand mb-0 ms-5 h1">
                         <img className="logo" src={logo} alt="Logo" />
                     </span>
                 </a>
@@ -99,7 +99,7 @@ export const Navbar = () => {
                             </div>
 
                             <button
-                                className="btn btn-outline-primary ms-3 mb-2 mb-lg-0 OBOTAO"
+                                className="btn btn-outline-primary ms-3 mb-2 mb-lg-0 OBOTAO me-5"
                                 data-bs-toggle="modal"
                                 data-bs-target="#exampleModal"
                             >
@@ -128,7 +128,7 @@ export const Navbar = () => {
                                                 rápido!
                                             </h6>
                                         </div>
-                                        <div className="modal-footer">
+                                        <div className="modal-footer ">
                                             <button
                                                 type="button"
                                                 className="btn btn-outline-primary"
@@ -142,16 +142,16 @@ export const Navbar = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className="ms-auto d-flex flex-wrap align-items-center">
+                        <div className="ms-auto d-flex flex-wrap align-items-center ">
                             {store.psycologoLogeado == false ? (
                                 <>
-                                    <button onClick={submitform} className="btn btn-primary mb-2 mb-lg-0">
+                                    <button onClick={submitform} className="btn btn-primary mb-2 mb-lg-0 ">
                                         Cerrar sesión
                                     </button>
-                                    <button onClick={handleClick} className="btn btn-primary ms-2 mb-2 mb-lg-0">
+                                    <button onClick={handleClick} className="btn btn-primary ms-2 mb-2 mb-lg-0 ">
                                         Habla con nuestro chat
                                     </button>
-                                    <button type="button" className="btn btn-primary ms-2 mb-2 mb-lg-0" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                    <button type="button" className="btn btn-primary ms-2 mb-2 mb-lg-0 me-5" data-bs-toggle="modal" data-bs-target="#exampleModal">
                                         Eliminar cuenta
                                     </button>
                                     <div className="modal fade" id="exampleModal" tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -176,7 +176,7 @@ export const Navbar = () => {
                                     <button onClick={submitform} className="btn btn-primary mb-2 mb-lg-0">
                                         Cerrar sesión
                                     </button>
-                                    <button onClick={handle} className="btn btn-primary ms-2 mb-2 mb-lg-0">
+                                    <button onClick={handle} className="btn btn-primary ms-2 mb-2 mb-lg-0 me-5">
                                         Ve a tu perfil
                                     </button>
                                 </>

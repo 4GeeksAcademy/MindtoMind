@@ -3,7 +3,7 @@ import "../../styles/home2.css";
 
 export const Home2 = () => {
   return (
-    <div className="fundo container-fluid">
+    <div className=" container-fluid">
       <div className="row black-wrapper">
         <div className="col-lg-6 mb-4">
           <img
@@ -34,9 +34,9 @@ export const Home2 = () => {
         </div>
       </div>
 
-      <div className="row mt-4">
+      <div className="row mt-4 minhaclasse pt-4">
         <div className="col-lg-4 col-md-6 mb-2">
-          <div className="card minhaclasse">
+          <div className="card minhaclasse ">
             <div className="card-header p-0">
               <img
                 src="https://th.bing.com/th/id/OIP.7BGpRXF-j9xknC62W7eJ4QHaE4?rs=1&pid=ImgDetMain"
