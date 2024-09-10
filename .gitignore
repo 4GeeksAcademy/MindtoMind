@@ -79,5 +79,4 @@ dist/*
 database.database
 database.db
 diagram.png
-migrations
 __pycache__/
