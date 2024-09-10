@@ -5,7 +5,7 @@
   aspect-ratio: 1 / 1;
   object-fit: cover;
   border-radius: 50%;
-  border: 2px solid #d5bdaf; /* Opcional: borde para las imágenes */
+  border: 2px solid #d5bdaf;
 }
 
 .vistachat {
@@ -28,7 +28,7 @@
 .input-container {
   position: sticky;
   bottom: 0;
-  background-color: white;/* Ajustar para que no se quede pegado al fondo en pantallas pequeñas */
+  background-color: white;
 }
 
 
@@ -54,16 +54,16 @@
 .psicologos {
   height: calc(80vh - 200px); 
 }
-/* Define las clases para los mensajes y las fechas */
+
 .message {
-  font-size: 1rem; /* Tamaño de fuente predeterminado */
+  font-size: 1rem; 
 }
 
 .accordion-button {
-  font-size: 1rem; /* Tamaño de fuente para las fechas en la vista de conversaciones */
+  font-size: 1rem; 
 }
 
-/* Media queries para ajustar el tamaño de fuente */
+
 @media (max-width: 992px) {
   .message {
     font-size: 0.9rem;

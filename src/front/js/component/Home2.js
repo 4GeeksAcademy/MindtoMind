@@ -112,7 +112,7 @@ export const Home2 = () => {
           </p>
         </div>
 
-        <div className="col-lg-6 mt-4 mb-5">
+        <div className="col-lg-6 mt-4 mb-5 ">
           <img
             src="https://th.bing.com/th/id/OIP.an295sAlWwpLDzBk0EeqoQAAAA?rs=1&pid=ImgDetMain"
             className="center img-fluid w-75"
