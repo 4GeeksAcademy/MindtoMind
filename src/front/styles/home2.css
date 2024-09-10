@@ -62,7 +62,7 @@
 
 .center {
   display: flex;
-  justify-content: flex-end; 
+  justify-content: flex-end;
   margin-bottom: 50px;
   margin-left: 150px;
 }
@@ -73,8 +73,8 @@
 }
 
 .branco {
-  color: #d5bdaf;
-  font-size: 1.2rem;
+  color: #bb8e74;
+  font-size: 1.3rem;
 }
 
 .fundo {

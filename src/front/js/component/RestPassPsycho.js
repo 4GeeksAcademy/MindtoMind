@@ -7,7 +7,7 @@ import { BsLock } from "react-icons/bs";
 
 export const ResetPassword= ({ token }) => {
     const { store, actions } = useContext(Context);
-    const navigate = useNavigate(); // Hook de navegación
+    const navigate = useNavigate(); 
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const apiUrl = process.env.BACKEND_URL + "/api";
@@ -41,7 +41,7 @@ export const ResetPassword= ({ token }) => {
             const result = await response.json();
             console.log(result.message);
             alert("Contraseña restablecida con éxito. Ahora puedes iniciar sesión.");
-            navigate("/login"); // Redirige al usuario a la página de inicio de sesión
+            navigate("/login");
           }
         } catch (error) {
           console.error("Fetch error:", error);
