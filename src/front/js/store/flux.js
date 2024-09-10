@@ -112,7 +112,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           alert("Ocurrió un problema al intentar enviar la solicitud.");
         }
       },
-      
+
       //Delete Psico
       deletePsico: async (id) => {
         try {
@@ -123,20 +123,19 @@ const getState = ({ getStore, getActions, setStore }) => {
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
           });
-      
+
           if (!resp.ok) {
             console.error(`Error en la petición: ${resp.status}`);
             return;
           }
-      
+
           console.log(`Psicólogo con id ${id} eliminado`);
           // this.getAllPsico(); // Actualiza la lista después de eliminar
-      
         } catch (error) {
           console.error(`Error en la promesa: ${error}`);
         }
       },
-      
+
       //Delete User
       deleteUser: async (id) => {
         try {
@@ -147,15 +146,13 @@ const getState = ({ getStore, getActions, setStore }) => {
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
           });
-      
+
           if (!resp.ok) {
             console.error(`Error en la petición: ${resp.status}`);
             return;
           }
-      
+
           console.log(`Usuario con id ${id} eliminado`);
-          
-      
         } catch (error) {
           console.error(`Error en la promesa: ${error}`);
         }
@@ -206,14 +203,12 @@ const getState = ({ getStore, getActions, setStore }) => {
         return true;
       },
 
-      
       getMessage: async () => {
         try {
-   
           const resp = await fetch(apiUrl + "/hello");
           const data = await resp.json();
           setStore({ message: data.message });
-         
+
           return data;
         } catch (error) {
           console.log("Error loading message from backend", error);
@@ -222,7 +217,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 
       mensajeApi: async (message) => {
         try {
-        
           const resp = await fetch(apiUrl + "/demo", {
             method: "POST",
             headers: {
@@ -235,14 +229,12 @@ const getState = ({ getStore, getActions, setStore }) => {
           });
 
           const data = await resp.json();
-  
+
           return data;
         } catch (error) {
           console.log("Error loading message from backend", error);
         }
       },
-
-      
 
       saveMessage: async (message) => {
         console.log("no estoy dando error");
@@ -309,7 +301,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       signupUsuario: async (dataToSend) => {
-        const response = await fetch( `${apiUrl}/register`, {
+        const response = await fetch(`${apiUrl}/register`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -388,10 +380,10 @@ const getState = ({ getStore, getActions, setStore }) => {
       logout: async () => {
         let { token } = getStore();
         let resp = await fetch(apiUrl + "/logout", {
-        	method: "POST",
-        	headers: {
-        		"Authorization": "Bearer " + token
-        	},
+          method: "POST",
+          headers: {
+            Authorization: "Bearer " + token,
+          },
         });
         if (!resp.ok) return false;
         setStore({ token: null, userInfo: null });
@@ -480,6 +472,7 @@ const getState = ({ getStore, getActions, setStore }) => {
           let resp = await fetch(apiUrl + `/psychologists`, {
             headers: {
               "Content-Type": "application/json",
+              "Access-Control-Allow-Origin": "*",
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
           });
@@ -526,37 +519,33 @@ const getState = ({ getStore, getActions, setStore }) => {
           console.error("Error en la actualización de los datos:", error);
         }
       },
-      
+
       getUserMessages: async (userId) => {
         const store = getStore();
         try {
-            const response = await fetch(`${apiUrl}/users/${userId}/messages`, {
-                method: "GET",
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Content-Type": "application/json",
-                    Authorization: "Bearer " + localStorage.getItem("token"),
-                },
-            });
-    
-            if (!response.ok) {
-               
-                if (response.status === 404) {
-                    throw new Error("Usuario no encontrado o no tiene mensajes.");
-                } else {
-                    throw new Error("Error al obtener los mensajes del servidor.");
-                }
-            }
-    
-            const data = await response.json();
-            setStore({ userMessages: data });
-    
-        } catch (error) {
-       
-            console.error("Error al obtener los mensajes:", error.message);
-        }
-    },
+          const response = await fetch(`${apiUrl}/users/${userId}/messages`, {
+            method: "GET",
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + localStorage.getItem("token"),
+            },
+          });
 
+          if (!response.ok) {
+            if (response.status === 404) {
+              throw new Error("Usuario no encontrado o no tiene mensajes.");
+            } else {
+              throw new Error("Error al obtener los mensajes del servidor.");
+            }
+          }
+
+          const data = await response.json();
+          setStore({ userMessages: data });
+        } catch (error) {
+          console.error("Error al obtener los mensajes:", error.message);
+        }
+      },
     },
   };
 };
