@@ -141,7 +141,7 @@ def handleIA():
 
 
             return jsonify(response_body), 200
-
+    #error que muestra
         except Exception as e:
             return jsonify({"error": str(e)}), 500
     

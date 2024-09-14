@@ -47,7 +47,7 @@ export const Demo = () => {
       console.log("demo js response",response)
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: response.message },
+        { text: response.message || "No response", type: "ai" },
       ]);
       console.log("message response",response.message)
     } catch (error) {
