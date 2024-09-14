@@ -44,11 +44,12 @@ export const Demo = () => {
 
     try {
       const response = await actions.mensajeApi(messageData);
-
+      console.log("demo js response",response)
       setMessages((prevMessages) => [
         ...prevMessages,
-        { text: response.message || "No response", type: "ai" },
+        { text: response.message },
       ]);
+      console.log("message response",response.message)
     } catch (error) {
       console.error("Error al enviar el mensaje:", error);
       setMessages((prevMessages) => [
