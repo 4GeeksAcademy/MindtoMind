@@ -129,6 +129,7 @@ def handleIA():
             response_body = {
                 "message": result
             }
+            print("response_body", response_body)
             conversation_history = load_conversation()
             conversation_history.append({"role": "user", "content": content})
             conversation_history.append({"role": "assistant", "content": result})
