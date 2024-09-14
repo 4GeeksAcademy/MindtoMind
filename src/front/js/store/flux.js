@@ -216,6 +216,8 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       mensajeApi: async (message) => {
+        console.log( apiUrl + "/demo")
+        console.log("process.env.API_KEY_AI", process.env.API_KEY_AI)
         try {
           const resp = await fetch(apiUrl + "/demo", {
             method: "POST",
@@ -301,6 +303,7 @@ const getState = ({ getStore, getActions, setStore }) => {
       },
 
       signupUsuario: async (dataToSend) => {
+        console.log(`${apiUrl}/register`)
         const response = await fetch(`${apiUrl}/register`, {
           method: "POST",
           headers: {

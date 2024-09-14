@@ -100,6 +100,8 @@ def handleIA():
     if request.method == 'POST':
         data = request.get_json()
         content = data.get('content')
+        print(data)
+        print(content)
 
         if content == "exit":
             conversation_history = load_conversation()
@@ -121,9 +123,9 @@ def handleIA():
                 return jsonify({"error": response["error"]}), 500
 
             result = response['choices'][0]['message']['content']
+            print(result)
             if is_inappropriate(result):
                 return jsonify({"message": "Hay muchos profesionales capacitados que pueden ayudarte a manejar esto. Si quieres, puedo ayudarte a buscar opciones."}), 400
-            
             response_body = {
                 "message": result
             }
